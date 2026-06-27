@@ -300,6 +300,13 @@ async function searchSoftware(query) {
 }
 
 function formatFileSize(size) {
+    if (!size) return '0 B';
+    if (typeof size === 'number') {
+        const k = 1024;
+        const sizes = ['B', 'KB', 'MB', 'GB', 'TB'];
+        const i = Math.floor(Math.log(size) / Math.log(k));
+        return parseFloat((size / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
     return size;
 }
 

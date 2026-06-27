@@ -168,3 +168,26 @@ BEGIN
     RETURN new_count;
 END;
 $$;
+
+-- 8. 联系留言表
+CREATE TABLE IF NOT EXISTS contact_messages (
+    id BIGSERIAL PRIMARY KEY,
+    name TEXT NOT NULL,
+    contact TEXT NOT NULL,
+    type TEXT DEFAULT '软件安装咨询',
+    message TEXT NOT NULL,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    is_read BOOLEAN DEFAULT FALSE
+);
+
+ALTER TABLE contact_messages ENABLE ROW LEVEL SECURITY;
+
+DO $$ BEGIN
+    CREATE POLICY "Allow public insert to contact_messages" ON contact_messages FOR INSERT WITH CHECK (true);
+EXCEPTION WHEN duplicate_object THEN NULL;
+END $$;
+
+DO $$ BEGIN
+    CREATE POLICY "Allow auth read contact_messages" ON contact_messages FOR SELECT USING (auth.role() = 'authenticated');
+EXCEPTION WHEN duplicate_object THEN NULL;
+END $$;

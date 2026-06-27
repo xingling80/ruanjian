@@ -137,39 +137,9 @@ function formatNumber(num) {
     return num.toLocaleString();
 }
 
-function isLoggedIn() {
-    const token = localStorage.getItem('admin_token') || sessionStorage.getItem('admin_token');
-    if (!token) return false;
-    
-    const loginTime = localStorage.getItem('admin_login_time') || sessionStorage.getItem('admin_login_time');
-    if (!loginTime) return false;
-    
-    const expireTime = parseInt(loginTime) + 24 * 60 * 60 * 1000;
-    if (Date.now() > expireTime) {
-        logout();
-        return false;
-    }
-    
-    return true;
-}
-
-function logout() {
-    localStorage.removeItem('admin_token');
-    localStorage.removeItem('admin_login_time');
-    localStorage.removeItem('admin_username');
-    sessionStorage.removeItem('admin_token');
-    sessionStorage.removeItem('admin_login_time');
-}
-
-function getLoginState() {
-    const token = localStorage.getItem('admin_token') || sessionStorage.getItem('admin_token');
-    const loginTime = localStorage.getItem('admin_login_time') || sessionStorage.getItem('admin_login_time');
-    return {
-        isLoggedIn: !!token,
-        token: token,
-        loginTime: loginTime ? parseInt(loginTime) : null
-    };
-}
+// 认证已统一使用 Supabase Auth，请勿使用 localStorage 自定义 token。
+// 以下函数仅保留用于兼容旧代码，新代码请使用 supabase-client.js 中的 isAuthenticated()。
+// 管理后台的 login/logout 由 supabase-client.js 处理，请勿在 common.js 中覆盖。
 
 document.addEventListener('DOMContentLoaded', () => {
     initParticles();

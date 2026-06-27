@@ -90,6 +90,16 @@ export async function incrementDownloadCount(softwareId) {
     return { data, error };
 }
 
+export async function submitContactMessage(message) {
+    const { data, error } = await supabase.from('contact_messages').insert([{
+        name: message.name,
+        contact: message.contact,
+        type: message.type,
+        message: message.message
+    }]);
+    return { data, error };
+}
+
 export async function getStats() {
     const softwareCount = await supabase.from('software').select('id', { count: 'exact', head: true });
     const totalDownloads = await supabase.from('software').select('downloads_count');

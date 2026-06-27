@@ -152,7 +152,7 @@
                                 <h3 class="font-headline-md text-headline-md text-on-surface mb-2">客服在线中</h3>
                                 <p class="text-green-400 text-sm">当前平均响应时间：3分钟</p>
                             </div>
-                            <div className="space-y-3">
+                            <div class="space-y-3">
                                 <div class="flex items-center gap-3 p-3 rounded-lg bg-surface-container/50">
                                     <span class="material-symbols-outlined text-primary">speed</span>
                                     <span class="text-on-surface-variant text-sm flex-grow">响应速度</span>
@@ -334,6 +334,10 @@
         </div>
     </footer>
 
+    <script type="module">
+        import { submitContactMessage } from './js/supabase-client.js';
+        window.submitContactMessage = submitContactMessage;
+    </script>
     <script src="js/common.js"></script>
     <script>
         function toggleFaq(btn) {
@@ -348,11 +352,38 @@
             showToast('邮箱已复制到剪贴板');
         }
 
-        function handleSubmitContact(e) {
+        async function handleSubmitContact(e) {
             e.preventDefault();
-            const name = document.getElementById('contact-name').value;
-            showToast(`感谢您的留言，${name}！我们会尽快回复。`);
-            e.target.reset();
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const name = document.getElementById('contact-name').value.trim();
+            const contact = document.getElementById('contact-contact').value.trim();
+            const type = document.getElementById('contact-type').value;
+            const message = document.getElementById('contact-message').value.trim();
+
+            if (!name || !contact || !message) {
+                showToast('请填写所有必填字段', 'error');
+                return;
+            }
+
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="material-symbols-outlined animate-spin">refresh</span> 提交中...';
+
+            try {
+                const { error } = await window.submitContactMessage({ name, contact, type, message });
+                if (error) throw error;
+                showToast(`感谢您的留言，${name}！我们会尽快回复。`, 'success');
+                e.target.reset();
+            } catch (err) {
+                // 如果 Supabase 未配置，给出友好提示
+                if (err.message?.includes('relation') || err.code === '42P01') {
+                    showToast('留言功能暂未配置，请通过咸鱼或邮箱联系我们', 'error');
+                } else {
+                    showToast('提交失败: ' + (err.message || '请稍后重试'), 'error');
+                }
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<span class="material-symbols-outlined">send</span> 提交留言';
+            }
         }
     </script>
 </body>
