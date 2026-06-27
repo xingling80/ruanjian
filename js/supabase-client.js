@@ -1,7 +1,7 @@
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
-const SUPABASE_URL = 'YOUR_SUPABASE_URL';
-const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
+const SUPABASE_URL = 'https://bszmxgjhxikfpisxgaml.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_vVGZp3VO6OPFxKBUIaxJkA_FmC0rqeS';
 
 export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
@@ -92,10 +92,16 @@ export async function incrementDownloadCount(softwareId) {
 
 export async function getStats() {
     const softwareCount = await supabase.from('software').select('id', { count: 'exact', head: true });
-    const totalDownloads = await supabase.from('software').select('downloads_count', { count: 'sum', head: true });
+    const totalDownloads = await supabase.from('software').select('downloads_count');
     
     return {
         softwareCount: softwareCount.count || 0,
-        totalDownloads: totalDownloads.count || 0
+        totalDownloads: totalDownloads.data ? totalDownloads.data.reduce((sum, s) => sum + (s.downloads_count || 0), 0) : 0
     };
+}
+
+// ==================== 注册管理员（首次设置用） ====================
+export async function signUpAdmin(email, password) {
+    const { data, error } = await supabase.auth.signUp({ email, password });
+    return { data, error };
 }
