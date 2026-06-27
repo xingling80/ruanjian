@@ -34,49 +34,46 @@
                 <span class="material-symbols-outlined text-primary text-4xl">lock_person</span>
             </div>
             <h1 class="font-headline-lg text-headline-lg text-on-surface mb-2">管理后台登录</h1>
-            <p class="text-on-surface-variant font-body-md">请输入管理员账号密码</p>
+            <p class="text-on-surface-variant font-body-md">请输入管理员邮箱和密码</p>
         </div>
 
         <!-- Login Form -->
         <div class="glass-level-1 rounded-2xl p-8 border border-white/10">
             <form onsubmit="handleLogin(event)" class="space-y-6">
                 <div class="form-group">
-                    <label class="form-label">用户名 *</label>
+                    <label class="form-label">邮箱 *</label>
                     <div class="relative">
-                        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">person</span>
-                        <input type="text" class="form-input pl-10" placeholder="admin" required id="login-username" autofocus>
+                        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">email</span>
+                        <input type="email" id="login-email" class="form-input pl-10" placeholder="请输入管理员邮箱" required autocomplete="email">
                     </div>
                 </div>
-
                 <div class="form-group">
                     <label class="form-label">密码 *</label>
                     <div class="relative">
-                        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">lock</span>
-                        <input type="password" class="form-input pl-10 pr-10" placeholder="请输入密码" required id="login-password">
-                        <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-on-surface" onclick="togglePassword()">
-                            <span class="material-symbols-outlined text-[18px]" id="password-toggle">visibility</span>
+                        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">lock</span>
+                        <input type="password" id="login-password" class="form-input pl-10 pr-10" placeholder="请输入密码" required autocomplete="current-password">
+                        <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-primary transition-colors" onclick="togglePassword()" tabindex="-1">
+                            <span class="material-symbols-outlined text-[20px]" id="password-toggle">visibility</span>
                         </button>
                     </div>
                 </div>
-
                 <div class="flex items-center justify-between">
                     <label class="flex items-center gap-2 cursor-pointer">
-                        <input type="checkbox" class="w-4 h-4 rounded border-white/20 bg-surface-container" id="remember-me">
-                        <span class="text-on-surface-variant text-sm">记住我</span>
+                        <input type="checkbox" id="remember-me" class="w-4 h-4 rounded border-outline-variant bg-surface-container-high checked:bg-primary">
+                        <span class="text-on-surface-variant text-sm font-body-md">记住登录状态</span>
                     </label>
-                    <button type="button" class="text-primary text-sm hover:underline">忘记密码？</button>
+                    <a href="#" class="text-primary text-sm hover:underline">忘记密码？</a>
                 </div>
-
-                <button type="submit" class="btn-primary w-full py-4" id="login-btn">
-                    <span class="material-symbols-outlined">login</span>
+                <button type="submit" class="btn-primary w-full py-3 font-body-lg text-lg" id="login-btn">
                     登录
                 </button>
-
-                <div id="login-error" class="hidden text-center text-error text-sm mt-4">
-                    <span class="material-symbols-outlined text-[14px]">error</span>
-                    <span id="error-message">用户名或密码错误</span>
-                </div>
             </form>
+            <div id="login-error" class="mt-4 p-3 bg-error/10 border border-error/30 rounded-lg hidden">
+                <div class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-error text-[18px]">error</span>
+                    <span class="text-error text-sm" id="error-message">用户名或密码错误</span>
+                </div>
+            </div>
         </div>
 
         <!-- Footer -->
@@ -90,10 +87,9 @@
     <script type="module">
         import { login as sbLogin, isAuthenticated } from './js/supabase-client.js';
         
-        function togglePassword() {
+        window.togglePassword = function() {
             const passwordInput = document.getElementById('login-password');
             const toggleIcon = document.getElementById('password-toggle');
-            
             if (passwordInput.type === 'password') {
                 passwordInput.type = 'text';
                 toggleIcon.textContent = 'visibility_off';
@@ -101,58 +97,67 @@
                 passwordInput.type = 'password';
                 toggleIcon.textContent = 'visibility';
             }
-        }
+        };
 
-        async function handleLogin(e) {
+        window.handleLogin = async function(e) {
             e.preventDefault();
             
-            const username = document.getElementById('login-username').value;
+            const email = document.getElementById('login-email').value.trim();
             const password = document.getElementById('login-password').value;
             const rememberMe = document.getElementById('remember-me').checked;
             const loginBtn = document.getElementById('login-btn');
             const errorDiv = document.getElementById('login-error');
+
+            if (!email || !password) {
+                errorDiv.classList.remove('hidden');
+                document.getElementById('error-message').textContent = '请填写邮箱和密码';
+                return;
+            }
 
             loginBtn.disabled = true;
             loginBtn.innerHTML = '<span class="material-symbols-outlined animate-spin">refresh</span> 登录中...';
             errorDiv.classList.add('hidden');
 
             try {
-                const email = `${username}@installer.local`;
                 const { data, error } = await sbLogin(email, password);
                 
                 if (error) {
-                    throw error;
+                    let msg = '登录失败';
+                    if (error.message?.includes('Invalid login credentials')) {
+                        msg = '邮箱或密码错误';
+                    } else if (error.message?.includes('Email not confirmed')) {
+                        msg = '邮箱未确认，请在 Supabase 中手动确认用户';
+                    } else if (error.message) {
+                        msg = error.message;
+                    }
+                    throw new Error(msg);
                 }
 
                 if (data.user) {
                     if (rememberMe) {
-                        localStorage.setItem('admin_username', username);
+                        localStorage.setItem('admin_email', email);
                     }
-                    showToast('登录成功！', 'success');
+                    await showToast('登录成功！', 'success');
                     setTimeout(() => {
                         window.location.href = 'admin.html';
                     }, 1000);
                 } else {
-                    throw new Error('登录失败');
+                    throw new Error('登录失败，请重试');
                 }
             } catch (err) {
                 loginBtn.disabled = false;
-                loginBtn.innerHTML = '<span class="material-symbols-outlined">login</span> 登录';
+                loginBtn.innerHTML = '登录';
                 errorDiv.classList.remove('hidden');
-                document.getElementById('error-message').textContent = err.message || '用户名或密码错误';
+                document.getElementById('error-message').textContent = err.message || '登录失败';
             }
-        }
+        };
 
-        document.addEventListener('DOMContentLoaded', async () => {
-            const savedUsername = localStorage.getItem('admin_username');
-            if (savedUsername) {
-                document.getElementById('login-username').value = savedUsername;
+        // 自动填充记住的邮箱
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedEmail = localStorage.getItem('admin_email');
+            if (savedEmail) {
+                document.getElementById('login-email').value = savedEmail;
                 document.getElementById('remember-me').checked = true;
-            }
-
-            const isLogged = await isAuthenticated();
-            if (isLogged) {
-                window.location.href = 'admin.html';
             }
         });
     </script>
