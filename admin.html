@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html class="dark" lang="zh-CN">
 <head>
     <meta charset="utf-8">
@@ -31,16 +31,24 @@
         }
     </script>
 </head>
-<body class="text-on-surface font-body-md min-h-screen bg-[#0A0A0A]">
+<body class="text-on-surface font-body-md min-h-screen bg-[#0A0A0A]" style="display:none">
     <div class="glow-bg"></div>
     <div id="particles-js"></div>
 
     <script type="module">
         import { isAuthenticated, logout as sbLogout } from './js/supabase-client.js';
-        document.addEventListener('DOMContentLoaded', async () => {
-            const isLogged = await isAuthenticated();
-            if (!isLogged) window.location.href = 'login.html';
-        });
+        (async () => {
+            try {
+                const isLogged = await isAuthenticated();
+                if (!isLogged) {
+                    window.location.href = 'login.html';
+                    return;
+                }
+                document.body.style.display = '';
+            } catch (e) {
+                window.location.href = 'login.html';
+            }
+        })();
         async function logout() {
             try { await sbLogout(); } catch (e) {}
             localStorage.removeItem('admin_username');
