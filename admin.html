@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html class="dark" lang="zh-CN">
 <head>
     <meta charset="utf-8">
@@ -36,27 +36,48 @@
     <div id="particles-js"></div>
 
     <script type="module">
-        import { isAuthenticated, logout as sbLogout } from './js/supabase-client.js';
-        (async () => {
-            try {
-                const isLogged = await isAuthenticated();
-                if (!isLogged) {
-                    window.location.href = 'login.html';
-                    return;
-                }
-                document.body.style.display = '';
-            } catch (e) {
-                window.location.href = 'login.html';
-            }
-        })();
-        async function logout() {
-            try { await sbLogout(); } catch (e) {}
-            localStorage.removeItem('admin_username');
-            showToast('已退出登录');
-            setTimeout(() => { window.location.href = 'login.html'; }, 1000);
+    import { isAuthenticated, logout as sbLogout } from './js/supabase-client.js';
+
+    // 显示加载状态
+    const loadingHtml = '<div id="auth-loading" style="position:fixed;inset:0;z-index:9999;background:#0A0A0A;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;color:#e3e2e7;font-family:Inter,sans-serif;"><div style="width:48px;height:48px;border:3px solid rgba(173,198,255,0.2);border-top-color:#adc6ff;border-radius:50%;animation:spin 0.8s linear infinite;"></div><p style="font-size:15px;">验证登录状态...</p></div>';
+    document.body.insertAdjacentHTML('afterbegin', loadingHtml);
+    const style = document.createElement('style');
+    style.textContent = '@keyframes spin{to{transform:rotate(360deg)}}';
+    document.head.appendChild(style);
+
+    // 3秒超时兜底  如果 Supabase 连不上就跳登录页
+    let timedOut = false;
+    const timer = setTimeout(() => {
+        timedOut = true;
+        window.location.href = 'login.html';
+    }, 3000);
+
+    try {
+        const isLogged = await isAuthenticated();
+        clearTimeout(timer);
+        if (timedOut) return;
+
+        if (!isLogged) {
+            window.location.href = 'login.html';
+            return;
         }
-        window.logout = logout;
-    </script>
+        // 认证通过，移除加载屏，显示页面
+        const loader = document.getElementById('auth-loading');
+        if (loader) loader.remove();
+        document.body.style.display = '';
+    } catch (e) {
+        clearTimeout(timer);
+        if (!timedOut) window.location.href = 'login.html';
+    }
+
+    async function logout() {
+        try { await sbLogout(); } catch (e) {}
+        localStorage.removeItem('admin_username');
+        showToast('已退出登录');
+        setTimeout(() => { window.location.href = 'login.html'; }, 1000);
+    }
+    window.logout = logout;
+</script>
 
     <!-- Admin Sidebar -->
     <aside class="admin-sidebar" id="admin-sidebar">
