@@ -52,23 +52,25 @@
         window.location.href = 'login.html';
     }, 3000);
 
-    try {
-        const isLogged = await isAuthenticated();
-        clearTimeout(timer);
-        if (timedOut) return;
+    (async () => {
+        try {
+            const isLogged = await isAuthenticated();
+            clearTimeout(timer);
+            if (timedOut) return;
 
-        if (!isLogged) {
-            window.location.href = 'login.html';
-            return;
+            if (!isLogged) {
+                window.location.href = 'login.html';
+                return;
+            }
+            // 认证通过，移除加载屏，显示页面
+            const loader = document.getElementById('auth-loading');
+            if (loader) loader.remove();
+            document.body.style.display = '';
+        } catch (e) {
+            clearTimeout(timer);
+            if (!timedOut) window.location.href = 'login.html';
         }
-        // 认证通过，移除加载屏，显示页面
-        const loader = document.getElementById('auth-loading');
-        if (loader) loader.remove();
-        document.body.style.display = '';
-    } catch (e) {
-        clearTimeout(timer);
-        if (!timedOut) window.location.href = 'login.html';
-    }
+    })();
 
     async function logout() {
         try { await sbLogout(); } catch (e) {}

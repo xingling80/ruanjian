@@ -1,4 +1,4 @@
-import { supabase, getSoftware, getSoftwareById as sbGetSoftwareById, getCategories, searchSoftware as sbSearchSoftware } from './supabase-client.js';
+﻿import { supabase, getSoftware, getSoftwareById as sbGetSoftwareById, getCategories, searchSoftware as sbSearchSoftware, createSoftware, updateSoftware, deleteSoftware, getDownloadLogs, getStats } from './supabase-client.js';
 
 const softwareData = [
     {
@@ -325,6 +325,11 @@ export {
     getSoftwareById,
     getSoftwareByCategory,
     searchSoftware,
+    createSoftware,
+    updateSoftware,
+    deleteSoftware,
+    getDownloadLogs,
+    getStats,
     formatFileSize,
     formatDate
 };
