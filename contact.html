@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html class="dark" lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>联系支持 - 安装中心</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Geist:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: { extend: { colors: { primary: "#adc6ff", secondary: "#e9b3ff" } } }
+        }
+    </script>
+</head>
+<body class="text-on-surface font-body-md min-h-screen">
+    <div id="particles-js"></div>
+
+    <header class="w-full max-w-container-max mx-auto px-gutter py-6 flex justify-between items-center relative z-10">
+        <a href="index.html" class="flex items-center gap-3 cursor-pointer">
+            <span class="material-symbols-outlined text-primary text-3xl">developer_board</span>
+            <span class="font-headline-md text-headline-md font-bold text-primary">安装中心</span>
+        </a>
+        <nav class="hidden md:flex items-center gap-8">
+            <a href="index.html" class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors uppercase tracking-wider">首页</a>
+            <a href="browse.html" class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors uppercase tracking-wider">浏览</a>
+            <a href="about.html" class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors uppercase tracking-wider">关于服务</a>
+            <a href="security.html" class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors uppercase tracking-wider">安全</a>
+            <a href="contact.html" class="font-label-sm text-label-sm text-primary uppercase tracking-wider">联系</a>
+        </nav>
+        <a href="admin.html" class="btn-primary text-sm">
+            <span class="material-symbols-outlined text-sm">dashboard</span>
+            管理后台
+        </a>
+    </header>
+
+    <main class="w-full max-w-container-max mx-auto px-gutter py-16 relative z-10">
+        <!-- Hero -->
+        <section class="text-center mb-16 animate-slide-up">
+            <span class="chip bg-primary/10 text-primary border-primary/20 mb-6">
+                <span class="material-symbols-outlined text-sm">chat</span>
+                联系我们
+            </span>
+            <h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg mb-6">
+                有问题？<span class="text-gradient-primary">随时联系</span>
+            </h1>
+            <p class="text-on-surface-variant font-body-lg max-w-2xl mx-auto">
+                无论是软件安装咨询、技术支持还是商务合作，
+                我们都随时准备为您服务。
+            </p>
+        </section>
+
+        <!-- Contact Cards -->
+        <section class="mb-16">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="glass-level-1 rounded-xl p-8 text-center interactive-hover">
+                    <div class="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-6">
+                        <span class="material-symbols-outlined text-primary text-3xl">chat_bubble</span>
+                    </div>
+                    <h3 class="font-headline-md text-headline-md text-on-surface mb-3">在线客服</h3>
+                    <p class="text-on-surface-variant font-body-md mb-6 text-sm">
+                        最快响应时间，在线即时沟通
+                    </p>
+                    <div class="text-primary font-body-md mb-4">
+                        响应时间：< 5分钟
+                    </div>
+                    <button class="btn-primary w-full" onclick="showToast('请通过咸鱼联系我们')">
+                        <span class="material-symbols-outlined text-sm">chat</span>
+                        立即咨询
+                    </button>
+                </div>
+
+                <div class="glass-level-1 rounded-xl p-8 text-center interactive-hover border-2 border-primary/30">
+                    <div class="absolute -top-3 left-1/2 -translate-x-1/2">
+                        <span class="bg-primary text-background px-3 py-1 rounded-full text-xs font-semibold">推荐</span>
+                    </div>
+                    <div class="w-16 h-16 rounded-2xl bg-secondary/10 flex items-center justify-center mx-auto mb-6">
+                        <span class="material-symbols-outlined text-secondary text-3xl">shopping_bag</span>
+                    </div>
+                    <h3 class="font-headline-md text-headline-md text-on-surface mb-3">咸鱼店铺</h3>
+                    <p class="text-on-surface-variant font-body-md mb-6 text-sm">
+                        通过咸鱼平台交易，更有保障
+                    </p>
+                    <div class="text-secondary font-body-md mb-4">
+                        交易保障 · 放心购买
+                    </div>
+                    <button class="btn-secondary w-full" onclick="showToast('咸鱼搜索：软件安装服务')">
+                        <span class="material-symbols-outlined text-sm">open_in_new</span>
+                        前往咸鱼
+                    </button>
+                </div>
+
+                <div class="glass-level-1 rounded-xl p-8 text-center interactive-hover">
+                    <div class="w-16 h-16 rounded-2xl bg-green-500/10 flex items-center justify-center mx-auto mb-6">
+                        <span class="material-symbols-outlined text-green-400 text-3xl">mail</span>
+                    </div>
+                    <h3 class="font-headline-md text-headline-md text-on-surface mb-3">邮件联系</h3>
+                    <p class="text-on-surface-variant font-body-md mb-6 text-sm">
+                        发送详细描述，我们会尽快回复
+                    </p>
+                    <div class="text-green-400 font-body-md mb-4 font-code-md">
+                        support@installer.com
+                    </div>
+                    <button class="btn-secondary w-full" onclick="copyEmail()">
+                        <span class="material-symbols-outlined text-sm">content_copy</span>
+                        复制邮箱
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Service Time -->
+        <section class="mb-16">
+            <div class="glass-level-1 rounded-2xl p-8 md:p-12">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <span class="chip bg-green-500/10 text-green-400 border-green-500/20 mb-6">
+                            <span class="material-symbols-outlined text-sm">schedule</span>
+                            服务时间
+                        </span>
+                        <h2 class="font-headline-lg text-headline-lg mb-6">
+                            我们的<span class="text-gradient-primary">服务时间</span>
+                        </h2>
+                        <p class="text-on-surface-variant font-body-md mb-8 leading-relaxed">
+                            我们尽量在第一时间响应您的咨询。
+                            如果在非服务时间联系，我们会在服务开始后尽快回复。
+                        </p>
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center py-3 border-b border-white/10">
+                                <span class="text-on-surface-variant">周一至周五</span>
+                                <span class="text-on-surface font-semibold">09:00 - 23:00</span>
+                            </div>
+                            <div class="flex justify-between items-center py-3 border-b border-white/10">
+                                <span class="text-on-surface-variant">周六</span>
+                                <span class="text-on-surface font-semibold">10:00 - 22:00</span>
+                            </div>
+                            <div class="flex justify-between items-center py-3">
+                                <span class="text-on-surface-variant">周日</span>
+                                <span class="text-on-surface font-semibold">14:00 - 21:00</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="glass-level-2 rounded-2xl p-8 border border-green-500/20">
+                            <div class="text-center mb-6">
+                                <div class="w-20 h-20 rounded-full bg-green-500/10 flex items-center justify-center mx-auto mb-4 relative">
+                                    <span class="material-symbols-outlined text-green-400 text-4xl">support_agent</span>
+                                    <span class="absolute bottom-1 right-1 w-4 h-4 rounded-full bg-green-400 border-2 border-surface animate-pulse"></span>
+                                </div>
+                                <h3 class="font-headline-md text-headline-md text-on-surface mb-2">客服在线中</h3>
+                                <p class="text-green-400 text-sm">当前平均响应时间：3分钟</p>
+                            </div>
+                            <div className="space-y-3">
+                                <div class="flex items-center gap-3 p-3 rounded-lg bg-surface-container/50">
+                                    <span class="material-symbols-outlined text-primary">speed</span>
+                                    <span class="text-on-surface-variant text-sm flex-grow">响应速度</span>
+                                    <span class="text-on-surface font-semibold">极快</span>
+                                </div>
+                                <div class="flex items-center gap-3 p-3 rounded-lg bg-surface-container/50">
+                                    <span class="material-symbols-outlined text-secondary">star</span>
+                                    <span class="text-on-surface-variant text-sm flex-grow">服务评分</span>
+                                    <span class="text-on-surface font-semibold">4.9/5.0</span>
+                                </div>
+                                <div class="flex items-center gap-3 p-3 rounded-lg bg-surface-container/50">
+                                    <span class="material-symbols-outlined text-green-400">groups</span>
+                                    <span class="text-on-surface-variant text-sm flex-grow">服务客户</span>
+                                    <span class="text-on-surface font-semibold">500+</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="mb-16">
+            <div class="text-center mb-12">
+                <h2 class="font-headline-lg text-headline-lg mb-4">常见问题</h2>
+                <p class="text-on-surface-variant font-body-md">先看看这些，也许能快速解答您的疑问</p>
+            </div>
+            <div class="max-w-3xl mx-auto space-y-4">
+                <div class="glass-level-1 rounded-xl overflow-hidden">
+                    <button class="w-full p-6 text-left flex justify-between items-center cursor-pointer" onclick="toggleFaq(this)">
+                        <span class="font-body-md font-semibold text-on-surface">如何下单购买安装服务？</span>
+                        <span class="material-symbols-outlined text-on-surface-variant">expand_more</span>
+                    </button>
+                    <div class="faq-content px-6 pb-6">
+                        <p class="text-on-surface-variant font-body-md">
+                            您可以通过咸鱼平台搜索我们的店铺"软件安装服务"，
+                            选择您需要的软件和服务套餐，拍下后联系客服安排安装即可。
+                        </p>
+                    </div>
+                </div>
+                <div class="glass-level-1 rounded-xl overflow-hidden">
+                    <button class="w-full p-6 text-left flex justify-between items-center cursor-pointer" onclick="toggleFaq(this)">
+                        <span class="font-body-md font-semibold text-on-surface">远程安装安全吗？会不会泄露隐私？</span>
+                        <span class="material-symbols-outlined text-on-surface-variant">expand_more</span>
+                    </button>
+                    <div class="faq-content px-6 pb-6">
+                        <p class="text-on-surface-variant font-body-md">
+                            远程安装使用正规的远程协助软件，整个过程您都可以看到操作。
+                            我们只进行软件安装相关操作，不会访问您的个人文件。
+                            安装完成后您可以随时断开连接并修改密码。
+                        </p>
+                    </div>
+                </div>
+                <div class="glass-level-1 rounded-xl overflow-hidden">
+                    <button class="w-full p-6 text-left flex justify-between items-center cursor-pointer" onclick="toggleFaq(this)">
+                        <span class="font-body-md font-semibold text-on-surface">安装需要我准备什么？</span>
+                        <span class="material-symbols-outlined text-on-surface-variant">expand_more</span>
+                    </button>
+                    <div class="faq-content px-6 pb-6">
+                        <p class="text-on-surface-variant font-body-md">
+                            您只需要准备一台可以正常上网的电脑，
+                            确保网络稳定即可。安装过程中您可以正常使用电脑做其他事情，
+                            不会影响您的正常使用。
+                        </p>
+                    </div>
+                </div>
+                <div class="glass-level-1 rounded-xl overflow-hidden">
+                    <button class="w-full p-6 text-left flex justify-between items-center cursor-pointer" onclick="toggleFaq(this)">
+                        <span class="font-body-md font-semibold text-on-surface">可以开发票吗？</span>
+                        <span class="material-symbols-outlined text-on-surface-variant">expand_more</span>
+                    </button>
+                    <div class="faq-content px-6 pb-6">
+                        <p class="text-on-surface-variant font-body-md">
+                            目前暂不提供发票。如果您有特殊需求，可以联系客服协商。
+                        </p>
+                    </div>
+                </div>
+                <div class="glass-level-1 rounded-xl overflow-hidden">
+                    <button class="w-full p-6 text-left flex justify-between items-center cursor-pointer" onclick="toggleFaq(this)">
+                        <span class="font-body-md font-semibold text-on-surface">支持哪些软件的安装？</span>
+                        <span class="material-symbols-outlined text-on-surface-variant">expand_more</span>
+                    </button>
+                    <div class="faq-content px-6 pb-6">
+                        <p class="text-on-surface-variant font-body-md">
+                            我们支持大部分常用软件的安装，包括创意设计类、开发工具类、
+                            视频剪辑类、办公软件类等。具体可以在软件库中查看，
+                            或者直接咨询客服您需要的软件。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Form -->
+        <section class="mb-16">
+            <div class="glass-level-1 rounded-2xl p-8 md:p-12">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                    <div>
+                        <span class="chip bg-secondary/10 text-secondary border-secondary/20 mb-6">
+                            <span class="material-symbols-outlined text-sm">edit_note</span>
+                            留言反馈
+                        </span>
+                        <h2 class="font-headline-lg text-headline-lg mb-6">
+                            给我们<span class="text-gradient-primary">留言</span>
+                        </h2>
+                        <p class="text-on-surface-variant font-body-md mb-8 leading-relaxed">
+                            填写下方表单，我们会在收到后尽快与您联系。
+                            建议通过咸鱼或在线客服咨询，响应更快哦。
+                        </p>
+                        <div class="space-y-6">
+                            <div class="flex items-start gap-4">
+                                <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                                    <span class="material-symbols-outlined text-primary">timeline</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-body-md font-semibold text-on-surface mb-1">快速响应</h4>
+                                    <p class="text-on-surface-variant text-sm">工作日2小时内回复</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <div class="w-10 h-10 rounded-lg bg-secondary/10 flex items-center justify-center flex-shrink-0">
+                                    <span class="material-symbols-outlined text-secondary">lock_person</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-body-md font-semibold text-on-surface mb-1">隐私保护</h4>
+                                    <p class="text-on-surface-variant text-sm">您的信息仅用于回复咨询</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <div class="w-10 h-10 rounded-lg bg-green-500/10 flex items-center justify-center flex-shrink-0">
+                                    <span class="material-symbols-outlined text-green-400">check_circle</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-body-md font-semibold text-on-surface mb-1">专业解答</h4>
+                                    <p class="text-on-surface-variant text-sm">技术人员一对一解答</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <form onsubmit="handleSubmitContact(event)" class="space-y-6">
+                            <div class="form-group">
+                                <label class="form-label">您的称呼 *</label>
+                                <input type="text" class="form-input" placeholder="请输入您的称呼" required id="contact-name">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">联系方式 *</label>
+                                <input type="text" class="form-input" placeholder="咸鱼ID / 邮箱 / 其他" required id="contact-contact">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">咨询类型</label>
+                                <select class="form-input" id="contact-type">
+                                    <option>软件安装咨询</option>
+                                    <option>技术问题反馈</option>
+                                    <option>售后支持</option>
+                                    <option>商务合作</option>
+                                    <option>其他</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">留言内容 *</label>
+                                <textarea class="form-input h-32 resize-none" placeholder="请详细描述您的问题或需求..." required id="contact-message"></textarea>
+                            </div>
+                            <button type="submit" class="btn-primary w-full">
+                                <span class="material-symbols-outlined">send</span>
+                                提交留言
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="border-t border-white/10 mt-20">
+        <div class="max-w-container-max mx-auto px-gutter py-12 text-center text-on-surface-variant text-sm">
+            © 2024 安装中心。专业的软件安装服务。
+        </div>
+    </footer>
+
+    <script src="js/common.js"></script>
+    <script>
+        function toggleFaq(btn) {
+            const content = btn.nextElementSibling;
+            const icon = btn.querySelector('.material-symbols-outlined');
+            content.classList.toggle('open');
+            icon.classList.toggle('rotate-180');
+        }
+
+        function copyEmail() {
+            copyToClipboard('support@installer.com');
+            showToast('邮箱已复制到剪贴板');
+        }
+
+        function handleSubmitContact(e) {
+            e.preventDefault();
+            const name = document.getElementById('contact-name').value;
+            showToast(`感谢您的留言，${name}！我们会尽快回复。`);
+            e.target.reset();
+        }
+    </script>
+</body>
+</html>

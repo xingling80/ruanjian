@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html class="dark" lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>定价方案 - 安装中心</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Geist:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: { extend: { colors: { primary: "#adc6ff", secondary: "#e9b3ff" } } }
+        }
+    </script>
+</head>
+<body class="text-on-surface font-body-md min-h-screen">
+    <div id="particles-js"></div>
+
+    <header class="w-full max-w-container-max mx-auto px-gutter py-6 flex justify-between items-center relative z-10">
+        <a href="index.html" class="flex items-center gap-3 cursor-pointer">
+            <span class="material-symbols-outlined text-primary text-3xl">developer_board</span>
+            <span class="font-headline-md text-headline-md font-bold text-primary">安装中心</span>
+        </a>
+        <nav class="hidden md:flex items-center gap-8">
+            <a href="index.html" class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors uppercase tracking-wider">首页</a>
+            <a href="browse.html" class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors uppercase tracking-wider">浏览</a>
+            <a href="about.html" class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors uppercase tracking-wider">关于服务</a>
+            <a href="pricing.html" class="font-label-sm text-label-sm text-primary uppercase tracking-wider">定价</a>
+            <a href="security.html" class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors uppercase tracking-wider">安全</a>
+            <a href="contact.html" class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors uppercase tracking-wider">联系</a>
+        </nav>
+        <a href="admin.html" class="btn-primary text-sm">
+            <span class="material-symbols-outlined text-sm">dashboard</span>
+            管理后台
+        </a>
+    </header>
+
+    <main class="w-full max-w-container-max mx-auto px-gutter py-16 relative z-10">
+        <!-- Hero -->
+        <section class="text-center mb-16 animate-slide-up">
+            <span class="chip bg-primary/10 text-primary border-primary/20 mb-6">
+                <span class="material-symbols-outlined text-sm">payments</span>
+                定价方案
+            </span>
+            <h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg mb-6">
+                选择适合您的<span class="text-gradient-primary">方案</span>
+            </h1>
+            <p class="text-on-surface-variant font-body-lg max-w-2xl mx-auto">
+                我们提供多种定价方案，满足不同客户的需求。
+                从单次安装到套餐服务，总有一款适合您。
+            </p>
+        </section>
+
+        <!-- Pricing Cards -->
+        <section class="mb-20">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="glass-level-1 rounded-2xl p-8 interactive-hover flex flex-col">
+                    <div class="mb-6">
+                        <h3 class="font-headline-md text-headline-md text-on-surface mb-2">基础版</h3>
+                        <p class="text-on-surface-variant font-body-md text-sm">适合单次安装需求</p>
+                    </div>
+                    <div class="mb-6">
+                        <span class="text-5xl font-bold text-on-surface">¥29</span>
+                        <span class="text-on-surface-variant">/次</span>
+                    </div>
+                    <ul class="space-y-4 mb-8 flex-grow">
+                        <li class="flex items-start gap-3">
+                            <span class="material-symbols-outlined text-green-400 text-xl flex-shrink-0">check</span>
+                            <span class="text-on-surface-variant">单个软件安装</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="material-symbols-outlined text-green-400 text-xl flex-shrink-0">check</span>
+                            <span class="text-on-surface-variant">安装包提供</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="material-symbols-outlined text-green-400 text-xl flex-shrink-0">check</span>
+                            <span class="text-on-surface-variant">远程协助安装</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="material-symbols-outlined text-green-400 text-xl flex-shrink-0">check</span>
+                            <span class="text-on-surface-variant">3天售后支持</span>
+                        </li>
+                        <li class="flex items-start gap-3 text-on-surface-variant/50">
+                            <span class="material-symbols-outlined text-xl flex-shrink-0">close</span>
+                            <span>优先技术支持</span>
+                        </li>
+                    </ul>
+                    <button class="btn-secondary w-full" onclick="showToast('请联系客服下单')">
+                        选择基础版
+                    </button>
+                </div>
+
+                <div class="glass-level-1 rounded-2xl p-8 border-2 border-primary/50 interactive-hover relative flex flex-col transform scale-105 z-10">
+                    <div class="absolute -top-4 left-1/2 -translate-x-1/2">
+                        <span class="bg-primary text-background px-4 py-1 rounded-full text-sm font-semibold">最受欢迎</span>
+                    </div>
+                    <div class="mb-6">
+                        <h3 class="font-headline-md text-headline-md text-on-surface mb-2">专业版</h3>
+                        <p class="text-on-surface-variant font-body-md text-sm">适合多软件安装需求</p>
+                    </div>
+                    <div class="mb-6">
+                        <span class="text-5xl font-bold text-gradient-primary">¥99</span>
+                        <span class="text-on-surface-variant">/套餐</span>
+                    </div>
+                    <ul class="space-y-4 mb-8 flex-grow">
+                        <li class="flex items-start gap-3">
+                            <span class="material-symbols-outlined text-green-400 text-xl flex-shrink-0">check</span>
+                            <span class="text-on-surface-variant">最多5个软件安装</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="material-symbols-outlined text-green-400 text-xl flex-shrink-0">check</span>
+                            <span class="text-on-surface-variant">全部安装包提供</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="material-symbols-outlined text-green-400 text-xl flex-shrink-0">check</span>
+                            <span class="text-on-surface-variant">远程协助安装</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="material-symbols-outlined text-green-400 text-xl flex-shrink-0">check</span>
+                            <span class="text-on-surface-variant">30天售后支持</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="material-symbols-outlined text-green-400 text-xl flex-shrink-0">check</span>
+                            <span class="text-on-surface-variant">优先技术支持</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="material-symbols-outlined text-green-400 text-xl flex-shrink-0">check</span>
+                            <span class="text-on-surface-variant">软件配置优化</span>
+                        </li>
+                    </ul>
+                    <button class="btn-primary w-full" onclick="showToast('请联系客服下单')">
+                        选择专业版
+                    </button>
+                </div>
+
+                <div class="glass-level-1 rounded-2xl p-8 interactive-hover flex flex-col">
+                    <div class="mb-6">
+                        <h3 class="font-headline-md text-headline-md text-on-surface mb-2">旗舰版</h3>
+                        <p class="text-on-surface-variant font-body-md text-sm">适合企业或重度用户</p>
+                    </div>
+                    <div class="mb-6">
+                        <span class="text-5xl font-bold text-on-surface">¥199</span>
+                        <span class="text-on-surface-variant">/套餐</span>
+                    </div>
+                    <ul class="space-y-4 mb-8 flex-grow">
+                        <li class="flex items-start gap-3">
+                            <span class="material-symbols-outlined text-green-400 text-xl flex-shrink-0">check</span>
+                            <span class="text-on-surface-variant">不限软件数量</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="material-symbols-outlined text-green-400 text-xl flex-shrink-0">check</span>
+                            <span class="text-on-surface-variant">全部安装包提供</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="material-symbols-outlined text-green-400 text-xl flex-shrink-0">check</span>
+                            <span class="text-on-surface-variant">远程协助安装</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="material-symbols-outlined text-green-400 text-xl flex-shrink-0">check</span>
+                            <span class="text-on-surface-variant">90天售后支持</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="material-symbols-outlined text-green-400 text-xl flex-shrink-0">check</span>
+                            <span class="text-on-surface-variant">VIP优先支持</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="material-symbols-outlined text-green-400 text-xl flex-shrink-0">check</span>
+                            <span class="text-on-surface-variant">系统优化服务</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="material-symbols-outlined text-green-400 text-xl flex-shrink-0">check</span>
+                            <span class="text-on-surface-variant">专属技术顾问</span>
+                        </li>
+                    </ul>
+                    <button class="btn-secondary w-full" onclick="showToast('请联系客服下单')">
+                        选择旗舰版
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Comparison Table -->
+        <section class="mb-20">
+            <div class="text-center mb-12">
+                <h2 class="font-headline-lg text-headline-lg mb-4">功能对比</h2>
+                <p class="text-on-surface-variant font-body-md">详细了解各方案的功能差异</p>
+            </div>
+            <div class="glass-level-1 rounded-xl overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="border-b border-white/10">
+                                <th class="text-left p-6 text-on-surface font-headline-md">功能</th>
+                                <th class="text-center p-6 text-on-surface font-headline-md">基础版</th>
+                                <th class="text-center p-6 text-primary font-headline-md">专业版</th>
+                                <th class="text-center p-6 text-on-surface font-headline-md">旗舰版</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b border-white/10">
+                                <td class="p-6 text-on-surface-variant">软件数量</td>
+                                <td class="text-center p-6 text-on-surface">1个</td>
+                                <td class="text-center p-6 text-primary font-semibold">5个</td>
+                                <td class="text-center p-6 text-on-surface">不限</td>
+                            </tr>
+                            <tr class="border-b border-white/10">
+                                <td class="p-6 text-on-surface-variant">安装包提供</td>
+                                <td class="text-center p-6"><span class="material-symbols-outlined text-green-400">check</span></td>
+                                <td class="text-center p-6"><span class="material-symbols-outlined text-green-400">check</span></td>
+                                <td class="text-center p-6"><span class="material-symbols-outlined text-green-400">check</span></td>
+                            </tr>
+                            <tr class="border-b border-white/10">
+                                <td class="p-6 text-on-surface-variant">远程安装</td>
+                                <td class="text-center p-6"><span class="material-symbols-outlined text-green-400">check</span></td>
+                                <td class="text-center p-6"><span class="material-symbols-outlined text-green-400">check</span></td>
+                                <td class="text-center p-6"><span class="material-symbols-outlined text-green-400">check</span></td>
+                            </tr>
+                            <tr class="border-b border-white/10">
+                                <td class="p-6 text-on-surface-variant">售后支持</td>
+                                <td class="text-center p-6 text-on-surface">3天</td>
+                                <td class="text-center p-6 text-primary font-semibold">30天</td>
+                                <td class="text-center p-6 text-on-surface">90天</td>
+                            </tr>
+                            <tr class="border-b border-white/10">
+                                <td class="p-6 text-on-surface-variant">优先响应</td>
+                                <td class="text-center p-6"><span class="material-symbols-outlined text-on-surface-variant/30">close</span></td>
+                                <td class="text-center p-6"><span class="material-symbols-outlined text-green-400">check</span></td>
+                                <td class="text-center p-6"><span class="material-symbols-outlined text-green-400">check</span></td>
+                            </tr>
+                            <tr class="border-b border-white/10">
+                                <td class="p-6 text-on-surface-variant">软件配置优化</td>
+                                <td class="text-center p-6"><span class="material-symbols-outlined text-on-surface-variant/30">close</span></td>
+                                <td class="text-center p-6"><span class="material-symbols-outlined text-green-400">check</span></td>
+                                <td class="text-center p-6"><span class="material-symbols-outlined text-green-400">check</span></td>
+                            </tr>
+                            <tr>
+                                <td class="p-6 text-on-surface-variant">专属顾问</td>
+                                <td class="text-center p-6"><span class="material-symbols-outlined text-on-surface-variant/30">close</span></td>
+                                <td class="text-center p-6"><span class="material-symbols-outlined text-on-surface-variant/30">close</span></td>
+                                <td class="text-center p-6"><span class="material-symbols-outlined text-green-400">check</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Additional Services -->
+        <section class="mb-20">
+            <div class="text-center mb-12">
+                <h2 class="font-headline-lg text-headline-lg mb-4">附加服务</h2>
+                <p class="text-on-surface-variant font-body-md">按需选择，灵活搭配</p>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="glass-level-1 rounded-xl p-6 interactive-hover">
+                    <div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4">
+                        <span class="material-symbols-outlined text-primary">system_update</span>
+                    </div>
+                    <h4 class="font-headline-md text-headline-md text-on-surface mb-2">软件升级</h4>
+                    <p class="text-on-surface-variant text-sm mb-4">已有软件升级到最新版本</p>
+                    <div class="text-primary font-bold">¥15起</div>
+                </div>
+                <div class="glass-level-1 rounded-xl p-6 interactive-hover">
+                    <div class="w-12 h-12 rounded-xl bg-secondary/10 flex items-center justify-center mb-4">
+                        <span class="material-symbols-outlined text-secondary">bug_report</span>
+                    </div>
+                    <h4 class="font-headline-md text-headline-md text-on-surface mb-2">问题排查</h4>
+                    <p class="text-on-surface-variant text-sm mb-4">软件运行问题排查修复</p>
+                    <div class="text-primary font-bold">¥30起</div>
+                </div>
+                <div class="glass-level-1 rounded-xl p-6 interactive-hover">
+                    <div class="w-12 h-12 rounded-xl bg-green-500/10 flex items-center justify-center mb-4">
+                        <span class="material-symbols-outlined text-green-400">tune</span>
+                    </div>
+                    <h4 class="font-headline-md text-headline-md text-on-surface mb-2">系统优化</h4>
+                    <p class="text-on-surface-variant text-sm mb-4">电脑系统清理优化提速</p>
+                    <div class="text-primary font-bold">¥50起</div>
+                </div>
+                <div class="glass-level-1 rounded-xl p-6 interactive-hover">
+                    <div class="w-12 h-12 rounded-xl bg-yellow-500/10 flex items-center justify-center mb-4">
+                        <span class="material-symbols-outlined text-yellow-400">help_center</span>
+                    </div>
+                    <h4 class="font-headline-md text-headline-md text-on-surface mb-2">技术咨询</h4>
+                    <p class="text-on-surface-variant text-sm mb-4">软件选型使用咨询服务</p>
+                    <div class="text-primary font-bold">¥20/小时</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ -->
+        <section class="mb-20">
+            <div class="text-center mb-12">
+                <h2 class="font-headline-lg text-headline-lg mb-4">定价常见问题</h2>
+                <p class="text-on-surface-variant font-body-md">关于价格和付款的常见疑问</p>
+            </div>
+            <div class="max-w-3xl mx-auto space-y-4">
+                <div class="glass-level-1 rounded-xl overflow-hidden">
+                    <button class="w-full p-6 text-left flex justify-between items-center cursor-pointer" onclick="toggleFaq(this)">
+                        <span class="font-body-md font-semibold text-on-surface">可以只买安装包自己安装吗？</span>
+                        <span class="material-symbols-outlined text-on-surface-variant">expand_more</span>
+                    </button>
+                    <div class="faq-content px-6 pb-6">
+                        <p class="text-on-surface-variant font-body-md">
+                            可以的。我们提供单独的安装包下载服务，价格根据软件不同而有所差异。
+                            具体价格请咨询客服。
+                        </p>
+                    </div>
+                </div>
+                <div class="glass-level-1 rounded-xl overflow-hidden">
+                    <button class="w-full p-6 text-left flex justify-between items-center cursor-pointer" onclick="toggleFaq(this)">
+                        <span class="font-body-md font-semibold text-on-surface">支持哪些付款方式？</span>
+                        <span class="material-symbols-outlined text-on-surface-variant">expand_more</span>
+                    </button>
+                    <div class="faq-content px-6 pb-6">
+                        <p class="text-on-surface-variant font-body-md">
+                            支持支付宝、微信支付、咸鱼交易等多种付款方式。
+                            建议通过咸鱼平台交易，更有保障。
+                        </p>
+                    </div>
+                </div>
+                <div class="glass-level-1 rounded-xl overflow-hidden">
+                    <button class="w-full p-6 text-left flex justify-between items-center cursor-pointer" onclick="toggleFaq(this)">
+                        <span class="font-body-md font-semibold text-on-surface">安装不成功怎么办？</span>
+                        <span class="material-symbols-outlined text-on-surface-variant">expand_more</span>
+                    </button>
+                    <div class="faq-content px-6 pb-6">
+                        <p class="text-on-surface-variant font-body-md">
+                            如果因为我们的原因导致安装不成功，我们会全额退款。
+                            如果是因为电脑配置不满足要求，我们会提前告知，您可以选择放弃或更换方案。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="text-center">
+            <div class="glass-level-1 rounded-2xl p-12">
+                <h2 class="font-headline-lg text-headline-lg mb-4">还有疑问？</h2>
+                <p class="text-on-surface-variant font-body-md mb-8 max-w-xl mx-auto">
+                    如果您对定价方案有任何疑问，或者需要定制服务，请随时联系我们。
+                </p>
+                <button class="btn-primary" onclick="navigateTo('contact.html')">
+                    <span class="material-symbols-outlined">chat</span>
+                    联系客服咨询
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <footer class="border-t border-white/10 mt-20">
+        <div class="max-w-container-max mx-auto px-gutter py-12 text-center text-on-surface-variant text-sm">
+            © 2024 安装中心。专业的软件安装服务。
+        </div>
+    </footer>
+
+    <script src="js/common.js"></script>
+    <script>
+        function toggleFaq(btn) {
+            const content = btn.nextElementSibling;
+            const icon = btn.querySelector('.material-symbols-outlined');
+            content.classList.toggle('open');
+            icon.classList.toggle('rotate-180');
+        }
+    </script>
+</body>
+</html>

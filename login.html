@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html class="dark" lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>管理员登录 - 安装中心</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Geist:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#adc6ff",
+                        secondary: "#e9b3ff",
+                        error: "#ffb4ab"
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="text-on-surface font-body-md min-h-screen bg-[#0A0A0A]">
+    <div class="glow-bg"></div>
+    <div id="particles-js"></div>
+
+    <main class="w-full max-w-md mx-auto px-gutter py-16 relative z-10">
+        <!-- Logo -->
+        <div class="text-center mb-10">
+            <div class="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
+                <span class="material-symbols-outlined text-primary text-4xl">lock_person</span>
+            </div>
+            <h1 class="font-headline-lg text-headline-lg text-on-surface mb-2">管理后台登录</h1>
+            <p class="text-on-surface-variant font-body-md">请输入管理员账号密码</p>
+        </div>
+
+        <!-- Login Form -->
+        <div class="glass-level-1 rounded-2xl p-8 border border-white/10">
+            <form onsubmit="handleLogin(event)" class="space-y-6">
+                <div class="form-group">
+                    <label class="form-label">用户名 *</label>
+                    <div class="relative">
+                        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">person</span>
+                        <input type="text" class="form-input pl-10" placeholder="admin" required id="login-username" autofocus>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">密码 *</label>
+                    <div class="relative">
+                        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">lock</span>
+                        <input type="password" class="form-input pl-10 pr-10" placeholder="请输入密码" required id="login-password">
+                        <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-on-surface" onclick="togglePassword()">
+                            <span class="material-symbols-outlined text-[18px]" id="password-toggle">visibility</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between">
+                    <label class="flex items-center gap-2 cursor-pointer">
+                        <input type="checkbox" class="w-4 h-4 rounded border-white/20 bg-surface-container" id="remember-me">
+                        <span class="text-on-surface-variant text-sm">记住我</span>
+                    </label>
+                    <button type="button" class="text-primary text-sm hover:underline">忘记密码？</button>
+                </div>
+
+                <button type="submit" class="btn-primary w-full py-4" id="login-btn">
+                    <span class="material-symbols-outlined">login</span>
+                    登录
+                </button>
+
+                <div id="login-error" class="hidden text-center text-error text-sm mt-4">
+                    <span class="material-symbols-outlined text-[14px]">error</span>
+                    <span id="error-message">用户名或密码错误</span>
+                </div>
+            </form>
+        </div>
+
+        <!-- Footer -->
+        <div class="text-center mt-8">
+            <p class="text-on-surface-variant text-sm">
+                返回 <a href="index.html" class="text-primary hover:underline">首页</a>
+            </p>
+        </div>
+    </main>
+
+    <script type="module">
+        import { login as sbLogin, isAuthenticated } from './js/supabase-client.js';
+        
+        function togglePassword() {
+            const passwordInput = document.getElementById('login-password');
+            const toggleIcon = document.getElementById('password-toggle');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.textContent = 'visibility_off';
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.textContent = 'visibility';
+            }
+        }
+
+        async function handleLogin(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('login-username').value;
+            const password = document.getElementById('login-password').value;
+            const rememberMe = document.getElementById('remember-me').checked;
+            const loginBtn = document.getElementById('login-btn');
+            const errorDiv = document.getElementById('login-error');
+
+            loginBtn.disabled = true;
+            loginBtn.innerHTML = '<span class="material-symbols-outlined animate-spin">refresh</span> 登录中...';
+            errorDiv.classList.add('hidden');
+
+            try {
+                const email = `${username}@installer.local`;
+                const { data, error } = await sbLogin(email, password);
+                
+                if (error) {
+                    throw error;
+                }
+
+                if (data.user) {
+                    if (rememberMe) {
+                        localStorage.setItem('admin_username', username);
+                    }
+                    showToast('登录成功！', 'success');
+                    setTimeout(() => {
+                        window.location.href = 'admin.html';
+                    }, 1000);
+                } else {
+                    throw new Error('登录失败');
+                }
+            } catch (err) {
+                loginBtn.disabled = false;
+                loginBtn.innerHTML = '<span class="material-symbols-outlined">login</span> 登录';
+                errorDiv.classList.remove('hidden');
+                document.getElementById('error-message').textContent = err.message || '用户名或密码错误';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const savedUsername = localStorage.getItem('admin_username');
+            if (savedUsername) {
+                document.getElementById('login-username').value = savedUsername;
+                document.getElementById('remember-me').checked = true;
+            }
+
+            const isLogged = await isAuthenticated();
+            if (isLogged) {
+                window.location.href = 'admin.html';
+            }
+        });
+    </script>
+</body>
+</html>

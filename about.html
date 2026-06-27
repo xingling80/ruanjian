@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html class="dark" lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>服务说明 - 安装中心</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Geist:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: { extend: { colors: { primary: "#adc6ff", secondary: "#e9b3ff" } } }
+        }
+    </script>
+</head>
+<body class="text-on-surface font-body-md min-h-screen">
+    <div id="particles-js"></div>
+
+    <!-- Header -->
+    <header class="w-full max-w-container-max mx-auto px-gutter py-6 flex justify-between items-center relative z-10">
+        <a href="index.html" class="flex items-center gap-3 cursor-pointer">
+            <span class="material-symbols-outlined text-primary text-3xl">developer_board</span>
+            <span class="font-headline-md text-headline-md font-bold text-primary">安装中心</span>
+        </a>
+        <nav class="hidden md:flex items-center gap-8">
+            <a href="index.html" class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors uppercase tracking-wider">首页</a>
+            <a href="browse.html" class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors uppercase tracking-wider">浏览</a>
+            <a href="about.html" class="font-label-sm text-label-sm text-primary uppercase tracking-wider">关于服务</a>
+            <a href="security.html" class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors uppercase tracking-wider">安全</a>
+            <a href="contact.html" class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors uppercase tracking-wider">联系</a>
+        </nav>
+        <a href="admin.html" class="btn-primary text-sm">
+            <span class="material-symbols-outlined text-sm">dashboard</span>
+            管理后台
+        </a>
+    </header>
+
+    <main class="w-full max-w-container-max mx-auto px-gutter py-16 relative z-10">
+        <!-- Hero Section -->
+        <section class="text-center mb-20 animate-slide-up">
+            <span class="chip bg-secondary/10 text-secondary border-secondary/20 mb-6">
+                <span class="material-symbols-outlined text-sm">workspace_premium</span>
+                关于我们的服务
+            </span>
+            <h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg mb-6">
+                专业的软件安装<span class="text-gradient-primary">服务</span>
+            </h1>
+            <p class="text-on-surface-variant font-body-lg max-w-2xl mx-auto leading-relaxed">
+                我们致力于为您提供高效、安全、便捷的软件安装服务。
+                从创意设计到开发工具，从视频剪辑到办公软件，我们帮您一站式解决所有软件安装问题。
+            </p>
+        </section>
+
+        <!-- Services -->
+        <section class="mb-20">
+            <div class="text-center mb-12">
+                <h2 class="font-headline-lg text-headline-lg mb-4">我们提供的服务</h2>
+                <p class="text-on-surface-variant font-body-md">全方位的软件安装与技术支持</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="glass-level-1 rounded-xl p-8 text-center interactive-hover">
+                    <div class="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-6">
+                        <span class="material-symbols-outlined text-primary text-3xl">build</span>
+                    </div>
+                    <h3 class="font-headline-md text-headline-md text-on-surface mb-3">远程安装</h3>
+                    <p class="text-on-surface-variant font-body-md leading-relaxed">
+                        通过远程协助的方式，专业技术人员帮您完成软件的安装与配置，
+                        确保软件正常运行，省去您自行摸索的烦恼。
+                    </p>
+                </div>
+                <div class="glass-level-1 rounded-xl p-8 text-center interactive-hover">
+                    <div class="w-16 h-16 rounded-2xl bg-secondary/10 flex items-center justify-center mx-auto mb-6">
+                        <span class="material-symbols-outlined text-secondary text-3xl">download_done</span>
+                    </div>
+                    <h3 class="font-headline-md text-headline-md text-on-surface mb-3">安装包提供</h3>
+                    <p class="text-on-surface-variant font-body-md leading-relaxed">
+                        提供经过严格测试和病毒扫描的安全安装包，
+                        支持多种版本选择，满足不同用户的需求。
+                    </p>
+                </div>
+                <div class="glass-level-1 rounded-xl p-8 text-center interactive-hover">
+                    <div class="w-16 h-16 rounded-2xl bg-green-500/10 flex items-center justify-center mx-auto mb-6">
+                        <span class="material-symbols-outlined text-green-400 text-3xl">support_agent</span>
+                    </div>
+                    <h3 class="font-headline-md text-headline-md text-on-surface mb-3">售后支持</h3>
+                    <p class="text-on-surface-variant font-body-md leading-relaxed">
+                        安装完成后提供售后技术支持，遇到问题随时联系，
+                        让您用得放心、用得安心。
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works -->
+        <section class="mb-20">
+            <div class="text-center mb-12">
+                <h2 class="font-headline-lg text-headline-lg mb-4">服务流程</h2>
+                <p class="text-on-surface-variant font-body-md">简单三步，快速搞定</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="relative">
+                    <div class="glass-level-1 rounded-xl p-8 text-center">
+                        <div class="w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center mx-auto mb-4 font-bold text-xl">1</div>
+                        <h3 class="font-headline-md text-headline-md text-on-surface mb-3">选择软件</h3>
+                        <p class="text-on-surface-variant font-body-md">
+                            在软件库中浏览并选择您需要安装的软件，
+                            查看详细信息和系统要求。
+                        </p>
+                    </div>
+                    <div class="hidden md:block absolute top-1/2 -right-4 w-8 h-0.5 bg-gradient-to-r from-primary to-secondary"></div>
+                </div>
+                <div class="relative">
+                    <div class="glass-level-1 rounded-xl p-8 text-center">
+                        <div class="w-12 h-12 rounded-full bg-secondary text-secondary-foreground flex items-center justify-center mx-auto mb-4 font-bold text-xl">2</div>
+                        <h3 class="font-headline-md text-headline-md text-on-surface mb-3">联系客服</h3>
+                        <p class="text-on-surface-variant font-body-md">
+                            通过咸鱼或其他方式联系我们，
+                            确认软件版本和安装方式。
+                        </p>
+                    </div>
+                    <div class="hidden md:block absolute top-1/2 -right-4 w-8 h-0.5 bg-gradient-to-r from-secondary to-green-400"></div>
+                </div>
+                <div>
+                    <div class="glass-level-1 rounded-xl p-8 text-center">
+                        <div class="w-12 h-12 rounded-full bg-green-500 text-white flex items-center justify-center mx-auto mb-4 font-bold text-xl">3</div>
+                        <h3 class="font-headline-md text-headline-md text-on-surface mb-3">开始安装</h3>
+                        <p class="text-on-surface-variant font-body-md">
+                            专业技术人员远程协助安装，
+                            安装完成后测试确认可用。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Why Choose Us -->
+        <section class="mb-20">
+            <div class="glass-level-1 rounded-2xl p-8 md:p-12">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <span class="chip bg-primary/10 text-primary border-primary/20 mb-6">
+                            <span class="material-symbols-outlined text-sm">verified</span>
+                            为什么选择我们
+                        </span>
+                        <h2 class="font-headline-lg text-headline-lg mb-6">
+                            专业、安全、<span class="text-gradient-primary">值得信赖</span>
+                        </h2>
+                        <p class="text-on-surface-variant font-body-md mb-8 leading-relaxed">
+                            我们拥有丰富的软件安装经验，已帮助数百位客户成功安装各类软件。
+                            所有安装包均经过严格检测，确保安全无毒。
+                        </p>
+                        <div class="space-y-4">
+                            <div class="flex items-start gap-4">
+                                <span class="material-symbols-outlined text-green-400 text-xl flex-shrink-0">check_circle</span>
+                                <div>
+                                    <h4 class="font-body-md font-semibold text-on-surface">专业技术团队</h4>
+                                    <p class="text-on-surface-variant text-sm">多年软件安装经验，熟悉各类软件的安装配置</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <span class="material-symbols-outlined text-green-400 text-xl flex-shrink-0">check_circle</span>
+                                <div>
+                                    <h4 class="font-body-md font-semibold text-on-surface">安全可靠</h4>
+                                    <p class="text-on-surface-variant text-sm">所有安装包均经过病毒扫描，确保安全无毒</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <span class="material-symbols-outlined text-green-400 text-xl flex-shrink-0">check_circle</span>
+                                <div>
+                                    <h4 class="font-body-md font-semibold text-on-surface">快速响应</h4>
+                                    <p class="text-on-surface-variant text-sm">在线时间长，响应速度快，不用长时间等待</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <span class="material-symbols-outlined text-green-400 text-xl flex-shrink-0">check_circle</span>
+                                <div>
+                                    <h4 class="font-body-md font-semibold text-on-surface">售后保障</h4>
+                                    <p class="text-on-surface-variant text-sm">提供售后技术支持，有问题随时解决</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="relative">
+                        <div class="aspect-square max-w-md mx-auto">
+                            <div class="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-3xl blur-3xl"></div>
+                            <div class="relative glass-level-1 rounded-2xl p-8 h-full flex flex-col justify-center">
+                                <div class="text-center">
+                                    <div class="text-6xl font-bold text-gradient-primary mb-4">500+</div>
+                                    <div class="font-headline-md text-headline-md text-on-surface mb-2">成功服务客户</div>
+                                    <div class="text-on-surface-variant font-body-md mb-8">满意度高达 98%</div>
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <div class="bg-surface-container/50 rounded-xl p-4">
+                                            <div class="text-2xl font-bold text-primary mb-1">50+</div>
+                                            <div class="text-on-surface-variant text-sm">软件种类</div>
+                                        </div>
+                                        <div class="bg-surface-container/50 rounded-xl p-4">
+                                            <div class="text-2xl font-bold text-secondary mb-1">24h</div>
+                                            <div class="text-on-surface-variant text-sm">快速响应</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ -->
+        <section class="mb-20">
+            <div class="text-center mb-12">
+                <h2 class="font-headline-lg text-headline-lg mb-4">常见问题</h2>
+                <p class="text-on-surface-variant font-body-md">您可能想了解的问题</p>
+            </div>
+            <div class="max-w-3xl mx-auto space-y-4">
+                <div class="glass-level-1 rounded-xl overflow-hidden">
+                    <button class="w-full p-6 text-left flex justify-between items-center cursor-pointer" onclick="toggleFaq(this)">
+                        <span class="font-body-md font-semibold text-on-surface">安装需要多长时间？</span>
+                        <span class="material-symbols-outlined text-on-surface-variant transition-transform">expand_more</span>
+                    </button>
+                    <div class="faq-content px-6 pb-6">
+                        <p class="text-on-surface-variant font-body-md">
+                            安装时间取决于软件大小和您的网络速度。一般来说，常见软件在 30 分钟到 2 小时内可以完成安装和配置。
+                            具体时间可以提前咨询客服。
+                        </p>
+                    </div>
+                </div>
+                <div class="glass-level-1 rounded-xl overflow-hidden">
+                    <button class="w-full p-6 text-left flex justify-between items-center cursor-pointer" onclick="toggleFaq(this)">
+                        <span class="font-body-md font-semibold text-on-surface">安装的软件是正版吗？</span>
+                        <span class="material-symbols-outlined text-on-surface-variant transition-transform">expand_more</span>
+                    </button>
+                    <div class="faq-content px-6 pb-6">
+                        <p class="text-on-surface-variant font-body-md">
+                            我们提供的是软件安装服务和安装包。我们提供的安装包均经过严格测试和病毒扫描，确保可以正常使用。
+                            具体授权方式请咨询客服。
+                        </p>
+                    </div>
+                </div>
+                <div class="glass-level-1 rounded-xl overflow-hidden">
+                    <button class="w-full p-6 text-left flex justify-between items-center cursor-pointer" onclick="toggleFaq(this)">
+                        <span class="font-body-md font-semibold text-on-surface">我的电脑配置可以安装吗？</span>
+                        <span class="material-symbols-outlined text-on-surface-variant transition-transform">expand_more</span>
+                    </button>
+                    <div class="faq-content px-6 pb-6">
+                        <p class="text-on-surface-variant font-body-md">
+                            每个软件都有对应的系统要求，您可以在软件详情页查看具体配置要求。
+                            如果不确定，也可以提供您的电脑配置给客服，我们会帮您判断是否可以安装。
+                        </p>
+                    </div>
+                </div>
+                <div class="glass-level-1 rounded-xl overflow-hidden">
+                    <button class="w-full p-6 text-left flex justify-between items-center cursor-pointer" onclick="toggleFaq(this)">
+                        <span class="font-body-md font-semibold text-on-surface">安装后有问题怎么办？</span>
+                        <span class="material-symbols-outlined text-on-surface-variant transition-transform">expand_more</span>
+                    </button>
+                    <div class="faq-content px-6 pb-6">
+                        <p class="text-on-surface-variant font-body-md">
+                            我们提供售后技术支持。如果安装后遇到问题，可以随时联系我们，
+                            我们会尽力帮您解决。具体售后政策请咨询客服。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="text-center">
+            <div class="glass-level-1 rounded-2xl p-12">
+                <h2 class="font-headline-lg text-headline-lg mb-4">准备好开始了吗？</h2>
+                <p class="text-on-surface-variant font-body-md mb-8 max-w-xl mx-auto">
+                    立即浏览我们的软件库，找到您需要的软件，享受专业的安装服务。
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <button class="btn-primary" onclick="navigateTo('browse.html')">
+                        <span class="material-symbols-outlined">apps</span>
+                        浏览软件
+                    </button>
+                    <button class="btn-secondary" onclick="navigateTo('contact.html')">
+                        <span class="material-symbols-outlined">chat</span>
+                        联系咨询
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/10 mt-20">
+        <div class="max-w-container-max mx-auto px-gutter py-12 text-center text-on-surface-variant text-sm">
+            © 2024 安装中心。专业的软件安装服务。
+        </div>
+    </footer>
+
+    <script src="js/common.js"></script>
+    <script>
+        function toggleFaq(btn) {
+            const content = btn.nextElementSibling;
+            const icon = btn.querySelector('.material-symbols-outlined');
+            content.classList.toggle('open');
+            icon.classList.toggle('rotate-180');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html class="dark" lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>管理后台 - 安装中心</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Geist:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary-container": "#4b8eff",
+                        "on-surface": "#e3e2e7",
+                        "on-surface-variant": "#c1c6d7",
+                        "surface": "#121317",
+                        "surface-container": "#1e1f23",
+                        "surface-container-high": "#292a2e",
+                        "surface-container-highest": "#343539",
+                        "primary": "#adc6ff",
+                        "secondary": "#e9b3ff",
+                        "error": "#ffb4ab",
+                        "outline": "#8b90a0"
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="text-on-surface font-body-md min-h-screen bg-[#0A0A0A]">
+    <div class="glow-bg"></div>
+    <div id="particles-js"></div>
+
+    <script type="module">
+        import { isAuthenticated, logout as sbLogout } from './js/supabase-client.js';
+        document.addEventListener('DOMContentLoaded', async () => {
+            const isLogged = await isAuthenticated();
+            if (!isLogged) window.location.href = 'login.html';
+        });
+        async function logout() {
+            try { await sbLogout(); } catch (e) {}
+            localStorage.removeItem('admin_username');
+            showToast('已退出登录');
+            setTimeout(() => { window.location.href = 'login.html'; }, 1000);
+        }
+        window.logout = logout;
+    </script>
+
+    <!-- Admin Sidebar -->
+    <aside class="admin-sidebar" id="admin-sidebar">
+        <div class="p-6 border-b border-white/10">
+            <div class="flex items-center gap-3 mb-2 cursor-pointer" onclick="navigateTo('index.html')">
+                <span class="material-symbols-outlined text-primary text-3xl">developer_board</span>
+                <span class="font-headline-md text-headline-md font-bold text-primary">安装中心</span>
+            </div>
+            <div class="font-label-sm text-label-sm text-on-surface-variant">管理控制台</div>
+        </div>
+        <div class="flex-1 flex flex-col gap-1 px-3 py-6">
+            <div class="admin-sidebar-item active" onclick="setActivePage('dashboard')" id="nav-dashboard">
+                <span class="material-symbols-outlined">dashboard</span><span>数据概览</span>
+            </div>
+            <div class="admin-sidebar-item" onclick="setActivePage('software')" id="nav-software">
+                <span class="material-symbols-outlined">apps</span><span>软件管理</span>
+            </div>
+            <div class="admin-sidebar-item" onclick="setActivePage('upload')" id="nav-upload">
+                <span class="material-symbols-outlined">upload</span><span>上传安装包</span>
+            </div>
+            <div class="admin-sidebar-item" onclick="setActivePage('downloads')" id="nav-downloads">
+                <span class="material-symbols-outlined">download</span><span>下载记录</span>
+            </div>
+            <div class="admin-sidebar-item" onclick="setActivePage('settings')" id="nav-settings">
+                <span class="material-symbols-outlined">settings</span><span>系统设置</span>
+            </div>
+        </div>
+        <div class="p-4 border-t border-white/10">
+            <div class="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 cursor-pointer" onclick="logout()">
+                <div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-primary">person</span>
+                </div>
+                <div class="flex-grow">
+                    <div class="font-body-md text-body-md text-on-surface">管理员</div>
+                    <div class="font-code-md text-code-md text-on-surface-variant text-xs">admin@installer</div>
+                </div>
+                <span class="material-symbols-outlined text-on-surface-variant text-sm">logout</span>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Mobile Top Bar -->
+    <div class="lg:hidden fixed top-0 left-0 right-0 h-16 bg-surface/80 backdrop-blur-xl border-b border-white/10 z-50 flex items-center justify-between px-4">
+        <button class="text-on-surface p-2" onclick="toggleSidebar()"><span class="material-symbols-outlined">menu</span></button>
+        <span class="font-headline-md text-headline-md font-bold text-primary">管理后台</span>
+        <button class="text-on-surface p-2" onclick="navigateTo('index.html')"><span class="material-symbols-outlined">home</span></button>
+    </div>
+
+    <!-- Main Content -->
+    <main class="admin-main pt-16 lg:pt-0">
+        <!-- Dashboard Page -->
+        <div id="page-dashboard" class="admin-page">
+            <div class="mb-8">
+                <h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg mb-2">
+                    数据<span class="text-gradient-primary">概览</span>
+                </h1>
+                <p class="text-on-surface-variant font-body-md">免费栈: GitHub Pages + Supabase + Cloudflare R2</p>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="glass-level-1 stat-card rounded-xl"><div class="stat-card-title">总软件数</div><div class="stat-card-value text-primary" id="stat-software">-</div></div>
+                <div class="glass-level-1 stat-card rounded-xl"><div class="stat-card-title">总下载量</div><div class="stat-card-value text-secondary" id="stat-downloads">-</div></div>
+                <div class="glass-level-1 stat-card rounded-xl"><div class="stat-card-title">存储方案</div><div class="stat-card-value text-primary text-lg">R2</div><div class="stat-card-change"><span class="material-symbols-outlined text-sm">cloud</span> 10GB 免费</div></div>
+                <div class="glass-level-1 stat-card rounded-xl"><div class="stat-card-title">服务可用率</div><div class="stat-card-value text-secondary">99.9%</div></div>
+            </div>
+        </div>
+
+        <!-- Software Management Page -->
+        <div id="page-software" class="admin-page hidden">
+            <div class="flex flex-wrap justify-between items-center gap-4 mb-8">
+                <div>
+                    <h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg mb-2">
+                        软件<span class="text-gradient-primary">管理</span>
+                    </h1>
+                    <p class="text-on-surface-variant font-body-md">管理所有软件安装包</p>
+                </div>
+                <button class="btn-primary" onclick="setActivePage('upload')">
+                    <span class="material-symbols-outlined text-sm">add</span>新增软件
+                </button>
+            </div>
+            <div class="glass-level-1 rounded-xl p-4 mb-6">
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <div class="relative flex-grow">
+                        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+                        <input type="text" class="search-input pl-10" placeholder="搜索软件..." id="admin-search" oninput="filterAdminSoftware(this.value)">
+                    </div>
+                    <select class="form-input w-full sm:w-48" id="admin-category-filter" onchange="filterAdminCategory(this.value)">
+                        <option value="all">全部分类</option>
+                    </select>
+                </div>
+            </div>
+            <div class="glass-level-1 rounded-xl overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="data-table">
+                        <thead><tr><th>软件</th><th>分类</th><th>版本</th><th>大小</th><th>下载量</th><th>上传日期</th><th>操作</th></tr></thead>
+                        <tbody id="admin-software-table"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Upload Page -->
+        <div id="page-upload" class="admin-page hidden">
+            <div class="mb-8">
+                <h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg mb-2">
+                    上传<span class="text-gradient-primary">安装包</span>
+                </h1>
+                <p class="text-on-surface-variant font-body-md">上传到 Cloudflare R2（10GB 免费） → 元数据存 Supabase</p>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="lg:col-span-2 space-y-6">
+                    <div class="glass-level-1 rounded-xl p-6">
+                        <h3 class="font-headline-md text-headline-md text-on-surface mb-6">基本信息</h3>
+                        <div class="form-group"><label class="form-label">软件名称 *</label><input type="text" class="form-input" placeholder="例如：Creative Suite Pro" id="upload-name"></div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div class="form-group"><label class="form-label">版本号</label><input type="text" class="form-input" placeholder="v24.5.1" id="upload-version"></div>
+                            <div class="form-group"><label class="form-label">软件分类 *</label><select class="form-input" id="upload-category"></select></div>
+                        </div>
+                        <div class="form-group"><label class="form-label">支持平台</label><input type="text" class="form-input" placeholder="Windows / macOS" id="upload-platform"></div>
+                        <div class="form-group"><label class="form-label">软件描述</label><textarea class="form-input h-24 resize-none" placeholder="请输入软件描述..." id="upload-description"></textarea></div>
+                    </div>
+                    <div class="glass-level-1 rounded-xl p-6">
+                        <h3 class="font-headline-md text-headline-md text-on-surface mb-6">系统要求</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div class="form-group"><label class="form-label">CPU</label><input type="text" class="form-input" placeholder="Intel Core i5" id="upload-cpu"></div>
+                            <div class="form-group"><label class="form-label">GPU</label><input type="text" class="form-input" placeholder="NVIDIA GTX 1060" id="upload-gpu"></div>
+                            <div class="form-group"><label class="form-label">RAM</label><input type="text" class="form-input" placeholder="8 GB RAM" id="upload-ram"></div>
+                            <div class="form-group"><label class="form-label">存储</label><input type="text" class="form-input" placeholder="10 GB" id="upload-storage"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="space-y-6">
+                    <div class="glass-level-1 rounded-xl p-6">
+                        <h3 class="font-headline-md text-headline-md text-on-surface mb-4">安装包 *</h3>
+                        <p class="text-on-surface-variant text-sm mb-3">上传到 Cloudflare R2</p>
+                        <div class="dropzone mb-4" id="dropzone" onclick="document.getElementById('file-input').click()">
+                            <input type="file" id="file-input" class="hidden" onchange="handleFileSelect(this.files)">
+                            <span class="material-symbols-outlined text-5xl text-primary/50 mb-3">cloud_upload</span>
+                            <p class="text-on-surface font-body-md mb-1">点击或拖拽文件</p>
+                            <p class="text-on-surface-variant text-sm">.exe .dmg .zip .msi 等</p>
+                        </div>
+                        <div id="uploaded-file" class="hidden">
+                            <div class="flex items-center gap-3 p-3 bg-surface-container/50 rounded-lg">
+                                <span class="material-symbols-outlined text-primary">description</span>
+                                <div class="flex-grow min-w-0">
+                                    <div class="font-body-md text-body-md text-on-surface truncate" id="file-name">-</div>
+                                    <div class="font-code-md text-code-md text-on-surface-variant text-sm" id="file-size">0 MB</div>
+                                </div>
+                                <button class="text-error hover:text-error/80 p-1" onclick="clearUploadedFile()"><span class="material-symbols-outlined">close</span></button>
+                            </div>
+                            <div class="mt-3">
+                                <div class="flex justify-between text-sm mb-1">
+                                    <span class="text-on-surface-variant">上传进度</span>
+                                    <span class="text-primary" id="upload-percent">0%</span>
+                                </div>
+                                <div class="h-2 bg-surface-container-high rounded-full overflow-hidden">
+                                    <div class="h-full bg-primary rounded-full transition-all duration-300" id="upload-progress" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="glass-level-1 rounded-xl p-6">
+                        <h3 class="font-headline-md text-headline-md text-on-surface mb-4">其他设置</h3>
+                        <div class="form-group"><label class="form-label">许可类型</label>
+                            <select class="form-input" id="upload-license"><option>商业软件</option><option>免费软件</option><option>开源软件</option></select>
+                        </div>
+                        <div class="form-group"><label class="form-label">功能标签</label><input type="text" class="form-input" placeholder="用逗号分隔" id="upload-features"></div>
+                        <div class="form-group"><label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" class="w-4 h-4" id="upload-verified"><span class="text-on-surface font-body-md">标记为已验证</span></label></div>
+                    </div>
+                    <button class="btn-primary w-full py-4" onclick="submitSoftware()" id="submit-btn">
+                        <span class="material-symbols-outlined">publish</span>发布软件
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Downloads Log Page -->
+        <div id="page-downloads" class="admin-page hidden">
+            <div class="mb-8">
+                <h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg mb-2">
+                    下载<span class="text-gradient-primary">记录</span>
+                </h1>
+                <p class="text-on-surface-variant font-body-md">查看所有下载记录</p>
+            </div>
+            <div class="glass-level-1 rounded-xl overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="data-table">
+                        <thead><tr><th>软件名称</th><th>文件名</th><th>大小</th><th>下载时间</th><th>状态</th></tr></thead>
+                        <tbody id="download-logs-body"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Page -->
+        <div id="page-settings" class="admin-page hidden">
+            <div class="mb-8">
+                <h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg mb-2">
+                    系统<span class="text-gradient-primary">设置</span>
+                </h1>
+                <p class="text-on-surface-variant font-body-md">完全免费技术栈配置</p>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="glass-level-1 rounded-xl p-6">
+                    <h3 class="font-headline-md text-headline-md text-on-surface mb-6">配置信息</h3>
+                    <div class="form-group"><label class="form-label">Cloudflare Worker URL</label><input type="text" class="form-input font-code-md text-sm" id="setting-worker-url" placeholder="https://your-worker.workers.dev"></div>
+                    <div class="form-group"><label class="form-label">上传密钥</label><input type="password" class="form-input font-code-md text-sm" id="setting-upload-secret" placeholder="UPLOAD_SECRET"><p class="text-on-surface-variant text-xs mt-1">与 Worker 中配置的密钥一致</p></div>
+                    <button class="btn-secondary mt-4" onclick="saveSettings()"><span class="material-symbols-outlined text-sm">save</span>保存设置</button>
+                </div>
+                <div class="glass-level-1 rounded-xl p-6">
+                    <h3 class="font-headline-md text-headline-md text-on-surface mb-6">免费技术栈</h3>
+                    <div class="space-y-4">
+                        <div class="flex justify-between py-2 border-b border-white/10"><span class="text-on-surface-variant">前端托管</span><span class="text-primary">GitHub Pages</span></div>
+                        <div class="flex justify-between py-2 border-b border-white/10"><span class="text-on-surface-variant">数据库+认证</span><span class="text-secondary">Supabase（500MB）</span></div>
+                        <div class="flex justify-between py-2 border-b border-white/10"><span class="text-on-surface-variant">文件存储</span><span class="text-primary">Cloudflare R2（10GB）</span></div>
+                        <div class="flex justify-between py-2"><span class="text-on-surface-variant">API 网关</span><span class="text-secondary">Cloudflare Worker</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal-overlay" id="delete-modal">
+        <div class="modal-content max-w-md">
+            <div class="text-center">
+                <div class="w-16 h-16 rounded-full bg-error/10 flex items-center justify-center mx-auto mb-4">
+                    <span class="material-symbols-outlined text-error text-4xl">warning</span>
+                </div>
+                <h3 class="font-headline-md text-headline-md text-on-surface mb-2">确认删除</h3>
+                <p class="text-on-surface-variant font-body-md mb-6" id="delete-confirm-text"></p>
+                <div class="flex gap-4">
+                    <button class="flex-1 btn-secondary" onclick="closeDeleteModal()">取消</button>
+                    <button class="flex-1 bg-error/20 border border-error/30 text-error py-3 rounded-lg hover:bg-error/30 transition-colors" onclick="confirmDelete()">确认删除</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { createSoftware, updateSoftware, deleteSoftware as sbDeleteSoftware, getDownloadLogs, getStats, loadSoftwareFromDB, loadCategoriesFromDB, categories } from './js/data.js';
+        window.createSoftware = createSoftware;
+        window.updateSoftware = updateSoftware;
+        window.sbDeleteSoftware = sbDeleteSoftware;
+        window.getDownloadLogs = getDownloadLogs;
+        window.getStats = getStats;
+        window.loadSoftwareFromDB = loadSoftwareFromDB;
+        window.loadCategoriesFromDB = loadCategoriesFromDB;
+        window.categories = categories;
+    </script>
+    <script src="js/data.js"></script>
+    <script src="js/common.js"></script>
+    <script>
+        // ==================== 配置 ====================
+        // Cloudflare Worker URL - 部署 Worker 后更新
+        const WORKER_URL = localStorage.getItem('worker_url') || 'https://your-worker.workers.dev';
+        const UPLOAD_SECRET = localStorage.getItem('upload_secret') || 'your-upload-secret';
+
+        let currentPage = 'dashboard';
+        let deleteTargetId = null;
+        let adminSoftwareData = [];
+        let selectedFile = null;
+
+        // ==================== 页面导航 ====================
+        function setActivePage(page) {
+            currentPage = page;
+            document.querySelectorAll('.admin-sidebar-item').forEach(i => i.classList.remove('active'));
+            const navItem = document.getElementById('nav-' + page);
+            if (navItem) navItem.classList.add('active');
+            document.querySelectorAll('.admin-page').forEach(p => p.classList.add('hidden'));
+            const pageEl = document.getElementById('page-' + page);
+            if (pageEl) pageEl.classList.remove('hidden');
+            if (page === 'software') renderAdminSoftwareTable();
+            if (page === 'dashboard') loadDashboardData();
+            if (page === 'downloads') loadDownloadLogs();
+            if (page === 'upload') initUploadCategory();
+            if (window.innerWidth < 1024) document.getElementById('admin-sidebar').classList.remove('open');
+        }
+
+        function toggleSidebar() { document.getElementById('admin-sidebar').classList.toggle('open'); }
+
+        function initUploadCategory() {
+            const sel = document.getElementById('upload-category');
+            if (sel && sel.options.length === 0 && categories.length > 0) {
+                sel.innerHTML = categories.filter(c => c.id !== 'all').map(c => '<option value="' + c.id + '">' + c.name + '</option>').join('');
+            }
+        }
+
+        // ==================== 软件表格 ====================
+        async function renderAdminSoftwareTable(data) {
+            const tbody = document.getElementById('admin-software-table');
+            if (!data) { adminSoftwareData = await loadSoftwareFromDB(); data = adminSoftwareData; }
+            tbody.innerHTML = data.map(s => `
+                <tr>
+                    <td>
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center">
+                                <span class="material-symbols-outlined text-primary text-[20px]">${s.icon}</span>
+                            </div>
+                            <div>
+                                <div class="text-on-surface font-body-md">${s.name}</div>
+                                <div class="text-on-surface-variant font-code-md text-xs">${s.platform}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td><span class="badge badge-primary">${s.category}</span></td>
+                    <td class="text-on-surface-variant font-code-md">${s.version}</td>
+                    <td class="text-on-surface-variant">${s.size}</td>
+                    <td class="text-on-surface-variant">${s.downloads_count}</td>
+                    <td class="text-on-surface-variant font-code-md text-sm">${formatDate(s.uploadDate)}</td>
+                    <td>
+                        <div class="flex gap-2">
+                            <button class="p-2 text-on-surface-variant hover:text-primary hover:bg-primary/10 rounded-lg" onclick="navigateTo('detail.html?id=${s.id}')" title="查看"><span class="material-symbols-outlined text-[18px]">visibility</span></button>
+                            <button class="p-2 text-on-surface-variant hover:text-primary hover:bg-primary/10 rounded-lg" onclick="showToast('编辑功能开发中')" title="编辑"><span class="material-symbols-outlined text-[18px]">edit</span></button>
+                            <button class="p-2 text-on-surface-variant hover:text-error hover:bg-error/10 rounded-lg" onclick="openDeleteModal(${s.id}, '${s.name.replace(/'/g, "\\'")}')" title="删除"><span class="material-symbols-outlined text-[18px]">delete</span></button>
+                        </div>
+                    </td>
+                </tr>`).join('');
+        }
+
+        function filterAdminSoftware(query) {
+            const q = query.toLowerCase();
+            const filtered = adminSoftwareData.filter(s => s.name.toLowerCase().includes(q) || s.description.toLowerCase().includes(q));
+            renderAdminSoftwareTable(filtered);
+        }
+
+        function filterAdminCategory(category) {
+            const filtered = category === 'all' ? adminSoftwareData : adminSoftwareData.filter(s => s.category_id == category);
+            renderAdminSoftwareTable(filtered);
+        }
+
+        // ==================== 文件拖拽上传 ====================
+        function initDragDrop() {
+            const dropzone = document.getElementById('dropzone');
+            if (!dropzone) return;
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(ev => dropzone.addEventListener(ev, e => { e.preventDefault(); e.stopPropagation(); }));
+            ['dragenter', 'dragover'].forEach(ev => dropzone.addEventListener(ev, () => dropzone.classList.add('dragover')));
+            ['dragleave', 'drop'].forEach(ev => dropzone.addEventListener(ev, () => dropzone.classList.remove('dragover')));
+            dropzone.addEventListener('drop', e => handleFileSelect(e.dataTransfer.files));
+        }
+
+        function handleFileSelect(files) {
+            if (!files || !files.length) return;
+            selectedFile = files[0];
+            document.getElementById('file-name').textContent = selectedFile.name;
+            document.getElementById('file-size').textContent = formatFileSizeDisplay(selectedFile.size);
+            document.getElementById('dropzone').classList.add('hidden');
+            document.getElementById('uploaded-file').classList.remove('hidden');
+            document.getElementById('upload-progress').style.width = '0%';
+            document.getElementById('upload-percent').textContent = '0%';
+        }
+
+        function formatFileSizeDisplay(bytes) {
+            if (!bytes || bytes === 0) return '0 B';
+            const k = 1024, sizes = ['B', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        function clearUploadedFile() {
+            document.getElementById('dropzone').classList.remove('hidden');
+            document.getElementById('uploaded-file').classList.add('hidden');
+            document.getElementById('file-input').value = '';
+            document.getElementById('upload-progress').style.width = '0%';
+            document.getElementById('upload-percent').textContent = '0%';
+            selectedFile = null;
+        }
+
+        // ==================== 上传到 R2 ====================
+        async function submitSoftware() {
+            const name = document.getElementById('upload-name').value;
+            const category = document.getElementById('upload-category').value;
+            const submitBtn = document.getElementById('submit-btn');
+
+            if (!name) { showToast('请填写软件名称'); return; }
+            if (!selectedFile) { showToast('请选择安装包文件'); return; }
+
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="material-symbols-outlined animate-spin">refresh</span> 上传到 R2...';
+
+            try {
+                const workerUrl = localStorage.getItem('worker_url') || WORKER_URL;
+                const secret = localStorage.getItem('upload_secret') || UPLOAD_SECRET;
+
+                // 1. 从 Worker 获取预签名上传 URL
+                const presignResp = await fetch(workerUrl + '/admin/upload-url', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + secret },
+                    body: JSON.stringify({ fileName: selectedFile.name, fileSize: selectedFile.size, contentType: selectedFile.type || 'application/octet-stream' })
+                });
+
+                if (!presignResp.ok) {
+                    const errData = await presignResp.json().catch(() => ({}));
+                    throw new Error(errData.error || '获取上传链接失败');
+                }
+
+                const presignData = await presignResp.json();
+
+                // 2. 直接上传文件到 R2
+                const uploadResp = await fetch(presignData.uploadUrl, {
+                    method: 'PUT',
+                    body: selectedFile,
+                    headers: { 'Content-Type': selectedFile.type || 'application/octet-stream' }
+                });
+
+                if (!uploadResp.ok) throw new Error('文件上传到 R2 失败');
+
+                document.getElementById('upload-progress').style.width = '100%';
+                document.getElementById('upload-percent').textContent = '100%';
+                showToast('文件上传到 R2 成功！', 'success');
+
+                // 3. 保存软件信息到 Supabase
+                const software = {
+                    name: name,
+                    icon: getIconForCategory(category),
+                    version: document.getElementById('upload-version').value || 'v1.0',
+                    platform: document.getElementById('upload-platform').value || 'Windows',
+                    size: formatFileSizeDisplay(selectedFile.size),
+                    category_id: parseInt(category),
+                    license: document.getElementById('upload-license').value || '商业软件',
+                    description: document.getElementById('upload-description').value || '',
+                    is_verified: document.getElementById('upload-verified').checked,
+                    features: (document.getElementById('upload-features').value || '').split(',').map(f => f.trim()).filter(f => f),
+                    system_requirements: {
+                        cpu: document.getElementById('upload-cpu').value || '',
+                        gpu: document.getElementById('upload-gpu').value || '',
+                        ram: document.getElementById('upload-ram').value || '',
+                        storage: document.getElementById('upload-storage').value || ''
+                    },
+                    download_urls: [{
+                        name: selectedFile.name,
+                        size: formatFileSizeDisplay(selectedFile.size),
+                        type: selectedFile.name.split('.').pop() || 'unknown',
+                        url: presignData.downloadUrl,
+                        r2_key: presignData.key
+                    }],
+                    release_notes: []
+                };
+
+                const result = await createSoftware(software);
+                if (result.error) throw result.error;
+
+                showToast('软件 ' + name + ' 已成功发布！', 'success');
+                clearUploadedFile();
+                setTimeout(() => setActivePage('software'), 1500);
+            } catch (err) {
+                showToast('发布失败: ' + err.message, 'error');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<span class="material-symbols-outlined">publish</span> 发布软件';
+            }
+        }
+
+        function getIconForCategory(catId) {
+            const cat = categories.find(c => c.id == catId);
+            return cat ? cat.icon : 'apps';
+        }
+
+        // ==================== 删除 ====================
+        function openDeleteModal(id, name) {
+            deleteTargetId = id;
+            document.getElementById('delete-confirm-text').textContent = '您确定要删除 "' + name + '" 吗？';
+            document.getElementById('delete-modal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeDeleteModal() {
+            document.getElementById('delete-modal').classList.remove('active');
+            document.body.style.overflow = '';
+            deleteTargetId = null;
+        }
+
+        async function confirmDelete() {
+            if (!deleteTargetId) return;
+            try {
+                const { error } = await sbDeleteSoftware(deleteTargetId);
+                if (error) throw error;
+                showToast('软件已删除', 'success');
+                closeDeleteModal();
+                renderAdminSoftwareTable();
+            } catch (err) {
+                showToast('删除失败: ' + err.message, 'error');
+                closeDeleteModal();
+            }
+        }
+
+        // ==================== 数据面板 ====================
+        async function loadDashboardData() {
+            try {
+                const stats = await getStats();
+                document.getElementById('stat-software').textContent = stats.softwareCount || '0';
+                document.getElementById('stat-downloads').textContent = (stats.totalDownloads || 0).toLocaleString();
+            } catch (e) { console.log('Failed to load stats:', e); }
+        }
+
+        async function loadDownloadLogs() {
+            try {
+                const { data } = await getDownloadLogs(20);
+                const tbody = document.getElementById('download-logs-body');
+                if (data && data.length && tbody) {
+                    tbody.innerHTML = data.map(log => `
+                        <tr>
+                            <td><div class="flex items-center gap-3"><div class="w-8 h-8 rounded bg-surface-container-high flex items-center justify-center"><span class="material-symbols-outlined text-primary text-[18px]">file_download</span></div><span class="text-on-surface">${log.software?.name || '未知'}</span></div></td>
+                            <td class="text-on-surface-variant font-code-md text-sm">${log.filename || '-'}</td>
+                            <td class="text-on-surface-variant">${log.file_size || '-'}</td>
+                            <td class="text-on-surface-variant font-code-md text-sm">${log.download_time ? new Date(log.download_time).toLocaleString('zh-CN') : '-'}</td>
+                            <td><span class="badge badge-success"><span class="material-symbols-outlined text-[12px]">check_circle</span>成功</span></td>
+                        </tr>`).join('');
+                } else if (tbody) {
+                    tbody.innerHTML = '<tr><td colspan="5" class="text-center text-on-surface-variant py-8">暂无下载记录</td></tr>';
+                }
+            } catch (e) { console.log('Failed to load download logs:', e); }
+        }
+
+        // ==================== 设置 ====================
+        function saveSettings() {
+            const url = document.getElementById('setting-worker-url').value;
+            const secret = document.getElementById('setting-upload-secret').value;
+            if (url) localStorage.setItem('worker_url', url);
+            if (secret) localStorage.setItem('upload_secret', secret);
+            showToast('设置已保存', 'success');
+        }
+
+        // 初始化设置表单
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlInput = document.getElementById('setting-worker-url');
+            const secretInput = document.getElementById('setting-upload-secret');
+            if (urlInput) urlInput.value = localStorage.getItem('worker_url') || WORKER_URL;
+            if (secretInput) secretInput.value = localStorage.getItem('upload_secret') || UPLOAD_SECRET;
+        });
+
+        // ==================== 事件监听 ====================
+        document.getElementById('delete-modal').addEventListener('click', e => { if (e.target.id === 'delete-modal') closeDeleteModal(); });
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            initDragDrop();
+            await loadCategoriesFromDB();
+            await renderAdminSoftwareTable();
+            loadDashboardData();
+        });
+    </script>
+</body>
+</html>

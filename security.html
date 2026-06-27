@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html class="dark" lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>安全保障 - 安装中心</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Geist:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: { extend: { colors: { primary: "#adc6ff", secondary: "#e9b3ff" } } }
+        }
+    </script>
+</head>
+<body class="text-on-surface font-body-md min-h-screen">
+    <div id="particles-js"></div>
+
+    <header class="w-full max-w-container-max mx-auto px-gutter py-6 flex justify-between items-center relative z-10">
+        <a href="index.html" class="flex items-center gap-3 cursor-pointer">
+            <span class="material-symbols-outlined text-primary text-3xl">developer_board</span>
+            <span class="font-headline-md text-headline-md font-bold text-primary">安装中心</span>
+        </a>
+        <nav class="hidden md:flex items-center gap-8">
+            <a href="index.html" class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors uppercase tracking-wider">首页</a>
+            <a href="browse.html" class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors uppercase tracking-wider">浏览</a>
+            <a href="about.html" class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors uppercase tracking-wider">关于服务</a>
+            <a href="security.html" class="font-label-sm text-label-sm text-primary uppercase tracking-wider">安全</a>
+            <a href="contact.html" class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors uppercase tracking-wider">联系</a>
+        </nav>
+        <a href="admin.html" class="btn-primary text-sm">
+            <span class="material-symbols-outlined text-sm">dashboard</span>
+            管理后台
+        </a>
+    </header>
+
+    <main class="w-full max-w-container-max mx-auto px-gutter py-16 relative z-10">
+        <!-- Hero -->
+        <section class="text-center mb-20 animate-slide-up">
+            <span class="chip bg-green-500/10 text-green-400 border-green-500/20 mb-6">
+                <span class="material-symbols-outlined text-sm">verified_user</span>
+                安全保障
+            </span>
+            <h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg mb-6">
+                您的安全是我们的<span class="text-gradient-primary">首要任务</span>
+            </h1>
+            <p class="text-on-surface-variant font-body-lg max-w-2xl mx-auto leading-relaxed">
+                我们深知软件安全的重要性。所有安装包均经过严格的安全检测，
+                确保您下载和使用的每一个软件都是安全可靠的。
+            </p>
+        </section>
+
+        <!-- Security Features -->
+        <section class="mb-20">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="glass-level-1 rounded-xl p-8 interactive-hover">
+                    <div class="w-16 h-16 rounded-2xl bg-green-500/10 flex items-center justify-center mb-6">
+                        <span class="material-symbols-outlined text-green-400 text-3xl">virus_scan</span>
+                    </div>
+                    <h3 class="font-headline-md text-headline-md text-on-surface mb-3">病毒扫描</h3>
+                    <p class="text-on-surface-variant font-body-md leading-relaxed">
+                        所有安装包均经过多款主流杀毒软件扫描检测，
+                        确保不含病毒、木马、恶意软件等威胁。
+                    </p>
+                </div>
+
+                <div class="glass-level-1 rounded-xl p-8 interactive-hover">
+                    <div class="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-6">
+                        <span class="material-symbols-outlined text-primary text-3xl">verified</span>
+                    </div>
+                    <h3 class="font-headline-md text-headline-md text-on-surface mb-3">数字签名验证</h3>
+                    <p class="text-on-surface-variant font-body-md leading-relaxed">
+                        优先提供带有官方数字签名的安装包，
+                        确保文件来源可信，未被篡改。
+                    </p>
+                </div>
+
+                <div class="glass-level-1 rounded-xl p-8 interactive-hover">
+                    <div class="w-16 h-16 rounded-2xl bg-secondary/10 flex items-center justify-center mb-6">
+                        <span class="material-symbols-outlined text-secondary text-3xl">lock</span>
+                    </div>
+                    <h3 class="font-headline-md text-headline-md text-on-surface mb-3">SHA-256 校验</h3>
+                    <p class="text-on-surface-variant font-body-md leading-relaxed">
+                        每个安装包都提供 SHA-256 校验值，
+                        您可以自行验证文件完整性。
+                    </p>
+                </div>
+
+                <div class="glass-level-1 rounded-xl p-8 interactive-hover">
+                    <div class="w-16 h-16 rounded-2xl bg-yellow-500/10 flex items-center justify-center mb-6">
+                        <span class="material-symbols-outlined text-yellow-400 text-3xl">shield</span>
+                    </div>
+                    <h3 class="font-headline-md text-headline-md text-on-surface mb-3">沙箱测试</h3>
+                    <p class="text-on-surface-variant font-body-md leading-relaxed">
+                        新软件在沙箱环境中运行测试，
+                        观察其行为是否正常，确保安全后才上架。
+                    </p>
+                </div>
+
+                <div class="glass-level-1 rounded-xl p-8 interactive-hover">
+                    <div class="w-16 h-16 rounded-2xl bg-blue-500/10 flex items-center justify-center mb-6">
+                        <span class="material-symbols-outlined text-blue-400 text-3xl">update</span>
+                    </div>
+                    <h3 class="font-headline-md text-headline-md text-on-surface mb-3">定期更新检测</h3>
+                    <p class="text-on-surface-variant font-body-md leading-relaxed">
+                        定期检查软件更新，确保提供的是最新版本，
+                        及时修复已知安全漏洞。
+                    </p>
+                </div>
+
+                <div class="glass-level-1 rounded-xl p-8 interactive-hover">
+                    <div class="w-16 h-16 rounded-2xl bg-purple-500/10 flex items-center justify-center mb-6">
+                        <span class="material-symbols-outlined text-purple-400 text-3xl">visibility</span>
+                    </div>
+                    <h3 class="font-headline-md text-headline-md text-on-surface mb-3">透明公开</h3>
+                    <p class="text-on-surface-variant font-body-md leading-relaxed">
+                        所有软件信息公开透明，
+                        包括文件大小、版本号、发布日期等详细信息。
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Security Process -->
+        <section class="mb-20">
+            <div class="glass-level-1 rounded-2xl p-8 md:p-12">
+                <div class="text-center mb-12">
+                    <h2 class="font-headline-lg text-headline-lg mb-4">安全检测流程</h2>
+                    <p class="text-on-surface-variant font-body-md">每一个软件都经过严格的检测流程</p>
+                </div>
+                <div class="relative">
+                    <div class="hidden md:block absolute top-8 left-0 right-0 h-0.5 bg-gradient-to-r from-green-500/30 via-primary/30 to-secondary/30"></div>
+                    <div class="grid grid-cols-1 md:grid-cols-5 gap-8">
+                        <div class="text-center relative">
+                            <div class="w-16 h-16 rounded-full bg-green-500/20 border-2 border-green-500 flex items-center justify-center mx-auto mb-4 relative z-10">
+                                <span class="material-symbols-outlined text-green-400 text-2xl">upload_file</span>
+                            </div>
+                            <h4 class="font-headline-md text-headline-sm text-on-surface mb-2">1. 获取安装包</h4>
+                            <p class="text-on-surface-variant text-sm">从官方渠道获取安装包</p>
+                        </div>
+                        <div class="text-center relative">
+                            <div class="w-16 h-16 rounded-full bg-primary/20 border-2 border-primary flex items-center justify-center mx-auto mb-4 relative z-10">
+                                <span class="material-symbols-outlined text-primary text-2xl">search</span>
+                            </div>
+                            <h4 class="font-headline-md text-headline-sm text-on-surface mb-2">2. 病毒扫描</h4>
+                            <p class="text-on-surface-variant text-sm">多款杀毒软件检测</p>
+                        </div>
+                        <div class="text-center relative">
+                            <div class="w-16 h-16 rounded-full bg-secondary/20 border-2 border-secondary flex items-center justify-center mx-auto mb-4 relative z-10">
+                                <span class="material-symbols-outlined text-secondary text-2xl">science</span>
+                            </div>
+                            <h4 class="font-headline-md text-headline-sm text-on-surface mb-2">3. 沙箱测试</h4>
+                            <p class="text-on-surface-variant text-sm">隔离环境运行测试</p>
+                        </div>
+                        <div class="text-center relative">
+                            <div class="w-16 h-16 rounded-full bg-yellow-500/20 border-2 border-yellow-500 flex items-center justify-center mx-auto mb-4 relative z-10">
+                                <span class="material-symbols-outlined text-yellow-400 text-2xl">fact_check</span>
+                            </div>
+                            <h4 class="font-headline-md text-headline-sm text-on-surface mb-2">4. 校验审核</h4>
+                            <p class="text-on-surface-variant text-sm">人工审核确认安全</p>
+                        </div>
+                        <div class="text-center relative">
+                            <div class="w-16 h-16 rounded-full bg-green-500/20 border-2 border-green-500 flex items-center justify-center mx-auto mb-4 relative z-10">
+                                <span class="material-symbols-outlined text-green-400 text-2xl">done_all</span>
+                            </div>
+                            <h4 class="font-headline-md text-headline-sm text-on-surface mb-2">5. 上线发布</h4>
+                            <p class="text-on-surface-variant text-sm">安全上架供下载</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Trust Badges -->
+        <section class="mb-20">
+            <div class="text-center mb-12">
+                <h2 class="font-headline-lg text-headline-lg mb-4">安全保障承诺</h2>
+                <p class="text-on-surface-variant font-body-md">我们对您的安全负责</p>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="glass-level-1 rounded-xl p-6 text-center interactive-hover">
+                    <span class="material-symbols-outlined text-5xl text-green-400 mb-4">gpp_good</span>
+                    <h4 class="font-headline-md text-headline-sm text-on-surface mb-2">无毒承诺</h4>
+                    <p class="text-on-surface-variant text-sm">所有软件均经过病毒检测</p>
+                </div>
+                <div class="glass-level-1 rounded-xl p-6 text-center interactive-hover">
+                    <span class="material-symbols-outlined text-5xl text-primary mb-4">schedule</span>
+                    <h4 class="font-headline-md text-headline-sm text-on-surface mb-2">定期检测</h4>
+                    <p class="text-on-surface-variant text-sm">定期复扫描确保持续安全</p>
+                </div>
+                <div class="glass-level-1 rounded-xl p-6 text-center interactive-hover">
+                    <span class="material-symbols-outlined text-5xl text-secondary mb-4">feedback</span>
+                    <h4 class="font-headline-md text-headline-sm text-on-surface mb-2">快速响应</h4>
+                    <p class="text-on-surface-variant text-sm">安全问题24小时内响应</p>
+                </div>
+                <div class="glass-level-1 rounded-xl p-6 text-center interactive-hover">
+                    <span class="material-symbols-outlined text-5xl text-yellow-400 mb-4">emoji_events</span>
+                    <h4 class="font-headline-md text-headline-sm text-on-surface mb-2">品质保证</h4>
+                    <p class="text-on-surface-variant text-sm">发现安全问题全额退款</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- How to Verify -->
+        <section class="mb-20">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <span class="chip bg-primary/10 text-primary border-primary/20 mb-6">
+                        <span class="material-symbols-outlined text-sm">tips_and_updates</span>
+                        安全小贴士
+                    </span>
+                    <h2 class="font-headline-lg text-headline-lg mb-6">
+                        如何验证下载的<span class="text-gradient-primary">文件完整性</span>
+                    </h2>
+                    <p class="text-on-surface-variant font-body-md mb-8 leading-relaxed">
+                        为了确保您下载的文件没有被篡改或损坏，
+                        您可以使用 SHA-256 校验值来验证文件完整性。
+                    </p>
+                    <div class="space-y-6">
+                        <div class="flex gap-4">
+                            <div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
+                                <span class="text-primary font-bold">1</span>
+                            </div>
+                            <div>
+                                <h4 class="font-body-md font-semibold text-on-surface mb-1">下载软件后获取校验值</h4>
+                                <p class="text-on-surface-variant text-sm">在软件详情页复制 SHA-256 校验值</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4">
+                            <div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
+                                <span class="text-primary font-bold">2</span>
+                            </div>
+                            <div>
+                                <h4 class="font-body-md font-semibold text-on-surface mb-1">在您的电脑上生成校验值</h4>
+                                <p class="text-on-surface-variant text-sm">
+                                    Windows: certutil -hashfile 文件名 SHA256<br>
+                                    macOS/Linux: shasum -a 256 文件名
+                                </p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4">
+                            <div class="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center flex-shrink-0">
+                                <span class="text-green-400 font-bold">3</span>
+                            </div>
+                            <div>
+                                <h4 class="font-body-md font-semibold text-on-surface mb-1">对比校验值</h4>
+                                <p class="text-on-surface-variant text-sm">如果两个校验值完全一致，说明文件完整可信</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="glass-level-1 rounded-2xl p-8">
+                    <div class="bg-surface-container/50 rounded-xl p-6 mb-6">
+                        <div class="flex items-center gap-2 mb-4">
+                            <span class="material-symbols-outlined text-green-400">verified</span>
+                            <span class="font-headline-md text-headline-sm text-on-surface">示例：SHA-256 校验值</span>
+                        </div>
+                        <div class="font-code-md text-code-md text-on-surface-variant break-all text-sm">
+                            5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8
+                        </div>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-3 p-3 rounded-lg bg-green-500/10 border border-green-500/20">
+                            <span class="material-symbols-outlined text-green-400">check_circle</span>
+                            <div>
+                                <div class="text-green-400 font-body-md font-semibold">校验一致</div>
+                                <div class="text-green-400/70 text-sm">文件完整，安全可靠</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 rounded-lg bg-error/10 border border-error/20">
+                            <span class="material-symbols-outlined text-error">error</span>
+                            <div>
+                                <div class="text-error font-body-md font-semibold">校验不一致</div>
+                                <div class="text-error/70 text-sm">文件可能已损坏或被篡改，请勿使用</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Report Security Issue -->
+        <section class="mb-20">
+            <div class="glass-level-1 rounded-2xl p-8 md:p-12 border border-yellow-500/20">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <span class="material-symbols-outlined text-yellow-400 text-5xl mb-4">warning</span>
+                        <h2 class="font-headline-lg text-headline-lg mb-4">发现安全问题？</h2>
+                        <p class="text-on-surface-variant font-body-md leading-relaxed">
+                            如果您在使用过程中发现任何安全问题或可疑软件，
+                            请立即联系我们。我们非常重视安全问题，
+                            会在第一时间进行调查和处理。
+                        </p>
+                    </div>
+                    <div class="flex flex-col sm:flex-row lg:flex-col gap-4">
+                        <button class="btn-primary flex-1" onclick="navigateTo('contact.html')">
+                            <span class="material-symbols-outlined">report</span>
+                            提交安全反馈
+                        </button>
+                        <button class="btn-secondary flex-1" onclick="navigateTo('contact.html')">
+                            <span class="material-symbols-outlined">email</span>
+                            联系安全团队
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="border-t border-white/10 mt-20">
+        <div class="max-w-container-max mx-auto px-gutter py-12 text-center text-on-surface-variant text-sm">
+            © 2024 安装中心。专业的软件安装服务。
+        </div>
+    </footer>
+
+    <script src="js/common.js"></script>
+</body>
+</html>
