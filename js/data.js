@@ -562,12 +562,12 @@ async function loadCategoriesFromDB() {
         const { data, error } = await getCategories();
         if (data && data.length > 0) {
             categories = [{ id: 'all', name: '全部软件', icon: 'apps' }, ...data];
-            setCache('categories', categories);
         }
     } catch (e) {
         console.log('Failed to load categories from DB, using default');
     }
-    // 无论成功/失败/空数据，都确保 window.categories 有值
+    // 缓存结果——即使DB为空也缓存，避免每次都连Supabase
+    setCache('categories', categories);
     syncWindowCategories(categories);
 }
 
@@ -576,17 +576,19 @@ async function loadSoftwareFromDB() {
     const cached = getCache('software');
     if (cached) return cached;
 
+    let result;
     try {
         const { data, error } = await getSoftware();
         if (data && data.length > 0) {
-            const transformed = data.map(s => transformSoftware(s));
-            setCache('software', transformed);
-            return transformed;
+            result = data.map(s => transformSoftware(s));
         }
     } catch (e) {
         console.log('Failed to load software from DB, using default');
     }
-    return softwareData;
+    // 无数据时用默认列表，并缓存结果——避免每次都连Supabase
+    if (!result) result = softwareData;
+    setCache('software', result);
+    return result;
 }
 
 function transformSoftware(s) {

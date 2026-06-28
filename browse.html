@@ -383,11 +383,10 @@
                 document.getElementById('search-input').value = currentSearch;
             }
             
-            renderCategories();
             renderOSFilters();
-            // 先出骨架屏，然后并行拉分类+软件
             renderSkeleton();
 
+            // 并行拉分类+软件，到齐后一次渲染
             Promise.all([loadCategoriesFromDB(), loadSoftwareFromDB()]).then(([_, dbData]) => {
                 allSoftwareData = dbData;
                 renderCategories();
