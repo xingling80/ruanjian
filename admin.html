@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html class="dark" lang="zh-CN">
 <head>
     <meta charset="utf-8">
@@ -284,8 +284,8 @@
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div class="glass-level-1 rounded-xl p-6">
                     <h3 class="font-headline-md text-headline-md text-on-surface mb-6">配置信息</h3>
-                    <div class="form-group"><label class="form-label">Cloudflare Worker URL</label><input type="text" class="form-input font-code-md text-sm" id="setting-worker-url" placeholder="https://your-worker.workers.dev"></div>
-                    <div class="form-group"><label class="form-label">上传密钥</label><input type="password" class="form-input font-code-md text-sm" id="setting-upload-secret" placeholder="UPLOAD_SECRET"><p class="text-on-surface-variant text-xs mt-1">与 Worker 中配置的密钥一致</p></div>
+                    <div class="form-group"><label class="form-label">Cloudflare Worker URL</label><input type="text" class="form-input font-code-md text-sm" id="setting-worker-url" placeholder="https://your-worker.workers.dev"><p class="text-on-surface-variant text-xs mt-1">必填，部署 Worker 后复制地址</p></div>
+                    <div class="form-group"><label class="form-label">上传密钥</label><input type="password" class="form-input font-code-md text-sm" id="setting-upload-secret" placeholder="请输入 UPLOAD_SECRET"><p class="text-on-surface-variant text-xs mt-1">必填，与 Worker 环境中配置的密钥一致</p></div>
                     <button class="btn-secondary mt-4" onclick="saveSettings()"><span class="material-symbols-outlined text-sm">save</span>保存设置</button>
                 </div>
                 <div class="glass-level-1 rounded-xl p-6">
@@ -332,9 +332,9 @@
     <script src="js/common.js"></script>
     <script>
         // ==================== 配置 ====================
-        // Cloudflare Worker URL - 部署 Worker 后更新
-        const WORKER_URL = localStorage.getItem('worker_url') || 'https://your-worker.workers.dev';
-        const UPLOAD_SECRET = localStorage.getItem('upload_secret') || 'your-upload-secret';
+        // 必须从 localStorage 读取有效的 Worker 配置，不允许硬编码默认值
+        const WORKER_URL = localStorage.getItem('worker_url') || '';
+        const UPLOAD_SECRET = localStorage.getItem('upload_secret') || '';
 
         let currentPage = 'dashboard';
         let deleteTargetId = null;
@@ -410,6 +410,26 @@
         }
 
         // ==================== 文件拖拽上传 ====================
+        // 允许的文件类型白名单
+        const ALLOWED_EXTENSIONS = ['exe', 'dmg', 'zip', 'msi', 'pkg', 'deb', 'rpm', 'appimage', 'tar', 'gz', '7z', 'rar'];
+        
+        function validateFile(file) {
+            if (!file) return { valid: false, error: '未选择文件' };
+            
+            const ext = file.name.split('.').pop().toLowerCase();
+            if (!ALLOWED_EXTENSIONS.includes(ext)) {
+                return { valid: false, error: `不支持的文件类型: .${ext}，仅允许: ${ALLOWED_EXTENSIONS.join(', ')}` };
+            }
+            
+            // 文件大小限制：5GB
+            const MAX_SIZE = 5 * 1024 * 1024 * 1024;
+            if (file.size > MAX_SIZE) {
+                return { valid: false, error: '文件大小超过 5GB 限制' };
+            }
+            
+            return { valid: true };
+        }
+
         function initDragDrop() {
             const dropzone = document.getElementById('dropzone');
             if (!dropzone) return;
@@ -421,6 +441,14 @@
 
         function handleFileSelect(files) {
             if (!files || !files.length) return;
+            
+            const validation = validateFile(files[0]);
+            if (!validation.valid) {
+                showToast(validation.error, 'error');
+                clearUploadedFile();
+                return;
+            }
+            
             selectedFile = files[0];
             document.getElementById('file-name').textContent = selectedFile.name;
             document.getElementById('file-size').textContent = formatFileSizeDisplay(selectedFile.size);
@@ -601,12 +629,12 @@
             showToast('设置已保存', 'success');
         }
 
-        // 初始化设置表单
+        // 初始化设置表单（不填充默认值，强制用户配置）
         document.addEventListener('DOMContentLoaded', () => {
             const urlInput = document.getElementById('setting-worker-url');
             const secretInput = document.getElementById('setting-upload-secret');
-            if (urlInput) urlInput.value = localStorage.getItem('worker_url') || WORKER_URL;
-            if (secretInput) secretInput.value = localStorage.getItem('upload_secret') || UPLOAD_SECRET;
+            if (urlInput) urlInput.value = localStorage.getItem('worker_url') || '';
+            if (secretInput) secretInput.value = localStorage.getItem('upload_secret') || '';
         });
 
         // ==================== 事件监听 ====================

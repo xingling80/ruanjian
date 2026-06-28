@@ -1,10 +1,7 @@
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
-const SUPABASE_URL = 'https://bszmxgjhxikfpisxgaml.supabase.co';
+const SUPABASE_URL = 'https://still-meadow-9abe.dongzehua588.workers.dev';
 const SUPABASE_ANON_KEY = 'sb_publishable_vVGZp3VO6OPFxKBUIaxJkA_FmC0rqeS';
-
-// Cloudflare Worker 部署后取消注释下面一行，替换上面的 SUPABASE_URL
-// const SUPABASE_URL = 'https://your-worker-name.username.workers.dev';
 
 export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 

@@ -154,9 +154,20 @@ export default {
 
     // ========== 公开下载（代理模式 - 如果不绑自定义域名） ==========
     if (request.method === 'GET' && path.startsWith('/download/')) {
-      const key = path.replace('/download/', '');
+      const rawKey = path.replace('/download/', '');
+      
+      // 安全验证：禁止路径遍历和无效字符
+      if (!rawKey || rawKey.includes('..') || rawKey.includes('//') || /[<>:"|?*]/.test(rawKey)) {
+        return new Response('无效的下载路径', { status: 400 });
+      }
+      
+      // 验证 key 格式：只允许字母数字、下划线、点号和连字符
+      if (!/^[a-zA-Z0-9._-]+$/.test(rawKey)) {
+        return new Response('无效的文件标识符', { status: 400 });
+      }
+      
       try {
-        const object = await env.INSTALLER_BUCKET.get(key);
+        const object = await env.INSTALLER_BUCKET.get(rawKey);
         if (!object) {
           return new Response('文件不存在', { status: 404 });
         }
@@ -164,7 +175,9 @@ export default {
         const headers = new Headers();
         object.writeHttpMetadata(headers);
         headers.set('etag', object.httpEtag);
-        headers.set('Content-Disposition', `attachment; filename="${key.split('_').slice(1).join('_')}"`);
+        // 提取原始文件名（移除时间戳前缀）
+        const originalFileName = rawKey.split('_').slice(1).join('_');
+        headers.set('Content-Disposition', `attachment; filename="${originalFileName}"`);
         headers.set('Access-Control-Allow-Origin', '*');
 
         return new Response(object.body, {

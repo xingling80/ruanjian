@@ -196,7 +196,7 @@
                             <div class="space-y-3" id="download-options-list">
                                 ${downloads.map((dl, i) => `
                                     <div class="flex items-center justify-between p-4 rounded-lg bg-surface-container/50 hover:bg-surface-container transition-colors cursor-pointer group download-option-btn" 
-                                         data-name="${dl.name}" data-url="${dl.url || ''}" data-size="${dl.size || ''}">
+                                         data-name="${dl.name}" data-url="${dl.url || ''}" data-size="${dl.size || ''}" data-r2-key="${dl.r2_key || ''}">
                                         <div class="flex items-center gap-3">
                                             <div class="w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center">
                                                 <span class="material-symbols-outlined text-primary text-[20px]">${i === 0 ? 'windows' : i === 1 ? 'laptop_mac' : 'folder_zip'}</span>
@@ -326,21 +326,22 @@
                     firstDl ? firstDl.name : currentSoftware.name,
                     firstDl ? (firstDl.url || '') : '',
                     firstDl ? (firstDl.size || '') : '',
-                    currentSoftware.id
+                    currentSoftware.id,
+                    firstDl ? (firstDl.r2_key || '') : ''
                 );
             }
 
             document.querySelectorAll('.download-option-btn').forEach(btn => {
                 btn.onclick = () => openDownloadModal(
-                    btn.dataset.name, btn.dataset.url, btn.dataset.size, currentSoftware?.id
+                    btn.dataset.name, btn.dataset.url, btn.dataset.size, currentSoftware?.id, btn.dataset.r2Key || ''
                 );
             });
         }
 
-        function openDownloadModal(name, downloadUrl, fileSize, softwareId) {
+        function openDownloadModal(name, downloadUrl, fileSize, softwareId, r2Key = '') {
             document.getElementById('modal-download-name').textContent = name || '下载准备中';
             document.getElementById('modal-download-info').textContent = fileSize ? '文件大小: ' + fileSize : '';
-            currentDownloadInfo = { name, downloadUrl, fileSize, softwareId };
+            currentDownloadInfo = { name, downloadUrl, fileSize, softwareId, r2_key: r2Key };
             
             const modal = document.getElementById('download-modal');
             modal.classList.add('active');
@@ -363,6 +364,13 @@
             currentDownloadInfo = null;
         }
 
+        // 从 localStorage 获取 Worker URL 用于代理下载
+        function getWorkerProxyUrl(r2Key) {
+            const workerUrl = localStorage.getItem('worker_url') || '';
+            if (!workerUrl) return null; // 没有配置 Worker 时返回 null
+            return `${workerUrl}/download/${r2Key}`;
+        }
+
         async function startDownload() {
             document.getElementById('modal-progress-bar').style.width = '100%';
 
@@ -377,9 +385,13 @@
                 btn.innerHTML = '<span class="material-symbols-outlined animate-spin">refresh</span> 下载中...';
                 btn.disabled = true;
 
-                // 直接使用 R2 公开 URL 触发下载
+                // 优先使用 Worker 代理下载（更安全），否则回退到直接 R2 URL
+                const r2Key = currentDownloadInfo.r2_key;
+                const workerProxyUrl = getWorkerProxyUrl(r2Key);
+                const downloadUrl = workerProxyUrl || currentDownloadInfo.downloadUrl;
+                
                 const a = document.createElement('a');
-                a.href = currentDownloadInfo.downloadUrl;
+                a.href = downloadUrl;
                 a.download = currentDownloadInfo.name || '';
                 a.target = '_blank';
                 a.rel = 'noopener noreferrer';
@@ -387,7 +399,7 @@
                 a.click();
                 document.body.removeChild(a);
 
-                showToast('下载已开始！文件来自 Cloudflare R2 全球 CDN');
+                showToast('下载已开始！' + (workerProxyUrl ? '通过安全代理' : '文件来自 Cloudflare R2 全球 CDN'));
 
                 // 记录下载
                 if (currentDownloadInfo.softwareId) {
