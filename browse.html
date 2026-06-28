@@ -354,11 +354,23 @@
                 document.getElementById('search-input').value = currentSearch;
             }
             
-            await loadCategoriesFromDB();
-            allSoftwareData = await loadSoftwareFromDB();
+            // 先用本地数据秒渲染——国内访问不用等数据库
+            const { softwareData: localData } = await import('./js/data.js');
+            allSoftwareData = localData;
             renderCategories();
             renderOSFilters();
             renderSoftware();
+
+            // 后台异步拉数据库数据，到了自动刷新
+            loadCategoriesFromDB().then(() => {
+                renderCategories();
+                return loadSoftwareFromDB();
+            }).then(dbData => {
+                if (dbData && dbData.length > 0) {
+                    allSoftwareData = dbData;
+                    renderSoftware();
+                }
+            });
         });
     </script>
 </body>
