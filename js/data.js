@@ -563,11 +563,12 @@ async function loadCategoriesFromDB() {
         if (data && data.length > 0) {
             categories = [{ id: 'all', name: '全部软件', icon: 'apps' }, ...data];
             setCache('categories', categories);
-            syncWindowCategories(categories);
         }
     } catch (e) {
         console.log('Failed to load categories from DB, using default');
     }
+    // 无论成功/失败/空数据，都确保 window.categories 有值
+    syncWindowCategories(categories);
 }
 
 async function loadSoftwareFromDB() {
