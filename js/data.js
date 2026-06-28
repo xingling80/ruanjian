@@ -1,4 +1,5 @@
-﻿﻿﻿﻿import { supabase, getSoftware, getSoftwareById as sbGetSoftwareById, getCategories, searchSoftware as sbSearchSoftware, createSoftware, updateSoftware, deleteSoftware, getDownloadLogs, getStats } from './supabase-client.js';
+﻿import { supabase, getSoftware, getSoftwareById as sbGetSoftwareById, getCategories, searchSoftware as sbSearchSoftware, createSoftware, updateSoftware, deleteSoftware, getDownloadLogs, getStats } from './supabase-client.js';
+import { getCache, setCache } from './cache.js';
 
 const softwareData = [
     {
@@ -544,10 +545,17 @@ function parseJsonField(val) {
 }
 
 async function loadCategoriesFromDB() {
+    // 优先读缓存 → 二次访问秒开
+    const cached = getCache('categories');
+    if (cached) {
+        categories = cached;
+        return;
+    }
     try {
         const { data, error } = await getCategories();
         if (data && data.length > 0) {
             categories = [{ id: 'all', name: '全部软件', icon: 'apps' }, ...data];
+            setCache('categories', categories);
         }
     } catch (e) {
         console.log('Failed to load categories from DB, using default');
@@ -555,10 +563,16 @@ async function loadCategoriesFromDB() {
 }
 
 async function loadSoftwareFromDB() {
+    // 优先读缓存 → 二次访问秒开
+    const cached = getCache('software');
+    if (cached) return cached;
+
     try {
         const { data, error } = await getSoftware();
         if (data && data.length > 0) {
-            return data.map(s => transformSoftware(s));
+            const transformed = data.map(s => transformSoftware(s));
+            setCache('software', transformed);
+            return transformed;
         }
     } catch (e) {
         console.log('Failed to load software from DB, using default');
