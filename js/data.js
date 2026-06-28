@@ -602,10 +602,17 @@ function transformSoftware(s) {
 }
 
 async function getSoftwareById(id) {
+    // 优先读缓存
+    const cacheKey = `software_${id}`;
+    const cached = getCache(cacheKey);
+    if (cached) return cached;
+
     try {
         const { data, error } = await sbGetSoftwareById(id);
         if (data) {
-            return transformSoftware(data);
+            const transformed = transformSoftware(data);
+            setCache(cacheKey, transformed);
+            return transformed;
         }
     } catch (e) {
         console.log('Failed to get software by ID from DB');
