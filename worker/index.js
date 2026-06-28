@@ -31,9 +31,16 @@ export default {
 
     // ========== 管理端：获取预签名上传 URL ==========
     if (request.method === 'POST' && path === '/admin/upload-url') {
-      // 简易认证：检查预设的管理密钥
+      // 强制要求 UPLOAD_SECRET 必须已配置
+      if (!env.UPLOAD_SECRET || typeof env.UPLOAD_SECRET !== 'string' || env.UPLOAD_SECRET.trim() === '') {
+        return new Response(JSON.stringify({ error: '服务器未配置上传密钥' }), {
+          status: 500,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      }
+      // 认证：检查 Bearer token
       const authHeader = request.headers.get('Authorization');
-      if (!authHeader || authHeader !== `Bearer ${env.UPLOAD_SECRET}`) {
+      if (!authHeader || !authHeader.startsWith('Bearer ') || authHeader.slice(7) !== env.UPLOAD_SECRET) {
         return new Response(JSON.stringify({ error: '未授权' }), {
           status: 401,
           headers: { ...corsHeaders, 'Content-Type': 'application/json' }
@@ -81,8 +88,15 @@ export default {
 
     // ========== 管理端：删除文件 ==========
     if (request.method === 'DELETE' && path.startsWith('/admin/delete/')) {
+      // 强制要求 UPLOAD_SECRET 必须已配置
+      if (!env.UPLOAD_SECRET || typeof env.UPLOAD_SECRET !== 'string' || env.UPLOAD_SECRET.trim() === '') {
+        return new Response(JSON.stringify({ error: '服务器未配置上传密钥' }), {
+          status: 500,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      }
       const authHeader = request.headers.get('Authorization');
-      if (!authHeader || authHeader !== `Bearer ${env.UPLOAD_SECRET}`) {
+      if (!authHeader || !authHeader.startsWith('Bearer ') || authHeader.slice(7) !== env.UPLOAD_SECRET) {
         return new Response(JSON.stringify({ error: '未授权' }), {
           status: 401,
           headers: { ...corsHeaders, 'Content-Type': 'application/json' }
@@ -105,8 +119,15 @@ export default {
 
     // ========== 列表文件 ==========
     if (request.method === 'GET' && path === '/admin/list') {
+      // 强制要求 UPLOAD_SECRET 必须已配置
+      if (!env.UPLOAD_SECRET || typeof env.UPLOAD_SECRET !== 'string' || env.UPLOAD_SECRET.trim() === '') {
+        return new Response(JSON.stringify({ error: '服务器未配置上传密钥' }), {
+          status: 500,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      }
       const authHeader = request.headers.get('Authorization');
-      if (!authHeader || authHeader !== `Bearer ${env.UPLOAD_SECRET}`) {
+      if (!authHeader || !authHeader.startsWith('Bearer ') || authHeader.slice(7) !== env.UPLOAD_SECRET) {
         return new Response(JSON.stringify({ error: '未授权' }), {
           status: 401,
           headers: { ...corsHeaders, 'Content-Type': 'application/json' }
