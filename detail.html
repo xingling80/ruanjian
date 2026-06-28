@@ -71,54 +71,92 @@
                 <a class="text-on-surface-variant hover:text-primary transition-colors" href="index.html">首页</a>
                 <a class="text-on-surface-variant hover:text-primary transition-colors" href="browse.html">浏览</a>
                 <a class="text-on-surface-variant hover:text-primary transition-colors" href="about.html">服务说明</a>
-                <a class="text-on-surface-variant hover:text-primary transition-colors" href="security.html">安全</a>
-                <a class="text-on-surface-variant hover:text-primary transition-colors" href="contact.html">联系我们</a>
             </nav>
-            <div class="text-on-surface-variant text-sm text-center md:text-right">&copy; 2024 安装中心。卓越的软件分发。</div>
+            <div class="text-on-surface-variant text-sm text-center md:text-right">&copy; 2024 安装中心。仅提供官方下载链接。</div>
         </div>
     </footer>
 
-    <!-- Download Modal -->
-    <div class="modal-overlay" id="download-modal">
-        <div class="modal-content">
-            <div class="flex items-center justify-between mb-6">
-                <h3 class="font-headline-md text-headline-md text-on-surface">初始化下载</h3>
-                <button class="text-on-surface-variant hover:text-on-surface p-1" onclick="closeDownloadModal()">
-                    <span class="material-symbols-outlined">close</span>
-                </button>
-            </div>
-            <div class="text-center py-8">
-                <div class="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
-                    <span class="material-symbols-outlined text-primary text-4xl">download</span>
-                </div>
-                <h4 class="font-headline-md text-headline-md text-on-surface mb-2" id="modal-download-name">下载准备中</h4>
-                <p class="text-on-surface-variant font-body-md mb-2">文件来自 Cloudflare R2（全球 CDN 加速）</p>
-                <p class="text-on-surface-variant text-sm mb-6" id="modal-download-info"></p>
-                <div class="w-full h-2 bg-surface-container-high rounded-full overflow-hidden mb-6">
-                    <div class="h-full bg-primary rounded-full transition-all duration-1000" id="modal-progress-bar" style="width: 0%"></div>
-                </div>
-                <button class="btn-primary w-full" onclick="startDownload()" id="manual-download-btn">
-                    <span class="material-symbols-outlined">download</span>
-                    手动开始下载
-                </button>
-            </div>
-        </div>
-    </div>
-
     <script type="module">
-        import { getSoftwareById } from './js/data.js';
-        import { incrementDownloadCount } from './js/supabase-client.js';
+        import { getSoftwareById, getSoftwareOSList } from './js/data.js';
         window.getSoftwareById = getSoftwareById;
-        window.incrementDownloadCount = incrementDownloadCount;
+        window.getSoftwareOSList = getSoftwareOSList;
     </script>
     <script src="js/common.js"></script>
     <script>
         let currentSoftware = null;
-        let currentDownloadInfo = null;
 
         function getSoftwareId() {
             const params = new URLSearchParams(window.location.search);
             return params.get('id') || 1;
+        }
+
+        function getPreferredOS() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get('os') || null;
+        }
+
+        function getOSInfo(os) {
+            const osMap = {
+                windows: { name: 'Windows', icon: 'desktop_windows', color: 'text-blue-400' },
+                macos: { name: 'macOS', icon: 'laptop_mac', color: 'text-gray-300' },
+                linux: { name: 'Linux', icon: 'terminal', color: 'text-yellow-400' },
+                android: { name: 'Android', icon: 'smartphone', color: 'text-green-400' }
+            };
+            return osMap[os] || { name: os, icon: 'devices', color: 'text-primary' };
+        }
+
+        function renderDownloadSection(software) {
+            const downloadLinks = software.downloadLinks || {};
+            const osKeys = Object.keys(downloadLinks);
+            
+            if (osKeys.length === 0) {
+                return `
+                    <div class="glass-level-1 rounded-xl p-6 text-center">
+                        <span class="material-symbols-outlined text-4xl text-on-surface-variant mb-3 block">download_off</span>
+                        <p class="text-on-surface-variant">暂无下载链接</p>
+                    </div>
+                `;
+            }
+
+            return `
+                <div class="space-y-4">
+                    ${osKeys.map(os => {
+                        const info = downloadLinks[os];
+                        const osInfo = getOSInfo(os);
+                        return `
+                            <div class="download-os-card glass-level-1 rounded-xl p-5 interactive-hover group" id="download-${os}">
+                                <div class="flex items-center justify-between gap-4">
+                                    <div class="flex items-center gap-4">
+                                        <div class="w-12 h-12 rounded-xl bg-surface-container-high flex items-center justify-center border border-white/10">
+                                            <span class="material-symbols-outlined text-[28px] ${osInfo.color}">${osInfo.icon}</span>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-body-lg font-bold text-on-surface">${osInfo.name}</h4>
+                                            <p class="font-code-md text-code-md text-on-surface-variant">${info.label || info.url}</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center gap-3">
+                                        ${info.size && info.size !== '—' ? `
+                                            <span class="text-sm text-on-surface-variant font-code-md">${info.size}</span>
+                                        ` : ''}
+                                        <a href="${info.url}" target="_blank" rel="noopener noreferrer" 
+                                           class="btn-primary text-sm" 
+                                           onclick="handleDownloadClick(event, '${os}', '${software.id}')">
+                                            <span class="material-symbols-outlined text-[18px]">download</span>
+                                            下载
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            `;
+        }
+
+        function handleDownloadClick(event, os, softwareId) {
+            event.stopPropagation();
+            showToast(`正在跳转到官方下载页面...`);
         }
 
         async function renderDetail() {
@@ -139,9 +177,8 @@
 
             document.title = software.name + ' - 安装中心';
             
-            // 构建下载选项
-            const downloads = software.downloads || [];
-            const hasDownloads = downloads.length > 0;
+            const downloadLinks = software.downloadLinks || {};
+            const osCount = Object.keys(downloadLinks).length;
 
             const container = document.getElementById('detail-content');
             container.innerHTML = `
@@ -153,10 +190,11 @@
                             </div>
                             <div>
                                 <h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface">${software.name}</h1>
-                                <p class="font-body-lg text-body-lg text-on-surface-variant mt-1">${software.version} &bull; ${software.platform}</p>
+                                <p class="font-body-lg text-body-lg text-on-surface-variant mt-1">${software.version}</p>
                             </div>
                         </div>
                         <p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">${software.description}</p>
+                        
                         <div class="flex flex-wrap gap-3 mt-2">
                             ${(software.features || []).map((f, i) => `
                                 <span class="glass-level-1 px-3 py-1.5 rounded-full flex items-center gap-2">
@@ -164,257 +202,151 @@
                                     <span class="font-label-sm text-label-sm text-on-surface">${f}</span>
                                 </span>`).join('')}
                         </div>
-                        <div class="glass-level-1 p-6 rounded-xl mt-4 flex flex-col gap-4">
-                            <div class="flex justify-between items-end">
+
+                        <div class="flex flex-wrap gap-2">
+                            <span class="badge badge-primary">${software.category}</span>
+                            <span class="badge badge-secondary">${osCount} 个平台</span>
+                            <span class="badge badge-success">官方链接</span>
+                        </div>
+
+                        <div class="glass-level-1 p-6 rounded-xl mt-4">
+                            <div class="flex justify-between items-end mb-4">
                                 <div>
-                                    <span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider block mb-1">下载大小</span>
-                                    <span class="font-headline-md text-headline-md text-on-surface">${software.size}</span>
-                                </div>
-                                <div class="text-right">
                                     <span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider block mb-1">许可协议</span>
                                     <span class="font-headline-md text-headline-md text-on-surface">${software.license}</span>
                                 </div>
+                                <div class="text-right">
+                                    <span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider block mb-1">更新日期</span>
+                                    <span class="font-headline-md text-headline-md text-on-surface">${formatDate(software.releaseDate)}</span>
+                                </div>
                             </div>
-                            ${hasDownloads ? `
-                            <button class="w-full btn-primary-tech py-4 rounded-lg flex items-center justify-center gap-3 mt-2 group cursor-pointer active:scale-95" id="primary-download-btn">
-                                <span class="material-symbols-outlined font-variation-settings-'FILL'-1 group-hover:animate-bounce">download</span>
-                                <span class="font-headline-md text-[18px] font-bold">初始化下载</span>
-                            </button>
-                            ` : `
-                            <div class="w-full py-4 text-center text-on-surface-variant">
-                                <span class="material-symbols-outlined text-sm">info</span> 暂无下载文件，请联系管理员上传
-                            </div>`}
-                            <div class="flex items-center justify-center gap-2 mt-2 cursor-pointer" onclick="copyToClipboard('${software.sha256 || 'N/A'}')">
-                                <span class="material-symbols-outlined text-[14px] text-tertiary">security</span>
-                                <span class="font-code-md text-code-md text-tertiary">校验码: SHA-256 已验证</span>
-                                <span class="material-symbols-outlined text-[14px] text-tertiary">content_copy</span>
-                            </div>
+                            <a href="${software.officialUrl}" target="_blank" rel="noopener noreferrer"
+                               class="w-full btn-secondary py-3 rounded-lg flex items-center justify-center gap-3 group">
+                                <span class="material-symbols-outlined text-[18px]">language</span>
+                                <span>访问官方网站</span>
+                                <span class="material-symbols-outlined text-[18px] group-hover:translate-x-1 transition-transform">open_in_new</span>
+                            </a>
                         </div>
-                        ${hasDownloads ? `
-                        <div class="glass-level-1 rounded-xl p-6">
-                            <h3 class="font-headline-md text-headline-md text-on-surface mb-4">下载选项</h3>
-                            <div class="space-y-3" id="download-options-list">
-                                ${downloads.map((dl, i) => `
-                                    <div class="flex items-center justify-between p-4 rounded-lg bg-surface-container/50 hover:bg-surface-container transition-colors cursor-pointer group download-option-btn" 
-                                         data-name="${dl.name}" data-url="${dl.url || ''}" data-size="${dl.size || ''}" data-r2-key="${dl.r2_key || ''}">
-                                        <div class="flex items-center gap-3">
-                                            <div class="w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center">
-                                                <span class="material-symbols-outlined text-primary text-[20px]">${i === 0 ? 'windows' : i === 1 ? 'laptop_mac' : 'folder_zip'}</span>
-                                            </div>
-                                            <div>
-                                                <div class="font-body-md text-body-md text-on-surface">${dl.name}</div>
-                                                <div class="font-code-md text-code-md text-on-surface-variant">${dl.size || software.size} &bull; ${dl.type || 'unknown'}</div>
-                                            </div>
-                                        </div>
-                                        <button class="text-on-surface-variant group-hover:text-primary transition-colors p-2">
-                                            <span class="material-symbols-outlined">download</span>
-                                        </button>
-                                    </div>`).join('')}
-                            </div>
-                        </div>` : ''}
                     </div>
+                    
                     <div class="lg:col-span-7 floating-frame relative" id="parallax-element">
                         <div class="absolute inset-0 bg-primary/10 rounded-xl blur-2xl -z-10 transform scale-95"></div>
                         <div class="w-full h-auto aspect-video object-cover bg-surface-container-high rounded-xl overflow-hidden border border-white/10 flex items-center justify-center relative">
                             <div class="text-center">
                                 <span class="material-symbols-outlined text-8xl text-primary/30 mb-4">${software.icon}</span>
-                                <p class="text-on-surface-variant font-body-md">软件预览图</p>
+                                <p class="text-on-surface-variant font-body-md">软件图标预览</p>
                             </div>
                             <div class="absolute inset-0 bg-gradient-to-br from-primary/5 to-secondary/5"></div>
                         </div>
                         <div class="absolute bottom-4 right-4 glass-level-2 px-4 py-2 rounded-lg flex flex-col items-end backdrop-blur-md">
-                            <span class="font-code-md text-[12px] text-secondary tracking-widest">CDN STATUS</span>
+                            <span class="font-code-md text-[12px] text-secondary tracking-widest">OFFICIAL</span>
                             <span class="font-code-md text-code-md text-on-surface flex items-center gap-2">
                                 <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
-                                Cloudflare Global CDN
+                                官方下载链接
                             </span>
                         </div>
                     </div>
                 </section>
 
-                <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="md:col-span-2 glass-level-1 rounded-xl p-8 hover:bg-white/[0.08] transition-colors duration-300 animate-slide-up delay-100">
-                        <div class="flex items-center gap-3 mb-6">
-                            <span class="material-symbols-outlined text-primary text-[28px]">memory</span>
-                            <h2 class="font-headline-md text-headline-md text-on-surface">系统要求</h2>
-                        </div>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-6">
-                            ${renderSysReq(software.systemRequirements)}
-                        </div>
+                <section class="animate-slide-up delay-100">
+                    <div class="flex items-center gap-3 mb-6">
+                        <span class="material-symbols-outlined text-primary text-[28px]">download</span>
+                        <h2 class="font-headline-md text-headline-md text-on-surface">下载链接</h2>
+                        <span class="badge badge-success ml-2">官方直链</span>
                     </div>
-                    <div class="md:col-span-1 glass-level-1 rounded-xl p-8 flex flex-col gap-6 hover:bg-white/[0.08] transition-colors duration-300 animate-slide-up delay-200">
-                        <div class="flex items-center gap-3">
-                            <span class="material-symbols-outlined text-secondary text-[28px]">update</span>
-                            <h2 class="font-headline-md text-headline-md text-on-surface">发布信息</h2>
-                        </div>
-                        <ul class="flex flex-col gap-4 flex-grow">
-                            ${(software.releaseNotes || []).map(note => `
-                                <li class="flex items-start gap-3">
-                                    <span class="material-symbols-outlined text-[20px] text-primary mt-0.5">${note.icon || 'new_releases'}</span>
-                                    <div>
-                                        <span class="font-body-md text-body-md text-on-surface block">${note.title || note}</span>
-                                        <span class="font-code-md text-code-md text-on-surface-variant">${note.detail || ''}</span>
-                                    </div>
-                                </li>`).join('') || '<li class="text-on-surface-variant">暂无发布说明</li>'}
-                        </ul>
-                    </div>
+                    ${renderDownloadSection(software)}
+                    <p class="text-on-surface-variant text-sm mt-4 leading-relaxed">
+                        <span class="material-symbols-outlined text-[14px] align-middle mr-1">info</span>
+                        所有下载链接均来自软件官方网站，安装中心仅提供链接导航服务。下载前请确认链接来源的安全性。
+                    </p>
                 </section>
 
                 <section class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="glass-level-1 rounded-xl p-8">
+                    <div class="glass-level-1 rounded-xl p-8 hover:bg-white/[0.08] transition-colors duration-300 animate-slide-up delay-200">
                         <div class="flex items-center gap-3 mb-6">
-                            <span class="material-symbols-outlined text-primary text-[28px]">description</span>
-                            <h2 class="font-headline-md text-headline-md text-on-surface">文件信息</h2>
+                            <span class="material-symbols-outlined text-secondary text-[28px]">info</span>
+                            <h2 class="font-headline-md text-headline-md text-on-surface">软件信息</h2>
                         </div>
                         <div class="space-y-4">
-                            ${fileInfoRows(software)}
+                            <div class="flex justify-between py-3 border-b border-white/10">
+                                <span class="text-on-surface-variant font-body-md">软件名称</span>
+                                <span class="text-on-surface font-body-md font-medium">${software.name}</span>
+                            </div>
+                            <div class="flex justify-between py-3 border-b border-white/10">
+                                <span class="text-on-surface-variant font-body-md">版本号</span>
+                                <span class="text-on-surface font-body-md font-medium">${software.version}</span>
+                            </div>
+                            <div class="flex justify-between py-3 border-b border-white/10">
+                                <span class="text-on-surface-variant font-body-md">软件分类</span>
+                                <span class="text-primary font-body-md font-medium">${software.category}</span>
+                            </div>
+                            <div class="flex justify-between py-3 border-b border-white/10">
+                                <span class="text-on-surface-variant font-body-md">支持平台</span>
+                                <span class="text-on-surface font-body-md font-medium">${osCount} 个操作系统</span>
+                            </div>
+                            <div class="flex justify-between py-3">
+                                <span class="text-on-surface-variant font-body-md">下载次数</span>
+                                <span class="text-on-surface font-body-md font-medium">${(software.downloads_count || 0).toLocaleString()} 次</span>
+                            </div>
                         </div>
                     </div>
-                    <div class="glass-level-1 rounded-xl p-8">
+                    
+                    <div class="glass-level-1 rounded-xl p-8 hover:bg-white/[0.08] transition-colors duration-300 animate-slide-up delay-300">
                         <div class="flex items-center gap-3 mb-6">
-                            <span class="material-symbols-outlined text-secondary text-[28px]">verified_user</span>
-                            <h2 class="font-headline-md text-headline-md text-on-surface">校验信息</h2>
+                            <span class="material-symbols-outlined text-primary text-[28px]">verified_user</span>
+                            <h2 class="font-headline-md text-headline-md text-on-surface">安全说明</h2>
                         </div>
-                        <div class="bg-surface-container/50 rounded-lg p-4 mb-4">
-                            <div class="text-on-surface-variant font-label-sm mb-2">SHA-256 校验值</div>
-                            <div class="font-code-md text-code-md text-on-surface break-all cursor-pointer" onclick="copyToClipboard('${software.sha256 || '暂无'}')">${software.sha256 || '暂无'}</div>
+                        <div class="space-y-4">
+                            <div class="flex items-start gap-3">
+                                <span class="material-symbols-outlined text-green-400 text-[20px] mt-0.5">check_circle</span>
+                                <div>
+                                    <p class="text-on-surface font-body-md font-medium">官方来源</p>
+                                    <p class="text-on-surface-variant text-sm">所有下载链接均来自软件官方网站，确保来源可信。</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <span class="material-symbols-outlined text-green-400 text-[20px] mt-0.5">check_circle</span>
+                                <div>
+                                    <p class="text-on-surface font-body-md font-medium">无修改打包</p>
+                                    <p class="text-on-surface-variant text-sm">安装中心不修改、不重新打包任何软件安装包。</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <span class="material-symbols-outlined text-green-400 text-[20px] mt-0.5">check_circle</span>
+                                <div>
+                                    <p class="text-on-surface font-body-md font-medium">直接跳转</p>
+                                    <p class="text-on-surface-variant text-sm">点击下载按钮直接跳转到官方下载页面，安全透明。</p>
+                                </div>
+                            </div>
                         </div>
-                        <button class="btn-secondary w-full" onclick="copyToClipboard('${software.sha256 || ''}')">
-                            <span class="material-symbols-outlined text-sm">content_copy</span>复制校验值
-                        </button>
-                        <p class="text-on-surface-variant text-sm mt-4 leading-relaxed">
-                            下载完成后使用此校验值验证文件完整性。文件托管于 Cloudflare R2，全球 CDN 加速。
-                        </p>
                     </div>
                 </section>
                 <div class="h-24"></div>`;
-
-            setTimeout(() => bindDownloadButtons(), 100);
 
             window.addEventListener('scroll', () => {
                 const parallaxEl = document.getElementById('parallax-element');
                 if (parallaxEl) parallaxEl.style.transform = 'translateY(' + (window.scrollY * 0.15) + 'px)';
             });
-        }
 
-        function renderSysReq(req) {
-            if (!req) return '<div class="text-on-surface-variant">暂无信息</div>';
-            return [
-                { label: 'CPU', value: req.cpu },
-                { label: 'GPU', value: req.gpu },
-                { label: 'RAM', value: req.ram },
-                { label: '存储', value: req.storage }
-            ].map(r => `<div class="flex flex-col gap-1 border-b border-white/10 pb-4"><span class="font-label-sm text-label-sm text-on-surface-variant">${r.label}</span><span class="font-body-md text-body-md text-on-surface">${r.value || '-'}</span></div>`).join('');
-        }
-
-        function fileInfoRows(sw) {
-            return [
-                { label: '软件名称', value: sw.name },
-                { label: '版本号', value: sw.version },
-                { label: '上传日期', value: formatDate(sw.uploadDate) },
-                { label: '下载次数', value: (sw.downloads_count || 0) + ' 次' },
-                { label: '软件分类', value: '<span class="text-primary">' + sw.category + '</span>' }
-            ].map(r => `<div class="flex justify-between py-2 border-b border-white/10"><span class="text-on-surface-variant font-body-md">${r.label}</span><span class="text-on-surface font-body-md">${r.value}</span></div>`).join('');
-        }
-
-        function bindDownloadButtons() {
-            const primaryBtn = document.getElementById('primary-download-btn');
-            if (primaryBtn && currentSoftware) {
-                const downloads = currentSoftware.downloads || [];
-                const firstDl = downloads[0];
-                primaryBtn.onclick = () => openDownloadModal(
-                    firstDl ? firstDl.name : currentSoftware.name,
-                    firstDl ? (firstDl.url || '') : '',
-                    firstDl ? (firstDl.size || '') : '',
-                    currentSoftware.id,
-                    firstDl ? (firstDl.r2_key || '') : ''
-                );
-            }
-
-            document.querySelectorAll('.download-option-btn').forEach(btn => {
-                btn.onclick = () => openDownloadModal(
-                    btn.dataset.name, btn.dataset.url, btn.dataset.size, currentSoftware?.id, btn.dataset.r2Key || ''
-                );
-            });
-        }
-
-        function openDownloadModal(name, downloadUrl, fileSize, softwareId, r2Key = '') {
-            document.getElementById('modal-download-name').textContent = name || '下载准备中';
-            document.getElementById('modal-download-info').textContent = fileSize ? '文件大小: ' + fileSize : '';
-            currentDownloadInfo = { name, downloadUrl, fileSize, softwareId, r2_key: r2Key };
-            
-            const modal = document.getElementById('download-modal');
-            modal.classList.add('active');
-            document.body.style.overflow = 'hidden';
-            
-            const bar = document.getElementById('modal-progress-bar');
-            bar.style.width = '0%';
-            bar.style.transition = 'none';
-            requestAnimationFrame(() => {
-                bar.style.transition = 'width 1s ease-out';
-                bar.style.width = '75%';
-            });
-
-            if (downloadUrl) setTimeout(() => startDownload(), 800);
-        }
-
-        function closeDownloadModal() {
-            document.getElementById('download-modal').classList.remove('active');
-            document.body.style.overflow = '';
-            currentDownloadInfo = null;
-        }
-
-        // 从 localStorage 获取 Worker URL 用于代理下载
-        function getWorkerProxyUrl(r2Key) {
-            const workerUrl = localStorage.getItem('worker_url') || '';
-            if (!workerUrl) return null; // 没有配置 Worker 时返回 null
-            return `${workerUrl}/download/${r2Key}`;
-        }
-
-        async function startDownload() {
-            document.getElementById('modal-progress-bar').style.width = '100%';
-
-            if (!currentDownloadInfo || !currentDownloadInfo.downloadUrl) {
-                showToast('暂无可用下载链接，文件可能尚未上传', 'error');
-                setTimeout(() => closeDownloadModal(), 1500);
-                return;
-            }
-
-            try {
-                const btn = document.getElementById('manual-download-btn');
-                btn.innerHTML = '<span class="material-symbols-outlined animate-spin">refresh</span> 下载中...';
-                btn.disabled = true;
-
-                // 优先使用 Worker 代理下载（更安全），否则回退到直接 R2 URL
-                const r2Key = currentDownloadInfo.r2_key;
-                const workerProxyUrl = getWorkerProxyUrl(r2Key);
-                const downloadUrl = workerProxyUrl || currentDownloadInfo.downloadUrl;
-                
-                const a = document.createElement('a');
-                a.href = downloadUrl;
-                a.download = currentDownloadInfo.name || '';
-                a.target = '_blank';
-                a.rel = 'noopener noreferrer';
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-
-                showToast('下载已开始！' + (workerProxyUrl ? '通过安全代理' : '文件来自 Cloudflare R2 全球 CDN'));
-
-                // 记录下载
-                if (currentDownloadInfo.softwareId) {
-                    try { await incrementDownloadCount(currentDownloadInfo.softwareId); } catch (e) {}
-                }
-            } catch (err) {
-                showToast('下载出错: ' + err.message, 'error');
-            } finally {
-                closeDownloadModal();
+            const preferredOS = getPreferredOS();
+            if (preferredOS && software.downloadLinks && software.downloadLinks[preferredOS]) {
+                setTimeout(() => {
+                    const targetEl = document.getElementById('download-' + preferredOS);
+                    if (targetEl) {
+                        const headerOffset = 100;
+                        const elementPosition = targetEl.getBoundingClientRect().top;
+                        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                        window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+                        targetEl.style.boxShadow = '0 0 30px rgba(75, 142, 255, 0.5)';
+                        targetEl.style.borderColor = 'rgba(75, 142, 255, 0.6)';
+                        setTimeout(() => {
+                            targetEl.style.boxShadow = '';
+                            targetEl.style.borderColor = '';
+                        }, 2000);
+                    }
+                }, 500);
             }
         }
-
-        document.getElementById('download-modal').addEventListener('click', e => {
-            if (e.target.id === 'download-modal') closeDownloadModal();
-        });
 
         document.addEventListener('DOMContentLoaded', async () => { await renderDetail(); });
     </script>

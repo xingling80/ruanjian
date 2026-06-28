@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>安装中心 - 卓越的软件分发平台</title>
+    <title>安装中心 - 编程开发 & AI 工具下载平台</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Geist:wght@400;500&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
@@ -99,208 +99,172 @@
     </script>
 </head>
 <body class="text-on-surface font-body-md min-h-screen flex flex-col antialiased">
-    <!-- Loading Screen -->
-    <div class="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-surface transition-opacity duration-1000" id="loading-screen">
-        <canvas class="absolute inset-0 w-full h-full" id="gl-canvas"></canvas>
-        <div class="relative z-10 flex flex-col items-center w-full max-w-md px-6">
-            <div class="flex items-center gap-3 mb-10">
-                <span class="material-symbols-outlined text-primary text-5xl">developer_board</span>
-                <span class="font-display-lg-mobile text-display-lg-mobile font-bold tracking-tight text-primary">安装中心</span>
-            </div>
-            <div class="w-full mb-6">
-                <div class="flex justify-between text-code-md font-code-md text-primary mb-2">
-                    <span>系统初始化中...</span>
-                    <span id="loading-percentage">0%</span>
-                </div>
-                <div class="h-1.5 w-full bg-surface-container-high rounded-full overflow-hidden shadow-[inset_0_0_5px_rgba(0,0,0,0.5)]">
-                    <div class="h-full bg-primary w-0 transition-all duration-75 ease-linear shadow-[0_0_10px_#4b8eff]" id="loading-bar"></div>
-                </div>
-            </div>
-            <div class="w-full h-24 overflow-hidden font-code-md text-code-md text-on-surface-variant flex flex-col justify-end text-sm opacity-80 space-y-1" id="loading-logs">
-            </div>
-        </div>
-    </div>
-
     <div class="glow-bg"></div>
     <div id="particles-js"></div>
 
     <!-- Top Navigation -->
     <header class="bg-white/5 dark:bg-white/5 font-body-md text-body-md fixed top-0 w-full backdrop-blur-[30px] border-b border-white/15 shadow-[0_0_15px_rgba(75,142,255,0.1)] z-50 transition-all duration-300">
         <div class="flex justify-between items-center px-gutter max-w-container-max mx-auto h-20">
-            <!-- Brand -->
             <div class="flex items-center gap-2 cursor-pointer active:scale-95" onclick="navigateTo('index.html')">
                 <span class="material-symbols-outlined text-primary text-3xl">developer_board</span>
                 <span class="text-headline-md font-headline-md font-bold tracking-tight text-primary dark:text-primary">安装中心</span>
             </div>
-            <!-- Navigation Links (Desktop) -->
             <nav class="hidden md:flex gap-8 desktop-nav">
                 <a class="text-primary dark:text-primary border-b-2 border-primary pb-1 cursor-pointer active:scale-95 transition-all duration-300" href="index.html">首页</a>
                 <a class="text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface hover:bg-white/10 hover:border-white/25 transition-all duration-300 rounded px-2 py-1 cursor-pointer active:scale-95" href="browse.html">浏览</a>
                 <a class="text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface hover:bg-white/10 hover:border-white/25 transition-all duration-300 rounded px-2 py-1 cursor-pointer active:scale-95" href="about.html">服务说明</a>
-                <a class="text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface hover:bg-white/10 hover:border-white/25 transition-all duration-300 rounded px-2 py-1 cursor-pointer active:scale-95" href="pricing.html">定价</a>
-                <a class="text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface hover:bg-white/10 hover:border-white/25 transition-all duration-300 rounded px-2 py-1 cursor-pointer active:scale-95" href="security.html">安全</a>
             </nav>
-            <!-- Actions -->
             <div class="flex items-center gap-4">
-                <div class="hidden md:flex items-center gap-2">
-                    <button class="text-on-surface-variant hover:text-primary transition-colors p-2 rounded-full hover:bg-white/10 active:scale-95" onclick="navigateTo('admin.html')">
-                        <span class="material-symbols-outlined">admin_panel_settings</span>
-                    </button>
-                </div>
                 <button class="btn-primary active:scale-95 font-label-sm text-label-sm uppercase tracking-wider" onclick="navigateTo('browse.html')">
                     浏览软件库
                     <span class="material-symbols-outlined text-sm">arrow_forward</span>
                 </button>
-                <!-- Mobile Menu Toggle -->
                 <button class="md:hidden text-on-surface p-2 rounded hover:bg-white/10 mobile-menu" onclick="toggleMobileMenu()">
                     <span class="material-symbols-outlined">menu</span>
                 </button>
             </div>
         </div>
-        <!-- Mobile Menu -->
         <div id="mobile-menu" class="hidden md:hidden bg-surface/95 backdrop-blur-xl border-b border-white/10">
             <nav class="flex flex-col py-4 px-6 gap-2">
                 <a class="text-primary py-3 px-4 rounded-lg bg-primary/10" href="index.html">首页</a>
                 <a class="text-on-surface-variant py-3 px-4 rounded-lg hover:bg-white/5" href="browse.html">浏览</a>
                 <a class="text-on-surface-variant py-3 px-4 rounded-lg hover:bg-white/5" href="about.html">服务说明</a>
-                <a class="text-on-surface-variant py-3 px-4 rounded-lg hover:bg-white/5" href="pricing.html">定价</a>
-                <a class="text-on-surface-variant py-3 px-4 rounded-lg hover:bg-white/5" href="security.html">安全</a>
-                <a class="text-on-surface-variant py-3 px-4 rounded-lg hover:bg-white/5" href="contact.html">联系我们</a>
-                <a class="text-on-surface-variant py-3 px-4 rounded-lg hover:bg-white/5" href="admin.html">管理后台</a>
             </nav>
         </div>
     </header>
 
     <main class="flex-grow pt-32 pb-24">
         <!-- Hero Section -->
-        <section class="max-w-container-max mx-auto px-gutter mb-32 flex flex-col items-center justify-center min-h-[614px] text-center fade-in-up">
+        <section class="max-w-container-max mx-auto px-gutter mb-24 flex flex-col items-center justify-center min-h-[400px] text-center fade-in-up">
             <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-level-1 mb-6 border-primary/30 text-primary font-label-sm text-label-sm">
                 <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
-                v4.2 Hub 在线
+                精选编程 & AI 工具
             </div>
             <h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg mb-6 max-w-4xl">
-                以卓越技术，<span class="text-gradient-primary">驱动完美部署</span>
+                <span class="text-gradient-primary">编程开发</span> & <span class="text-gradient-primary">AI 工具</span> 一站式下载
             </h1>
             <p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mb-10">
-                专为精准交付而设计的专业软件分发平台。加速您的项目工作流，安全、即时、可靠。
+                精选优质编程开发工具和人工智能工具，按操作系统分类，官方下载链接直达，安全可靠。
             </p>
+            <div class="flex flex-wrap justify-center gap-3 mb-8">
+                <button class="os-tab active" data-os="windows" onclick="scrollToOS('windows')">
+                    <span class="material-symbols-outlined text-[18px]">desktop_windows</span>
+                    Windows
+                </button>
+                <button class="os-tab" data-os="macos" onclick="scrollToOS('macos')">
+                    <span class="material-symbols-outlined text-[18px]">laptop_mac</span>
+                    macOS
+                </button>
+                <button class="os-tab" data-os="linux" onclick="scrollToOS('linux')">
+                    <span class="material-symbols-outlined text-[18px]">terminal</span>
+                    Linux
+                </button>
+                <button class="os-tab" data-os="android" onclick="scrollToOS('android')">
+                    <span class="material-symbols-outlined text-[18px]">smartphone</span>
+                    Android
+                </button>
+            </div>
             <div class="flex flex-col sm:flex-row gap-4">
                 <button class="btn-primary font-label-sm text-label-sm uppercase tracking-widest px-8 py-4" onclick="navigateTo('browse.html')">
-                    浏览软件库
+                    浏览全部软件
                     <span class="material-symbols-outlined text-sm">arrow_forward</span>
-                </button>
-                <button class="btn-secondary font-code-md text-code-md px-8 py-4" onclick="navigateTo('about.html')">
-                    <span class="material-symbols-outlined text-sm">terminal</span>
-                    查看服务说明
                 </button>
             </div>
         </section>
 
         <!-- Stats Bar -->
-        <section class="max-w-container-max mx-auto px-gutter mb-32 fade-in-up">
+        <section class="max-w-container-max mx-auto px-gutter mb-24 fade-in-up">
             <div class="glass-level-1 rounded-xl p-8 grid grid-cols-2 md:grid-cols-4 gap-8">
                 <div class="text-center">
-                    <div class="font-display-lg-mobile text-display-lg-mobile font-bold text-primary mb-2">6+</div>
+                    <div class="font-display-lg-mobile text-display-lg-mobile font-bold text-primary mb-2">16+</div>
                     <div class="font-label-sm text-label-sm text-on-surface-variant">软件数量</div>
                 </div>
                 <div class="text-center">
-                    <div class="font-display-lg-mobile text-display-lg-mobile font-bold text-secondary mb-2">12K+</div>
-                    <div class="font-label-sm text-label-sm text-on-surface-variant">累计下载</div>
+                    <div class="font-display-lg-mobile text-display-lg-mobile font-bold text-secondary mb-2">2</div>
+                    <div class="font-label-sm text-label-sm text-on-surface-variant">软件分类</div>
                 </div>
                 <div class="text-center">
-                    <div class="font-display-lg-mobile text-display-lg-mobile font-bold text-primary mb-2">99.9%</div>
-                    <div class="font-label-sm text-label-sm text-on-surface-variant">服务可用率</div>
+                    <div class="font-display-lg-mobile text-display-lg-mobile font-bold text-primary mb-2">4</div>
+                    <div class="font-label-sm text-label-sm text-on-surface-variant">操作系统</div>
                 </div>
                 <div class="text-center">
-                    <div class="font-display-lg-mobile text-display-lg-mobile font-bold text-secondary mb-2">24/7</div>
-                    <div class="font-label-sm text-label-sm text-on-surface-variant">技术支持</div>
+                    <div class="font-display-lg-mobile text-display-lg-mobile font-bold text-secondary mb-2">官方</div>
+                    <div class="font-label-sm text-label-sm text-on-surface-variant">下载链接</div>
                 </div>
             </div>
         </section>
 
-        <!-- Tech Stack / Features (Bento Grid) -->
-        <section class="max-w-container-max mx-auto px-gutter mb-32 fade-in-up">
-            <div class="mb-12">
-                <h2 class="font-headline-md text-headline-md text-primary mb-2">核心架构</h2>
-                <p class="text-on-surface-variant font-body-md">专为无缝集成和坚固安全性而设计。</p>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- Large Feature Card -->
-                <div class="md:col-span-2 glass-level-1 rounded-xl p-8 interactive-hover flex flex-col justify-between relative overflow-hidden group">
-                    <div class="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                    <div class="relative z-10">
-                        <div class="w-12 h-12 rounded-lg bg-surface-container-high flex items-center justify-center mb-6 border border-white/10 shadow-[0_0_10px_rgba(173,198,255,0.2)]">
-                            <span class="material-symbols-outlined text-primary">security</span>
-                        </div>
-                        <h3 class="font-headline-md text-headline-md mb-3">零信任交付</h3>
-                        <p class="text-on-surface-variant font-body-md mb-6 max-w-md">每个安装包均经过加密签名并在执行前实时验证，确保整个流水线的绝对完整性。</p>
-                    </div>
-                    <div class="relative z-10 w-full h-2 bg-surface-container-high rounded-full overflow-hidden mt-4">
-                        <div class="h-full bg-primary w-full relative">
-                            <div class="absolute top-0 left-0 h-full w-full bg-gradient-to-r from-transparent via-white/50 to-transparent animate-[shimmer_2s_infinite]"></div>
-                        </div>
-                    </div>
-                    <span class="absolute top-6 right-6 font-label-sm text-label-sm text-primary border border-primary/30 px-2 py-1 rounded bg-primary/5">SHIELD-V2</span>
-                </div>
-                <!-- Small Feature Card 1 -->
-                <div class="glass-level-1 rounded-xl p-8 interactive-hover relative flex flex-col">
-                    <div class="w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center mb-4 border border-white/10">
-                        <span class="material-symbols-outlined text-secondary">speed</span>
-                    </div>
-                    <h3 class="font-body-lg text-body-lg font-bold mb-2">极速 CDN 节点</h3>
-                    <p class="text-on-surface-variant font-body-md text-sm flex-grow">全球边缘网络提供亚秒级延迟的全球数据包检索。</p>
-                    <span class="mt-4 font-code-md text-code-md text-outline-variant block">延迟: &lt;50ms</span>
-                </div>
-                <!-- Small Feature Card 2 -->
-                <div class="glass-level-1 rounded-xl p-8 interactive-hover relative flex flex-col">
-                    <div class="w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center mb-4 border border-white/10">
-                        <span class="material-symbols-outlined text-primary">data_object</span>
-                    </div>
-                    <h3 class="font-body-lg text-body-lg font-bold mb-2">版本控制</h3>
-                    <p class="text-on-surface-variant font-body-md text-sm flex-grow">自动回滚和语义版本控制在中心内部原生处理。</p>
-                </div>
-                <!-- Small Feature Card 3 -->
-                <div class="md:col-span-2 glass-level-1 rounded-xl p-8 interactive-hover relative flex flex-col sm:flex-row items-center gap-6">
-                    <div class="flex-grow">
-                        <div class="inline-flex items-center gap-2 mb-2 text-secondary">
-                            <span class="material-symbols-outlined text-sm">api</span>
-                            <span class="font-label-sm text-label-sm uppercase tracking-wider">RESTful API</span>
-                        </div>
-                        <h3 class="font-headline-md text-headline-md mb-2">无头模式集成</h3>
-                        <p class="text-on-surface-variant font-body-md">通过我们全面的 API 端点以编程方式管理您的整个软件套件。</p>
-                    </div>
-                    <div class="w-full sm:w-auto bg-[#0d0e12] border border-white/10 rounded-lg p-4 font-code-md text-code-md text-on-surface-variant shadow-inner">
-                        <div class="text-primary mb-1">$ ihub install core</div>
-                        <div class="text-secondary opacity-70">&gt; resolving dependencies...</div>
-                        <div class="text-white">&gt; installation complete [1.2s]</div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Featured Software -->
-        <section class="max-w-container-max mx-auto px-gutter mb-32 fade-in-up">
-            <div class="flex justify-between items-center mb-12">
-                <div>
-                    <h2 class="font-headline-md text-headline-md text-primary mb-2">热门软件</h2>
-                    <p class="text-on-surface-variant font-body-md">精选优质软件，即下即用</p>
-                </div>
-                <button class="btn-secondary" onclick="navigateTo('browse.html')">
-                    查看全部
-                    <span class="material-symbols-outlined text-sm">arrow_forward</span>
+        <!-- Category Tabs -->
+        <section class="max-w-container-max mx-auto px-gutter mb-8 fade-in-up">
+            <div class="flex justify-center gap-4">
+                <button class="category-tab active" data-category="devtools" onclick="switchCategory('devtools')">
+                    <span class="material-symbols-outlined text-[20px]">code</span>
+                    编程开发工具
+                </button>
+                <button class="category-tab" data-category="ai" onclick="switchCategory('ai')">
+                    <span class="material-symbols-outlined text-[20px]">psychology</span>
+                    人工智能工具
                 </button>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="featured-software">
+        </section>
+
+        <!-- Windows Section -->
+        <section class="max-w-container-max mx-auto px-gutter mb-16 fade-in-up os-section" id="section-windows">
+            <div class="flex items-center gap-3 mb-8">
+                <div class="w-12 h-12 rounded-xl bg-surface-container-high flex items-center justify-center border border-white/10">
+                    <span class="material-symbols-outlined text-primary text-[28px]">desktop_windows</span>
+                </div>
+                <div>
+                    <h2 class="font-headline-md text-headline-md text-on-surface">Windows</h2>
+                    <p class="text-on-surface-variant font-code-md text-code-md">支持 Windows 10/11 x64</p>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" id="windows-software">
             </div>
         </section>
 
-        <!-- Categories Section -->
-        <section class="max-w-container-max mx-auto px-gutter mb-32 fade-in-up">
-            <div class="text-center mb-12">
-                <h2 class="font-headline-md text-headline-md text-primary mb-2">分类浏览</h2>
-                <p class="text-on-surface-variant font-body-md">按类别快速找到您需要的软件</p>
+        <!-- macOS Section -->
+        <section class="max-w-container-max mx-auto px-gutter mb-16 fade-in-up os-section" id="section-macos">
+            <div class="flex items-center gap-3 mb-8">
+                <div class="w-12 h-12 rounded-xl bg-surface-container-high flex items-center justify-center border border-white/10">
+                    <span class="material-symbols-outlined text-primary text-[28px]">laptop_mac</span>
+                </div>
+                <div>
+                    <h2 class="font-headline-md text-headline-md text-on-surface">macOS</h2>
+                    <p class="text-on-surface-variant font-code-md text-code-md">支持 Intel & Apple Silicon</p>
+                </div>
             </div>
-            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4" id="categories-grid">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" id="macos-software">
+            </div>
+        </section>
+
+        <!-- Linux Section -->
+        <section class="max-w-container-max mx-auto px-gutter mb-16 fade-in-up os-section" id="section-linux">
+            <div class="flex items-center gap-3 mb-8">
+                <div class="w-12 h-12 rounded-xl bg-surface-container-high flex items-center justify-center border border-white/10">
+                    <span class="material-symbols-outlined text-primary text-[28px]">terminal</span>
+                </div>
+                <div>
+                    <h2 class="font-headline-md text-headline-md text-on-surface">Linux</h2>
+                    <p class="text-on-surface-variant font-code-md text-code-md">支持 Ubuntu/Debian/Fedora 等</p>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" id="linux-software">
+            </div>
+        </section>
+
+        <!-- Android Section -->
+        <section class="max-w-container-max mx-auto px-gutter mb-24 fade-in-up os-section" id="section-android">
+            <div class="flex items-center gap-3 mb-8">
+                <div class="w-12 h-12 rounded-xl bg-surface-container-high flex items-center justify-center border border-white/10">
+                    <span class="material-symbols-outlined text-primary text-[28px]">smartphone</span>
+                </div>
+                <div>
+                    <h2 class="font-headline-md text-headline-md text-on-surface">Android</h2>
+                    <p class="text-on-surface-variant font-code-md text-code-md">支持 Android 8.0+</p>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" id="android-software">
             </div>
         </section>
 
@@ -310,19 +274,15 @@
                 <div class="absolute inset-0 bg-gradient-to-r from-primary/5 to-secondary/5"></div>
                 <div class="relative z-10">
                     <h2 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg mb-4">
-                        准备好开始了吗？
+                        找到您需要的工具了吗？
                     </h2>
                     <p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto mb-8">
-                        立即浏览我们的软件库，找到您需要的工具。专业、安全、快速。
+                        浏览完整软件库，按分类和操作系统筛选，快速找到您需要的开发和 AI 工具。
                     </p>
                     <div class="flex flex-col sm:flex-row gap-4 justify-center">
                         <button class="btn-primary px-8 py-4 font-label-sm uppercase tracking-widest" onclick="navigateTo('browse.html')">
                             浏览软件库
                             <span class="material-symbols-outlined text-sm">arrow_forward</span>
-                        </button>
-                        <button class="btn-secondary px-8 py-4" onclick="navigateTo('contact.html')">
-                            <span class="material-symbols-outlined text-sm">support_agent</span>
-                            联系支持
                         </button>
                     </div>
                 </div>
@@ -341,224 +301,114 @@
                 <a class="text-on-surface-variant hover:text-primary transition-colors" href="index.html">首页</a>
                 <a class="text-on-surface-variant hover:text-primary transition-colors" href="browse.html">浏览</a>
                 <a class="text-on-surface-variant hover:text-primary transition-colors" href="about.html">服务说明</a>
-                <a class="text-on-surface-variant hover:text-primary transition-colors" href="security.html">安全</a>
-                <a class="text-on-surface-variant hover:text-primary transition-colors" href="pricing.html">定价</a>
-                <a class="text-on-surface-variant hover:text-primary transition-colors" href="contact.html">联系我们</a>
-                <a class="text-on-surface-variant hover:text-primary transition-colors" href="admin.html">管理后台</a>
             </nav>
             <div class="text-on-surface-variant text-sm text-center md:text-right">
-                © 2024 安装中心。卓越的软件分发。
+                © 2024 安装中心。仅提供官方下载链接。
             </div>
         </div>
     </footer>
 
     <script type="module">
-        import { loadSoftwareFromDB, loadCategoriesFromDB, categories } from './js/data.js';
+        import { loadSoftwareFromDB, loadCategoriesFromDB, osList, getSoftwareOSList } from './js/data.js';
         window.loadSoftwareFromDB = loadSoftwareFromDB;
         window.loadCategoriesFromDB = loadCategoriesFromDB;
-        window.categories = categories;
+        window.osList = osList;
+        window.getSoftwareOSList = getSoftwareOSList;
     </script>
     <script src="js/common.js"></script>
     <script>
+        let currentCategory = 'devtools';
+        let allSoftwareData = [];
+
         function toggleMobileMenu() {
             const menu = document.getElementById('mobile-menu');
             menu.classList.toggle('hidden');
         }
 
-        async function renderFeaturedSoftware() {
-            const container = document.getElementById('featured-software');
-            const featured = (await loadSoftwareFromDB()).slice(0, 6);
-            
-            container.innerHTML = featured.map(software => `
-                <div class="glass-level-1 rounded-xl p-6 software-card cursor-pointer" onclick="navigateTo('detail.html?id=${software.id}')">
-                    <div class="flex items-start gap-4 mb-4">
-                        <div class="software-card-icon">
-                            <span class="material-symbols-outlined text-primary text-[28px]">${software.icon}</span>
-                        </div>
-                        <div class="flex-grow">
-                            <h3 class="font-headline-md text-headline-md text-on-surface mb-1">${software.name}</h3>
-                            <p class="font-code-md text-code-md text-on-surface-variant">${software.version}</p>
-                        </div>
-                    </div>
-                    <p class="font-body-md text-body-md text-on-surface-variant mb-4 line-clamp-2">${software.description}</p>
-                    <div class="flex items-center justify-between pt-4 border-t border-white/10">
-                        <span class="badge badge-primary">${software.category}</span>
-                        <div class="flex items-center gap-1 text-on-surface-variant font-code-md text-code-md">
-                            <span class="material-symbols-outlined text-[16px]">download</span>
-                            ${software.size}
-                        </div>
-                    </div>
-                </div>
-            `).join('');
+        function scrollToOS(os) {
+            document.querySelectorAll('.os-tab').forEach(tab => {
+                tab.classList.toggle('active', tab.dataset.os === os);
+            });
+            const section = document.getElementById('section-' + os);
+            if (section) {
+                const headerOffset = 100;
+                const elementPosition = section.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+            }
         }
 
-        async function renderCategories() {
-            await loadCategoriesFromDB();
-            const container = document.getElementById('categories-grid');
-            const displayCategories = categories.filter(c => c.id !== 'all');
-            
-            container.innerHTML = displayCategories.map(cat => `
-                <div class="glass-level-1 rounded-xl p-6 text-center cursor-pointer interactive-hover" onclick="navigateTo('browse.html?category=${cat.id}')">
-                    <div class="w-12 h-12 rounded-lg bg-surface-container-high flex items-center justify-center mx-auto mb-3 border border-white/10">
-                        <span class="material-symbols-outlined text-primary text-[24px]">${cat.icon}</span>
-                    </div>
-                    <div class="font-label-sm text-label-sm text-on-surface">${cat.name}</div>
-                </div>
-            `).join('');
+        function switchCategory(category) {
+            currentCategory = category;
+            document.querySelectorAll('.category-tab').forEach(tab => {
+                tab.classList.toggle('active', tab.dataset.category === category);
+            });
+            renderAllOSSoftware();
         }
 
-        // Loading screen animation
+        function getSoftwareForOS(software, os) {
+            return software.downloadLinks && software.downloadLinks[os];
+        }
+
+        function getFilteredSoftware() {
+            return allSoftwareData.filter(s => s.category_id === currentCategory);
+        }
+
+        function createSoftwareCard(software, os) {
+            const dlInfo = software.downloadLinks[os];
+            return `
+                <div class="software-card-compact glass-level-1 rounded-xl p-4 cursor-pointer interactive-hover group" 
+                     onclick="handleSoftwareClick(${software.id}, '${os}')">
+                    <div class="flex items-start gap-3 mb-3">
+                        <div class="w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center flex-shrink-0 border border-white/10">
+                            <span class="material-symbols-outlined text-primary text-[22px]">${software.icon}</span>
+                        </div>
+                        <div class="flex-grow min-w-0">
+                            <h3 class="font-body-md font-bold text-on-surface truncate group-hover:text-primary transition-colors">${software.name}</h3>
+                            <p class="font-code-md text-code-md text-on-surface-variant truncate">${software.version}</p>
+                        </div>
+                    </div>
+                    <p class="font-code-md text-code-md text-on-surface-variant text-xs mb-3 line-clamp-2">${dlInfo.label}</p>
+                    <div class="flex items-center justify-between pt-3 border-t border-white/10">
+                        <span class="text-xs text-on-surface-variant font-code-md">${dlInfo.size || '—'}</span>
+                        <span class="download-btn-icon">
+                            <span class="material-symbols-outlined text-[18px] text-primary">download</span>
+                        </span>
+                    </div>
+                </div>
+            `;
+        }
+
+        function handleSoftwareClick(id, os) {
+            navigateTo('detail.html?id=' + id + '&os=' + os);
+        }
+
+        function renderOSSoftware(os) {
+            const container = document.getElementById(os + '-software');
+            const filtered = getFilteredSoftware().filter(s => getSoftwareForOS(s, os));
+            
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full text-center py-8 text-on-surface-variant">
+                        <span class="material-symbols-outlined text-4xl mb-2 block opacity-50">inbox</span>
+                        暂无该分类下的 ${os} 软件
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = filtered.map(s => createSoftwareCard(s, os)).join('');
+        }
+
+        function renderAllOSSoftware() {
+            ['windows', 'macos', 'linux', 'android'].forEach(os => {
+                renderOSSoftware(os);
+            });
+        }
+
         document.addEventListener("DOMContentLoaded", async () => {
-            document.body.style.overflow = 'hidden';
-
-            const loadingScreen = document.getElementById('loading-screen');
-            const loadingBar = document.getElementById('loading-bar');
-            const loadingPercentage = document.getElementById('loading-percentage');
-            const loadingLogs = document.getElementById('loading-logs');
-    
-            const logs = [
-                "初始化核心模块...",
-                "建立安全连接...",
-                "加载软件仓库...",
-                "验证签名...",
-                "预热 CDN 节点...",
-                "系统就绪."
-            ];
-    
-            let startTime = null;
-            const duration = 2000;
-    
-            function updateLoading(timestamp) {
-                if (!startTime) startTime = timestamp;
-                const elapsed = timestamp - startTime;
-                let progress = Math.min(elapsed / duration, 1);
-                
-                const percent = Math.floor(progress * 100);
-                loadingBar.style.width = `${percent}%`;
-                loadingPercentage.textContent = `${percent}%`;
-    
-                const logIndex = Math.min(Math.floor(progress * logs.length), logs.length - 1);
-                
-                if (!loadingLogs.lastChild || loadingLogs.lastChild.textContent !== `> ${logs[logIndex]}`) {
-                    const logEl = document.createElement('div');
-                    logEl.textContent = `> ${logs[logIndex]}`;
-                    logEl.className = "animate-pulse";
-                    loadingLogs.appendChild(logEl);
-                    if (loadingLogs.children.length > 4) {
-                        loadingLogs.removeChild(loadingLogs.firstChild);
-                    }
-                }
-    
-                if (progress < 1) {
-                    requestAnimationFrame(updateLoading);
-                } else {
-                    setTimeout(() => {
-                        loadingScreen.style.opacity = '0';
-                        setTimeout(() => {
-                            loadingScreen.remove();
-                            document.body.style.overflow = '';
-                        }, 1000);
-                    }, 300);
-                }
-            }
-            requestAnimationFrame(updateLoading);
-
-            // WebGL Shader for loading screen
-            const canvas = document.getElementById('gl-canvas');
-            const gl = canvas.getContext('webgl');
-            if (gl) {
-                function resizeCanvas() {
-                    canvas.width = window.innerWidth;
-                    canvas.height = window.innerHeight;
-                    gl.viewport(0, 0, canvas.width, canvas.height);
-                }
-                window.addEventListener('resize', resizeCanvas);
-                resizeCanvas();
-
-                const vsSource = `
-                    attribute vec2 a_position;
-                    varying vec2 v_texCoord;
-                    void main() {
-                        gl_Position = vec4(a_position, 0.0, 1.0);
-                        v_texCoord = a_position * 0.5 + 0.5;
-                    }
-                `;
-                const fsSource = `
-                    precision highp float;
-                    varying vec2 v_texCoord;
-                    uniform float u_time;
-                    uniform vec2 u_resolution;
-                    
-                    float hash(vec2 p) {
-                        p = fract(p * vec2(123.34, 456.21));
-                        p += dot(p, p + 45.32);
-                        return fract(p.x * p.y);
-                    }
-                    
-                    void main() {
-                        vec2 uv = v_texCoord;
-                        vec3 color = vec3(0.04, 0.05, 0.07);
-                        
-                        vec2 gridUv = uv * 30.0;
-                        vec2 gridId = floor(gridUv);
-                        vec2 gridFract = fract(gridUv);
-                        float grid = smoothstep(0.02, 0.0, abs(gridFract.x - 0.5)) + smoothstep(0.02, 0.0, abs(gridFract.y - 0.5));
-                        color += grid * 0.02;
-                        
-                        float scanLine = smoothstep(0.02, 0.0, abs(uv.y - fract(u_time * 0.3)));
-                        color += scanLine * vec3(0.0, 0.48, 1.0) * 0.2;
-                        
-                        float glitch = step(0.98, hash(gridId + floor(u_time * 10.0)));
-                        color += glitch * vec3(0.0, 0.48, 1.0) * 0.15;
-                        
-                        float vignette = smoothstep(1.5, 0.5, length(uv - 0.5));
-                        color *= vignette;
-                        
-                        gl_FragColor = vec4(color, 1.0);
-                    }
-                `;
-
-                function createShader(gl, type, source) {
-                    const shader = gl.createShader(type);
-                    gl.shaderSource(shader, source);
-                    gl.compileShader(shader);
-                    return shader;
-                }
-
-                const vertexShader = createShader(gl, gl.VERTEX_SHADER, vsSource);
-                const fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fsSource);
-                const program = gl.createProgram();
-                gl.attachShader(program, vertexShader);
-                gl.attachShader(program, fragmentShader);
-                gl.linkProgram(program);
-                gl.useProgram(program);
-
-                const positionBuffer = gl.createBuffer();
-                gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
-                const positions = [-1.0, -1.0, 1.0, -1.0, -1.0, 1.0, -1.0, 1.0, 1.0, -1.0, 1.0, 1.0];
-                gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
-
-                const positionLocation = gl.getAttribLocation(program, "a_position");
-                gl.enableVertexAttribArray(positionLocation);
-                gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
-
-                const timeLocation = gl.getUniformLocation(program, "u_time");
-                const resolutionLocation = gl.getUniformLocation(program, "u_resolution");
-
-                function render(time) {
-                    if (!document.getElementById('loading-screen')) return;
-                    time *= 0.001;
-                    gl.uniform1f(timeLocation, time);
-                    gl.uniform2f(resolutionLocation, canvas.width, canvas.height);
-                    gl.drawArrays(gl.TRIANGLES, 0, 6);
-                    requestAnimationFrame(render);
-                }
-                requestAnimationFrame(render);
-            }
-
-            await loadCategoriesFromDB();
-            await renderFeaturedSoftware();
-            renderCategories();
+            allSoftwareData = await loadSoftwareFromDB();
+            renderAllOSSoftware();
         });
     </script>
 </body>

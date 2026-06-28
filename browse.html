@@ -49,13 +49,8 @@
                 <a class="text-on-surface-variant hover:text-on-surface hover:bg-white/10 transition-all duration-300 rounded px-2 py-1 cursor-pointer active:scale-95" href="index.html">首页</a>
                 <a class="text-primary border-b-2 border-primary pb-1 cursor-pointer active:scale-95 transition-all duration-300" href="browse.html">浏览</a>
                 <a class="text-on-surface-variant hover:text-on-surface hover:bg-white/10 transition-all duration-300 rounded px-2 py-1 cursor-pointer active:scale-95" href="about.html">服务说明</a>
-                <a class="text-on-surface-variant hover:text-on-surface hover:bg-white/10 transition-all duration-300 rounded px-2 py-1 cursor-pointer active:scale-95" href="pricing.html">定价</a>
-                <a class="text-on-surface-variant hover:text-on-surface hover:bg-white/10 transition-all duration-300 rounded px-2 py-1 cursor-pointer active:scale-95" href="security.html">安全</a>
             </nav>
             <div class="flex items-center gap-4">
-                <button class="hidden md:flex text-on-surface-variant hover:text-primary transition-colors p-2 rounded-full hover:bg-white/10 active:scale-95" onclick="navigateTo('admin.html')">
-                    <span class="material-symbols-outlined">admin_panel_settings</span>
-                </button>
                 <button class="md:hidden text-on-surface p-2 rounded hover:bg-white/10 mobile-menu" onclick="toggleMobileMenu()">
                     <span class="material-symbols-outlined">menu</span>
                 </button>
@@ -66,10 +61,6 @@
                 <a class="text-on-surface-variant py-3 px-4 rounded-lg hover:bg-white/5" href="index.html">首页</a>
                 <a class="text-primary py-3 px-4 rounded-lg bg-primary/10" href="browse.html">浏览</a>
                 <a class="text-on-surface-variant py-3 px-4 rounded-lg hover:bg-white/5" href="about.html">服务说明</a>
-                <a class="text-on-surface-variant py-3 px-4 rounded-lg hover:bg-white/5" href="pricing.html">定价</a>
-                <a class="text-on-surface-variant py-3 px-4 rounded-lg hover:bg-white/5" href="security.html">安全</a>
-                <a class="text-on-surface-variant py-3 px-4 rounded-lg hover:bg-white/5" href="contact.html">联系我们</a>
-                <a class="text-on-surface-variant py-3 px-4 rounded-lg hover:bg-white/5" href="admin.html">管理后台</a>
             </nav>
         </div>
     </header>
@@ -82,7 +73,7 @@
                 软件<span class="text-gradient-primary">浏览库</span>
             </h1>
             <p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">
-                浏览我们精心挑选的优质软件，涵盖创意设计、开发工具、视频剪辑等多个类别。
+                浏览编程开发工具和人工智能工具，按分类和操作系统筛选，官方下载链接直达。
             </p>
             </section>
 
@@ -100,7 +91,16 @@
                         >
                     </div>
                     
-                    <div class="flex flex-wrap gap-3" id="category-filters">
+                    <div class="mb-4">
+                        <div class="font-label-sm text-label-sm text-on-surface-variant mb-3">软件分类</div>
+                        <div class="flex flex-wrap gap-3" id="category-filters">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="font-label-sm text-label-sm text-on-surface-variant mb-3">操作系统</div>
+                        <div class="flex flex-wrap gap-3" id="os-filters">
+                        </div>
                     </div>
                 </div>
 
@@ -112,18 +112,9 @@
                     <div class="flex items-center gap-4">
                         <select class="form-input w-auto" id="sort-select" onchange="handleSort(this.value)">
                             <option value="downloads">下载量最多</option>
-                            <option value="date">最新上传</option>
+                            <option value="date">最新更新</option>
                             <option value="name">名称排序</option>
-                            <option value="size">大小排序</option>
                         </select>
-                        <div class="flex rounded-lg border border-white/15 overflow-hidden">
-                            <button class="p-2 bg-primary/10 text-primary" id="grid-view-btn" onclick="setViewMode('grid')">
-                                <span class="material-symbols-outlined text-[20px]">grid_view</span>
-                            </button>
-                            <button class="p-2 text-on-surface-variant hover:bg-white/5" id="list-view-btn" onclick="setViewMode('list')">
-                                <span class="material-symbols-outlined text-[20px]">view_list</span>
-                            </button>
-                        </div>
                     </div>
                 </div>
             </section>
@@ -154,30 +145,29 @@
                 <a class="text-on-surface-variant hover:text-primary transition-colors" href="index.html">首页</a>
                 <a class="text-on-surface-variant hover:text-primary transition-colors" href="browse.html">浏览</a>
                 <a class="text-on-surface-variant hover:text-primary transition-colors" href="about.html">服务说明</a>
-                <a class="text-on-surface-variant hover:text-primary transition-colors" href="security.html">安全</a>
-                <a class="text-on-surface-variant hover:text-primary transition-colors" href="pricing.html">定价</a>
-                <a class="text-on-surface-variant hover:text-primary transition-colors" href="contact.html">联系我们</a>
             </nav>
             <div class="text-on-surface-variant text-sm text-center md:text-right">
-                © 2024 安装中心。卓越的软件分发。
+                © 2024 安装中心。仅提供官方下载链接。
             </div>
         </div>
     </footer>
 
     <script type="module">
-        import { loadSoftwareFromDB, loadCategoriesFromDB, searchSoftware, getSoftwareByCategory, categories } from './js/data.js';
+        import { loadSoftwareFromDB, loadCategoriesFromDB, searchSoftware, getSoftwareByCategory, categories, osList, getSoftwareOSList } from './js/data.js';
         window.loadSoftwareFromDB = loadSoftwareFromDB;
         window.loadCategoriesFromDB = loadCategoriesFromDB;
         window.searchSoftware = searchSoftware;
         window.getSoftwareByCategory = getSoftwareByCategory;
         window.categories = categories;
+        window.osList = osList;
+        window.getSoftwareOSList = getSoftwareOSList;
     </script>
     <script src="js/common.js"></script>
     <script>
         let currentCategory = 'all';
+        let currentOS = 'all';
         let currentSearch = '';
         let currentSort = 'downloads';
-        let viewMode = 'grid';
         let allSoftwareData = [];
 
         function toggleMobileMenu() {
@@ -189,6 +179,7 @@
             const params = new URLSearchParams(window.location.search);
             return {
                 category: params.get('category') || 'all',
+                os: params.get('os') || 'all',
                 search: params.get('search') || ''
             };
         }
@@ -196,7 +187,8 @@
         async function renderCategories() {
             await loadCategoriesFromDB();
             const container = document.getElementById('category-filters');
-            container.innerHTML = categories.map(cat => `
+            const displayCats = categories.filter(c => c.id === 'all' || c.id === 'devtools' || c.id === 'ai');
+            container.innerHTML = displayCats.map(cat => `
                 <button 
                     class="category-pill glass-level-1 ${currentCategory === cat.id ? 'active' : ''}"
                     onclick="setCategory('${cat.id}')"
@@ -207,9 +199,28 @@
             `).join('');
         }
 
+        function renderOSFilters() {
+            const container = document.getElementById('os-filters');
+            container.innerHTML = osList.map(os => `
+                <button 
+                    class="os-pill glass-level-1 ${currentOS === os.id ? 'active' : ''}"
+                    onclick="setOS('${os.id}')"
+                >
+                    <span class="material-symbols-outlined text-[16px]">${os.icon}</span>
+                    ${os.name}
+                </button>
+            `).join('');
+        }
+
         function setCategory(category) {
             currentCategory = category;
             renderCategories();
+            renderSoftware();
+        }
+
+        function setOS(os) {
+            currentOS = os;
+            renderOSFilters();
             renderSoftware();
         }
 
@@ -223,27 +234,24 @@
             renderSoftware();
         }
 
-        function setViewMode(mode) {
-            viewMode = mode;
-            const gridBtn = document.getElementById('grid-view-btn');
-            const listBtn = document.getElementById('list-view-btn');
-            
-            if (mode === 'grid') {
-                gridBtn.className = 'p-2 bg-primary/10 text-primary';
-                listBtn.className = 'p-2 text-on-surface-variant hover:bg-white/5';
-            } else {
-                listBtn.className = 'p-2 bg-primary/10 text-primary';
-                gridBtn.className = 'p-2 text-on-surface-variant hover:bg-white/5';
-            }
-            
-            renderSoftware();
+        function matchesCategory(software, categoryId) {
+            if (categoryId === 'all') return true;
+            if (software.category_id === categoryId) return true;
+            if (software.category === categoryId) return true;
+            const cat = categories.find(c => c.id === categoryId);
+            if (cat && software.category === cat.name) return true;
+            return false;
         }
 
         function getFilteredSoftware(data) {
             let result = [...data];
             
             if (currentCategory !== 'all') {
-                result = result.filter(s => s.category_id == currentCategory || s.category === currentCategory);
+                result = result.filter(s => matchesCategory(s, currentCategory));
+            }
+            
+            if (currentOS !== 'all') {
+                result = result.filter(s => s.downloadLinks && s.downloadLinks[currentOS]);
             }
             
             if (currentSearch) {
@@ -260,23 +268,29 @@
                     result.sort((a, b) => (b.downloads_count || 0) - (a.downloads_count || 0));
                     break;
                 case 'date':
-                    result.sort((a, b) => new Date(b.uploadDate || b.upload_date) - new Date(a.uploadDate || a.upload_date));
+                    result.sort((a, b) => new Date(b.releaseDate || b.release_date) - new Date(a.releaseDate || a.release_date));
                     break;
                 case 'name':
                     result.sort((a, b) => a.name.localeCompare(b.name));
                     break;
-                case 'size':
-                    result.sort((a, b) => {
-                        const parseSize = (s) => {
-                            const num = parseFloat(s);
-                            return s.includes('GB') ? num * 1024 : num;
-                        };
-                        return parseSize(b.size) - parseSize(a.size);
-                    });
-                    break;
             }
             
             return result;
+        }
+
+        function getOSBadges(software) {
+            const osMap = {
+                windows: { name: 'Windows', icon: 'desktop_windows' },
+                macos: { name: 'macOS', icon: 'laptop_mac' },
+                linux: { name: 'Linux', icon: 'terminal' },
+                android: { name: 'Android', icon: 'smartphone' }
+            };
+            const links = software.downloadLinks || {};
+            return Object.keys(links).map(os => `
+                <span class="os-badge" title="${osMap[os]?.name || os}">
+                    <span class="material-symbols-outlined text-[14px]">${osMap[os]?.icon || 'devices'}</span>
+                </span>
+            `).join('');
         }
 
         async function renderSoftware() {
@@ -288,16 +302,9 @@
                 allSoftwareData = await loadSoftwareFromDB();
             }
 
-            let software = [];
-            if (currentSearch) {
-                software = await searchSoftware(currentSearch);
-            } else if (currentCategory !== 'all') {
-                software = await getSoftwareByCategory(currentCategory);
-            } else {
-                software = allSoftwareData;
-            }
-            
+            let software = allSoftwareData;
             software = getFilteredSoftware(software);
+            
             resultCount.textContent = software.length;
             
             if (software.length === 0) {
@@ -309,84 +316,38 @@
             container.classList.remove('hidden');
             emptyState.classList.add('hidden');
             
-            if (viewMode === 'grid') {
-                container.className = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6';
-                container.innerHTML = software.map(s => `
-                    <div class="glass-level-1 rounded-xl p-6 software-card cursor-pointer" onclick="navigateTo('detail.html?id=${s.id}')">
-                        <div class="flex items-start gap-4 mb-4">
-                            <div class="software-card-icon">
-                                <span class="material-symbols-outlined text-primary text-[28px]">${s.icon}</span>
-                            </div>
-                            <div class="flex-grow">
-                                <h3 class="font-headline-md text-headline-md text-on-surface mb-1">${s.name}</h3>
-                                <p class="font-code-md text-code-md text-on-surface-variant">${s.version}</p>
-                            </div>
-                        </div>
-                        <p class="font-body-md text-body-md text-on-surface-variant mb-4 line-clamp-2">${s.description}</p>
-                        <div class="flex flex-wrap gap-2 mb-4">
-                            ${(s.features || []).slice(0, 2).map(f => `
-                                <span class="badge badge-secondary">${f}</span>
-                            `).join('')}
-                        </div>
-                        <div class="flex items-center justify-between pt-4 border-t border-white/10">
-                            <span class="badge badge-primary">${s.category}</span>
-                            <div class="flex items-center gap-3 text-on-surface-variant font-code-md text-code-md">
-                                <span class="flex items-center gap-1">
-                                    <span class="material-symbols-outlined text-[14px]">download</span>
-                                    ${s.size}
-                                </span>
-                                <span class="flex items-center gap-1">
-                                    <span class="material-symbols-outlined text-[14px]">download_done</span>
-                                    ${s.downloads_count || 0}
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                `).join('');
-            } else {
-                container.className = 'flex flex-col gap-4';
-                container.innerHTML = software.map(s => `
-                    <div class="glass-level-1 rounded-xl p-6 software-card cursor-pointer flex flex-col sm:flex-row gap-6" onclick="navigateTo('detail.html?id=${s.id}')">
-                        <div class="software-card-icon flex-shrink-0 w-16 h-16">
-                            <span class="material-symbols-outlined text-primary text-[32px]">${s.icon}</span>
+            container.className = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6';
+            container.innerHTML = software.map(s => `
+                <div class="glass-level-1 rounded-xl p-6 software-card cursor-pointer" onclick="navigateTo('detail.html?id=${s.id}')">
+                    <div class="flex items-start gap-4 mb-4">
+                        <div class="software-card-icon">
+                            <span class="material-symbols-outlined text-primary text-[28px]">${s.icon}</span>
                         </div>
                         <div class="flex-grow">
-                            <div class="flex flex-wrap items-start justify-between gap-2 mb-2">
-                                <div>
-                                    <h3 class="font-headline-md text-headline-md text-on-surface mb-1">${s.name}</h3>
-                                    <p class="font-code-md text-code-md text-on-surface-variant">${s.version} • ${s.platform}</p>
-                                </div>
-                                <span class="badge badge-primary">${s.category}</span>
-                            </div>
-                            <p class="font-body-md text-body-md text-on-surface-variant mb-4">${s.description}</p>
-                            <div class="flex flex-wrap gap-4 text-on-surface-variant font-code-md text-code-md">
-                                <span class="flex items-center gap-1">
-                                    <span class="material-symbols-outlined text-[14px]">download</span>
-                                    ${s.size}
-                                </span>
-                                <span class="flex items-center gap-1">
-                                    <span class="material-symbols-outlined text-[14px]">download_done</span>
-                                    ${s.downloads_count || 0} 次下载
-                                </span>
-                                <span class="flex items-center gap-1">
-                                    <span class="material-symbols-outlined text-[14px]">calendar_today</span>
-                                    ${formatDate(s.uploadDate || s.upload_date)}
-                                </span>
-                            </div>
-                        </div>
-                        <div class="flex sm:flex-col items-center justify-center gap-2 sm:gap-3 flex-shrink-0">
-                            <button class="btn-primary w-full sm:w-auto" onclick="event.stopPropagation(); navigateTo('detail.html?id=${s.id}')">
-                                查看详情
-                            </button>
+                            <h3 class="font-headline-md text-headline-md text-on-surface mb-1">${s.name}</h3>
+                            <p class="font-code-md text-code-md text-on-surface-variant">${s.version}</p>
                         </div>
                     </div>
-                `).join('');
-            }
+                    <p class="font-body-md text-body-md text-on-surface-variant mb-4 line-clamp-2">${s.description}</p>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        ${(s.features || []).slice(0, 2).map(f => `
+                            <span class="badge badge-secondary">${f}</span>
+                        `).join('')}
+                    </div>
+                    <div class="flex items-center justify-between pt-4 border-t border-white/10">
+                        <div class="flex items-center gap-2">
+                            ${getOSBadges(s)}
+                        </div>
+                        <span class="badge badge-primary">${s.category}</span>
+                    </div>
+                </div>
+            `).join('');
         }
 
         document.addEventListener('DOMContentLoaded', async () => {
             const params = getUrlParams();
             currentCategory = params.category;
+            currentOS = params.os;
             currentSearch = params.search;
             
             if (currentSearch) {
@@ -396,6 +357,7 @@
             await loadCategoriesFromDB();
             allSoftwareData = await loadSoftwareFromDB();
             renderCategories();
+            renderOSFilters();
             renderSoftware();
         });
     </script>

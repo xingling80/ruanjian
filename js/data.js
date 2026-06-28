@@ -1,183 +1,539 @@
-﻿import { supabase, getSoftware, getSoftwareById as sbGetSoftwareById, getCategories, searchSoftware as sbSearchSoftware, createSoftware, updateSoftware, deleteSoftware, getDownloadLogs, getStats } from './supabase-client.js';
+﻿﻿﻿﻿import { supabase, getSoftware, getSoftwareById as sbGetSoftwareById, getCategories, searchSoftware as sbSearchSoftware, createSoftware, updateSoftware, deleteSoftware, getDownloadLogs, getStats } from './supabase-client.js';
 
 const softwareData = [
     {
         id: 1,
-        name: "Creative Suite Pro",
-        icon: "design_services",
-        version: "v24.5.1 LTS",
-        platform: "Multi-Platform",
-        size: "4.2 GB",
-        category: "创意设计",
-        license: "企业订阅",
-        description: "数字创作者的终极工具包。体验硬件加速渲染、AI驱动的自动化工具。",
-        features: ["认证发行商", "64位原生", "支持云端"],
-        systemRequirements: {
-            cpu: "Intel Core i7 or AMD Ryzen 7 (8+ cores)",
-            gpu: "NVIDIA RTX 3060 (8GB+ VRAM)",
-            ram: "32GB DDR4/DDR5 unified memory",
-            storage: "50GB available NVMe SSD space"
+        name: "VS Code",
+        icon: "code",
+        version: "v1.90.0",
+        category: "编程开发工具",
+        category_id: "devtools",
+        license: "MIT 开源",
+        description: "微软推出的轻量级代码编辑器，支持丰富的插件生态系统，是最流行的开发工具之一。",
+        features: ["开源免费", "智能补全", "插件生态"],
+        officialUrl: "https://code.visualstudio.com/",
+        downloadLinks: {
+            windows: {
+                url: "https://code.visualstudio.com/sha/download?build=stable&os=win32-x64-user",
+                label: "Windows x64 安装包",
+                size: "95 MB"
+            },
+            macos: {
+                url: "https://code.visualstudio.com/sha/download?build=stable&os=darwin-universal",
+                label: "macOS Universal",
+                size: "120 MB"
+            },
+            linux: {
+                url: "https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64",
+                label: "Linux .deb (x64)",
+                size: "90 MB"
+            }
         },
-        releaseNotes: [
-            { title: "引擎优化", detail: "Build 24.5.1 - Fixes render latency", icon: "build" },
-            { title: "AI 模块更新", detail: "Build 24.5.0 - New generative fill", icon: "neurology" }
-        ],
-        downloads: [],
-        download_urls: [],
-        sha256: "a1b2c3d4e5f6789012345678abcdef0123456789abcdef0123456789abcdef01",
-        uploadDate: "2024-06-15",
-        downloads_count: 1256
+        releaseDate: "2024-06-10",
+        downloads_count: 15234
     },
     {
         id: 2,
-        name: "DevStudio Enterprise",
-        icon: "code",
-        version: "v2024.2",
-        platform: "Windows / macOS / Linux",
-        size: "1.8 GB",
-        category: "开发工具",
-        license: "商业许可",
-        description: "专业级集成开发环境，支持100+编程语言，智能代码补全。",
-        features: ["认证发行商", "64位原生", "跨平台支持"],
-        systemRequirements: {
-            cpu: "Intel Core i5 or AMD Ryzen 5 (4+ cores)",
-            gpu: "Integrated graphics or better",
-            ram: "16GB RAM minimum",
-            storage: "20GB available space"
+        name: "IntelliJ IDEA",
+        icon: "integration_instructions",
+        version: "v2024.1",
+        category: "编程开发工具",
+        category_id: "devtools",
+        license: "社区版免费 / 旗舰版付费",
+        description: "JetBrains 出品的智能 Java IDE，提供深度代码分析、智能重构和强大的调试功能。",
+        features: ["智能代码分析", "多语言支持", "强大调试"],
+        officialUrl: "https://www.jetbrains.com/idea/",
+        downloadLinks: {
+            windows: {
+                url: "https://www.jetbrains.com/idea/download/download-thanks.html?platform=windows&code=IIC",
+                label: "Windows x64 安装包",
+                size: "780 MB"
+            },
+            macos: {
+                url: "https://www.jetbrains.com/idea/download/download-thanks.html?platform=macM1&code=IIC",
+                label: "macOS (Apple Silicon)",
+                size: "820 MB"
+            },
+            linux: {
+                url: "https://www.jetbrains.com/idea/download/download-thanks.html?platform=linux&code=IIC",
+                label: "Linux tar.gz",
+                size: "750 MB"
+            }
         },
-        releaseNotes: [
-            { title: "性能优化", detail: "Build 2024.2 - 启动速度提升30%", icon: "speed" },
-            { title: "新语言支持", detail: "Build 2024.1 - Rust & Go 深度集成", icon: "language" }
-        ],
-        downloads: [],
-        download_urls: [],
-        sha256: "b2c3d4e5f6a7890123456789bcdef0123456789abcdef0123456789abcdef0123",
-        uploadDate: "2024-05-20",
-        downloads_count: 2890
+        releaseDate: "2024-05-20",
+        downloads_count: 8921
     },
     {
         id: 3,
-        name: "VideoStudio Ultimate",
-        icon: "movie_edit",
-        version: "v18.0",
-        platform: "Windows / macOS",
-        size: "3.5 GB",
-        category: "视频剪辑",
-        license: "永久授权",
-        description: "专业视频编辑软件，支持8K视频编辑，AI智能剪辑。",
-        features: ["认证发行商", "64位原生", "GPU加速"],
-        systemRequirements: {
-            cpu: "Intel Core i7 or AMD Ryzen 7 (8+ cores)",
-            gpu: "NVIDIA RTX 3070 / AMD RX 6800 (8GB+ VRAM)",
-            ram: "32GB RAM recommended",
-            storage: "100GB available SSD space"
+        name: "Git",
+        icon: "hub",
+        version: "v2.45.0",
+        category: "编程开发工具",
+        category_id: "devtools",
+        license: "GPL v2 开源",
+        description: "分布式版本控制系统，用于跟踪代码变更和团队协作开发。",
+        features: ["分布式", "开源免费", "行业标准"],
+        officialUrl: "https://git-scm.com/",
+        downloadLinks: {
+            windows: {
+                url: "https://git-scm.com/download/win",
+                label: "Windows 安装包",
+                size: "55 MB"
+            },
+            macos: {
+                url: "https://git-scm.com/download/mac",
+                label: "macOS (Homebrew/安装包)",
+                size: "45 MB"
+            },
+            linux: {
+                url: "https://git-scm.com/download/linux",
+                label: "Linux (各发行版)",
+                size: "30 MB"
+            }
         },
-        releaseNotes: [
-            { title: "AI 剪辑增强", detail: "v18.0 - AI智能剪辑全面升级", icon: "auto_awesome" },
-            { title: "格式支持", detail: "v17.5 - 新增 AV1 编解码", icon: "video_library" }
-        ],
-        downloads: [],
-        download_urls: [],
-        sha256: "c3d4e5f6a7b890123456789cdef0123456789abcdef0123456789abcdef012345",
-        uploadDate: "2024-04-10",
-        downloads_count: 987
+        releaseDate: "2024-04-15",
+        downloads_count: 21567
     },
     {
         id: 4,
-        name: "DataAnalytics Pro",
-        icon: "analytics",
-        version: "v12.3",
-        platform: "Windows / macOS / Web",
-        size: "2.1 GB",
-        category: "数据分析",
-        license: "订阅制",
-        description: "强大的数据分析与可视化工具，支持海量数据处理。",
-        features: ["认证发行商", "64位原生", "云同步"],
-        systemRequirements: {
-            cpu: "Intel Core i5 or AMD Ryzen 5",
-            gpu: "Integrated graphics",
-            ram: "16GB RAM",
-            storage: "10GB available space"
+        name: "Node.js",
+        icon: "javascript",
+        version: "v20.14.0 LTS",
+        category: "编程开发工具",
+        category_id: "devtools",
+        license: "MIT 开源",
+        description: "基于 Chrome V8 引擎的 JavaScript 运行时，用于构建高性能网络应用。",
+        features: ["事件驱动", "非阻塞I/O", "npm生态"],
+        officialUrl: "https://nodejs.org/",
+        downloadLinks: {
+            windows: {
+                url: "https://nodejs.org/dist/v20.14.0/node-v20.14.0-x64.msi",
+                label: "Windows x64 MSI",
+                size: "35 MB"
+            },
+            macos: {
+                url: "https://nodejs.org/dist/v20.14.0/node-v20.14.0.pkg",
+                label: "macOS 安装包",
+                size: "40 MB"
+            },
+            linux: {
+                url: "https://nodejs.org/dist/v20.14.0/node-v20.14.0-linux-x64.tar.xz",
+                label: "Linux x64 二进制",
+                size: "25 MB"
+            },
+            android: {
+                url: "https://play.google.com/store/apps/details?id=com.termux",
+                label: "Termux (Android终端)",
+                size: "—"
+            }
         },
-        releaseNotes: [
-            { title: "大数据优化", detail: "v12.3 - 亿级数据处理性能提升50%", icon: "dataset" },
-            { title: "新图表类型", detail: "v12.0 - 新增20+图表类型", icon: "show_chart" }
-        ],
-        downloads: [],
-        download_urls: [],
-        sha256: "d4e5f6a7b8c90123456789def0123456789abcdef0123456789abcdef01234567",
-        uploadDate: "2024-06-01",
-        downloads_count: 1543
+        releaseDate: "2024-05-28",
+        downloads_count: 18765
     },
     {
         id: 5,
-        name: "SecureVault Premium",
-        icon: "security",
-        version: "v8.2",
-        platform: "Multi-Platform",
-        size: "256 MB",
-        category: "安全加密",
-        license: "永久授权",
-        description: "军事级数据加密软件，端到端加密保护您的敏感数据。",
-        features: ["认证发行商", "64位原生", "军事级加密"],
-        systemRequirements: {
-            cpu: "Any modern processor",
-            gpu: "Not required",
-            ram: "4GB RAM minimum",
-            storage: "500MB available space"
+        name: "Docker Desktop",
+        icon: "deployed_code",
+        version: "v4.31.0",
+        category: "编程开发工具",
+        category_id: "devtools",
+        license: "个人免费 / 商业付费",
+        description: "容器化应用开发和部署平台，简化开发环境配置和应用分发。",
+        features: ["容器化", "Kubernetes集成", "跨平台"],
+        officialUrl: "https://www.docker.com/products/docker-desktop/",
+        downloadLinks: {
+            windows: {
+                url: "https://desktop.docker.com/win/main/amd64/Docker%20Desktop%20Installer.exe",
+                label: "Windows x64 安装包",
+                size: "550 MB"
+            },
+            macos: {
+                url: "https://desktop.docker.com/mac/main/arm64/Docker.dmg",
+                label: "macOS (Apple Silicon)",
+                size: "520 MB"
+            },
+            linux: {
+                url: "https://docs.docker.com/desktop/install/linux-install/",
+                label: "Linux DEB/RPM",
+                size: "—"
+            }
         },
-        releaseNotes: [
-            { title: "安全更新", detail: "v8.2 - 修复潜在安全漏洞", icon: "shield" },
-            { title: "新功能", detail: "v8.0 - 支持硬件安全密钥", icon: "vpn_key" }
-        ],
-        downloads: [],
-        download_urls: [],
-        sha256: "e5f6a7b8c9d0123456789ef0123456789abcdef0123456789abcdef0123456789",
-        uploadDate: "2024-05-28",
-        downloads_count: 3421
+        releaseDate: "2024-06-05",
+        downloads_count: 12345
     },
     {
         id: 6,
-        name: "CloudSync Business",
-        icon: "cloud_sync",
-        version: "v5.1",
-        platform: "Windows / macOS / Linux / Mobile",
-        size: "128 MB",
-        category: "云存储",
-        license: "企业订阅",
-        description: "企业级云存储同步工具，智能增量同步，完整审计日志。",
-        features: ["认证发行商", "跨平台", "企业级"],
-        systemRequirements: {
-            cpu: "Any modern processor",
-            gpu: "Not required",
-            ram: "2GB RAM minimum",
-            storage: "200MB available space"
+        name: "Postman",
+        icon: "send",
+        version: "v11.1.0",
+        category: "编程开发工具",
+        category_id: "devtools",
+        license: "免费版 / 专业版付费",
+        description: "API 开发和测试工具，支持 REST、GraphQL、SOAP 等多种 API 协议。",
+        features: ["API测试", "自动化", "团队协作"],
+        officialUrl: "https://www.postman.com/",
+        downloadLinks: {
+            windows: {
+                url: "https://www.postman.com/downloads/",
+                label: "Windows x64 安装包",
+                size: "200 MB"
+            },
+            macos: {
+                url: "https://www.postman.com/downloads/",
+                label: "macOS 安装包",
+                size: "220 MB"
+            },
+            linux: {
+                url: "https://www.postman.com/downloads/",
+                label: "Linux tar.gz",
+                size: "195 MB"
+            }
         },
-        releaseNotes: [
-            { title: "同步优化", detail: "v5.1 - 增量同步速度提升80%", icon: "sync" },
-            { title: "团队功能", detail: "v5.0 - 新增团队协作空间", icon: "group" }
-        ],
-        downloads: [],
-        download_urls: [],
-        sha256: "f6a7b8c9d0e123456789f0123456789abcdef0123456789abcdef0123456789a",
-        uploadDate: "2024-06-10",
-        downloads_count: 2156
+        releaseDate: "2024-05-18",
+        downloads_count: 9876
+    },
+    {
+        id: 7,
+        name: "Python",
+        icon: "data_object",
+        version: "v3.12.4",
+        category: "编程开发工具",
+        category_id: "devtools",
+        license: "PSF 开源",
+        description: "简洁优雅的编程语言，广泛应用于 Web 开发、数据分析、人工智能等领域。",
+        features: ["语法简洁", "生态丰富", "跨平台"],
+        officialUrl: "https://www.python.org/",
+        downloadLinks: {
+            windows: {
+                url: "https://www.python.org/ftp/python/3.12.4/python-3.12.4-amd64.exe",
+                label: "Windows x64 安装包",
+                size: "28 MB"
+            },
+            macos: {
+                url: "https://www.python.org/ftp/python/3.12.4/python-3.12.4-macos11.pkg",
+                label: "macOS 安装包",
+                size: "35 MB"
+            },
+            linux: {
+                url: "https://www.python.org/downloads/source/",
+                label: "Linux 源码包",
+                size: "25 MB"
+            },
+            android: {
+                url: "https://play.google.com/store/apps/details?id=org.qpython.qpy3",
+                label: "QPython (Android)",
+                size: "—"
+            }
+        },
+        releaseDate: "2024-06-06",
+        downloads_count: 25678
+    },
+    {
+        id: 8,
+        name: "MySQL Workbench",
+        icon: "schema",
+        version: "v8.0.37",
+        category: "编程开发工具",
+        category_id: "devtools",
+        license: "GPL 开源",
+        description: "MySQL 官方数据库设计和管理工具，支持可视化建模、SQL 开发和服务器管理。",
+        features: ["可视化建模", "SQL开发", "性能监控"],
+        officialUrl: "https://www.mysql.com/products/workbench/",
+        downloadLinks: {
+            windows: {
+                url: "https://dev.mysql.com/downloads/workbench/",
+                label: "Windows x64 安装包",
+                size: "150 MB"
+            },
+            macos: {
+                url: "https://dev.mysql.com/downloads/workbench/",
+                label: "macOS DMG",
+                size: "160 MB"
+            },
+            linux: {
+                url: "https://dev.mysql.com/downloads/workbench/",
+                label: "Linux DEB/RPM",
+                size: "145 MB"
+            }
+        },
+        releaseDate: "2024-04-30",
+        downloads_count: 7654
+    },
+    {
+        id: 9,
+        name: "ChatGPT",
+        icon: "smart_toy",
+        version: "v2024.06",
+        category: "人工智能工具",
+        category_id: "ai",
+        license: "免费版 / Plus付费",
+        description: "OpenAI 开发的强大 AI 对话助手，支持文本生成、代码编写、问题解答等。",
+        features: ["对话AI", "代码生成", "多模态"],
+        officialUrl: "https://chat.openai.com/",
+        downloadLinks: {
+            windows: {
+                url: "https://chat.openai.com/download",
+                label: "Windows 桌面版",
+                size: "180 MB"
+            },
+            macos: {
+                url: "https://chat.openai.com/download",
+                label: "macOS 桌面版",
+                size: "200 MB"
+            },
+            android: {
+                url: "https://play.google.com/store/apps/details?id=com.openai.chatgpt",
+                label: "Android 版 (Google Play)",
+                size: "—"
+            },
+            linux: {
+                url: "https://chat.openai.com/",
+                label: "Linux (网页版)",
+                size: "—"
+            }
+        },
+        releaseDate: "2024-06-15",
+        downloads_count: 35678
+    },
+    {
+        id: 10,
+        name: "Claude",
+        icon: "psychology",
+        version: "v2024.06",
+        category: "人工智能工具",
+        category_id: "ai",
+        license: "免费版 / Pro付费",
+        description: "Anthropic 开发的 AI 助手，擅长长文本处理、分析推理和代码生成。",
+        features: ["长上下文", "强推理", "安全对齐"],
+        officialUrl: "https://claude.ai/",
+        downloadLinks: {
+            windows: {
+                url: "https://claude.ai/download",
+                label: "Windows 桌面版",
+                size: "160 MB"
+            },
+            macos: {
+                url: "https://claude.ai/download",
+                label: "macOS 桌面版",
+                size: "180 MB"
+            },
+            android: {
+                url: "https://play.google.com/store/apps/details?id=com.anthropic.claude",
+                label: "Android 版 (Google Play)",
+                size: "—"
+            },
+            linux: {
+                url: "https://claude.ai/",
+                label: "Linux (网页版)",
+                size: "—"
+            }
+        },
+        releaseDate: "2024-06-12",
+        downloads_count: 28934
+    },
+    {
+        id: 11,
+        name: "Stable Diffusion WebUI",
+        icon: "image",
+        version: "v1.9.3",
+        category: "人工智能工具",
+        category_id: "ai",
+        license: "AGPL 开源",
+        description: "基于 Stable Diffusion 的 AI 图像生成工具，支持文生图、图生图、ControlNet 等功能。",
+        features: ["AI绘图", "开源免费", "高度自定义"],
+        officialUrl: "https://github.com/AUTOMATIC1111/stable-diffusion-webui",
+        downloadLinks: {
+            windows: {
+                url: "https://github.com/AUTOMATIC1111/stable-diffusion-webui/releases",
+                label: "Windows 一键包",
+                size: "8.5 GB"
+            },
+            macos: {
+                url: "https://github.com/AUTOMATIC1111/stable-diffusion-webui",
+                label: "macOS (源码安装)",
+                size: "—"
+            },
+            linux: {
+                url: "https://github.com/AUTOMATIC1111/stable-diffusion-webui",
+                label: "Linux (源码安装)",
+                size: "—"
+            }
+        },
+        releaseDate: "2024-05-25",
+        downloads_count: 15678
+    },
+    {
+        id: 12,
+        name: "Ollama",
+        icon: "model_training",
+        version: "v0.1.48",
+        category: "人工智能工具",
+        category_id: "ai",
+        license: "MIT 开源",
+        description: "本地运行大语言模型的工具，支持 Llama、Mistral、Gemma 等多种开源模型。",
+        features: ["本地运行", "多模型支持", "CLI工具"],
+        officialUrl: "https://ollama.com/",
+        downloadLinks: {
+            windows: {
+                url: "https://ollama.com/download/OllamaSetup.exe",
+                label: "Windows 安装包",
+                size: "250 MB"
+            },
+            macos: {
+                url: "https://ollama.com/download/Ollama-darwin.zip",
+                label: "macOS 安装包",
+                size: "280 MB"
+            },
+            linux: {
+                url: "https://ollama.com/download/ollama-linux-amd64.tgz",
+                label: "Linux 二进制",
+                size: "230 MB"
+            }
+        },
+        releaseDate: "2024-06-18",
+        downloads_count: 12345
+    },
+    {
+        id: 13,
+        name: "Cursor",
+        icon: "mode_edit",
+        version: "v0.40.0",
+        category: "人工智能工具",
+        category_id: "ai",
+        license: "免费版 / Pro付费",
+        description: "AI 驱动的代码编辑器，基于 VS Code 构建，内置智能代码补全和对话功能。",
+        features: ["AI编程", "代码补全", "代码对话"],
+        officialUrl: "https://cursor.sh/",
+        downloadLinks: {
+            windows: {
+                url: "https://cursor.sh/download/windows",
+                label: "Windows 安装包",
+                size: "120 MB"
+            },
+            macos: {
+                url: "https://cursor.sh/download/mac",
+                label: "macOS 安装包",
+                size: "145 MB"
+            },
+            linux: {
+                url: "https://cursor.sh/download/linux",
+                label: "Linux .AppImage",
+                size: "115 MB"
+            }
+        },
+        releaseDate: "2024-06-20",
+        downloads_count: 18902
+    },
+    {
+        id: 14,
+        name: "Hugging Face Hub",
+        icon: "hub",
+        version: "v2024.06",
+        category: "人工智能工具",
+        category_id: "ai",
+        license: "Apache 2.0 开源",
+        description: "AI 模型和数据集平台，提供数千个预训练模型和数据集的托管服务。",
+        features: ["模型仓库", "数据集", "开源社区"],
+        officialUrl: "https://huggingface.co/",
+        downloadLinks: {
+            windows: {
+                url: "https://huggingface.co/docs/huggingface_hub/installation",
+                label: "Python 包 (pip)",
+                size: "—"
+            },
+            macos: {
+                url: "https://huggingface.co/docs/huggingface_hub/installation",
+                label: "Python 包 (pip)",
+                size: "—"
+            },
+            linux: {
+                url: "https://huggingface.co/docs/huggingface_hub/installation",
+                label: "Python 包 (pip)",
+                size: "—"
+            }
+        },
+        releaseDate: "2024-06-01",
+        downloads_count: 8765
+    },
+    {
+        id: 15,
+        name: "LangChain",
+        icon: "link",
+        version: "v0.2.5",
+        category: "人工智能工具",
+        category_id: "ai",
+        license: "MIT 开源",
+        description: "构建 LLM 应用的开发框架，支持链式调用、RAG、Agent 等高级功能。",
+        features: ["LLM开发", "RAG检索", "智能Agent"],
+        officialUrl: "https://www.langchain.com/",
+        downloadLinks: {
+            windows: {
+                url: "https://python.langchain.com/docs/get_started/installation",
+                label: "Python 包 (pip install langchain)",
+                size: "—"
+            },
+            macos: {
+                url: "https://python.langchain.com/docs/get_started/installation",
+                label: "Python 包 (pip install langchain)",
+                size: "—"
+            },
+            linux: {
+                url: "https://python.langchain.com/docs/get_started/installation",
+                label: "Python 包 (pip install langchain)",
+                size: "—"
+            }
+        },
+        releaseDate: "2024-06-22",
+        downloads_count: 11234
+    },
+    {
+        id: 16,
+        name: "TensorFlow",
+        icon: "tune",
+        version: "v2.16.1",
+        category: "人工智能工具",
+        category_id: "ai",
+        license: "Apache 2.0 开源",
+        description: "Google 开发的端到端机器学习平台，支持深度学习模型的构建、训练和部署。",
+        features: ["深度学习", "生产部署", "TPU支持"],
+        officialUrl: "https://www.tensorflow.org/",
+        downloadLinks: {
+            windows: {
+                url: "https://www.tensorflow.org/install/pip",
+                label: "pip 安装",
+                size: "—"
+            },
+            macos: {
+                url: "https://developer.apple.com/metal/tensorflow-plugin/",
+                label: "macOS (Metal插件)",
+                size: "—"
+            },
+            linux: {
+                url: "https://www.tensorflow.org/install/pip",
+                label: "pip 安装 (GPU支持)",
+                size: "—"
+            }
+        },
+        releaseDate: "2024-05-10",
+        downloads_count: 14567
     }
 ];
 
 const defaultCategories = [
     { id: 'all', name: '全部软件', icon: 'apps' },
-    { id: '创意设计', name: '创意设计', icon: 'design_services' },
-    { id: '开发工具', name: '开发工具', icon: 'code' },
-    { id: '视频剪辑', name: '视频剪辑', icon: 'movie_edit' },
-    { id: '数据分析', name: '数据分析', icon: 'analytics' },
-    { id: '安全加密', name: '安全加密', icon: 'security' },
-    { id: '云存储', name: '云存储', icon: 'cloud' }
+    { id: 'devtools', name: '编程开发工具', icon: 'code' },
+    { id: 'ai', name: '人工智能工具', icon: 'psychology' }
+];
+
+const osList = [
+    { id: 'all', name: '全部平台', icon: 'devices' },
+    { id: 'windows', name: 'Windows', icon: 'desktop_windows' },
+    { id: 'macos', name: 'macOS', icon: 'laptop_mac' },
+    { id: 'linux', name: 'Linux', icon: 'terminal' },
+    { id: 'android', name: 'Android', icon: 'smartphone' }
 ];
 
 let categories = [...defaultCategories];
-
-// ==================== JSON 工具函数 ====================
 
 function parseJsonField(val) {
     if (!val) return null;
@@ -186,8 +542,6 @@ function parseJsonField(val) {
     }
     return val;
 }
-
-// ==================== 数据加载函数 ====================
 
 async function loadCategoriesFromDB() {
     try {
@@ -213,37 +567,21 @@ async function loadSoftwareFromDB() {
 }
 
 function transformSoftware(s) {
-    // download_urls 优先，回退到 downloads 兼容旧数据
-    const downloadUrls = parseJsonField(s.download_urls) || [];
-    const downloads = parseJsonField(s.downloads) || [];
-    const mergedDownloads = downloadUrls.length > 0 
-        ? downloadUrls.map(d => ({
-            name: d.name,
-            size: d.size,
-            type: d.type || (d.name ? d.name.split('.').pop() : 'unknown'),
-            url: d.url,
-            r2_key: d.r2_key
-          }))
-        : downloads;
-
+    const downloadLinks = parseJsonField(s.download_links) || {};
+    
     return {
         id: s.id,
         name: s.name,
         icon: s.icon,
         version: s.version,
-        platform: s.platform,
-        size: s.size,
         category: s.categories?.name || s.category,
         category_id: s.category_id,
         license: s.license,
         description: s.description,
         features: s.features || [],
-        systemRequirements: parseJsonField(s.system_requirements) || {},
-        releaseNotes: parseJsonField(s.release_notes) || [],
-        downloads: mergedDownloads,
-        download_urls: downloadUrls,
-        sha256: s.sha256,
-        uploadDate: s.upload_date || s.uploadDate,
+        officialUrl: s.official_url || s.officialUrl,
+        downloadLinks: downloadLinks,
+        releaseDate: s.release_date || s.releaseDate,
         downloads_count: s.downloads_count || 0,
         is_verified: s.is_verified
     };
@@ -266,7 +604,7 @@ async function getSoftwareByCategory(category) {
         return await loadSoftwareFromDB();
     }
     
-    const catId = categories.find(c => c.name === category)?.id;
+    const catId = categories.find(c => c.id === category || c.name === category)?.id;
     if (catId && catId !== 'all') {
         try {
             const { data, error } = await getSoftware(null, catId);
@@ -278,7 +616,18 @@ async function getSoftwareByCategory(category) {
         }
     }
     
-    return softwareData.filter(s => s.category === category);
+    const effectiveCatId = catId || category;
+    return softwareData.filter(s => 
+        s.category_id === effectiveCatId || 
+        s.category === effectiveCatId || 
+        s.category === category
+    );
+}
+
+async function getSoftwareByOS(os) {
+    const allSoftware = await loadSoftwareFromDB();
+    if (os === 'all') return allSoftware;
+    return allSoftware.filter(s => s.downloadLinks && s.downloadLinks[os]);
 }
 
 async function searchSoftware(query) {
@@ -299,8 +648,23 @@ async function searchSoftware(query) {
     );
 }
 
+function getSoftwareOSList(software) {
+    const links = software.downloadLinks || {};
+    const osMap = {
+        windows: { name: 'Windows', icon: 'desktop_windows' },
+        macos: { name: 'macOS', icon: 'laptop_mac' },
+        linux: { name: 'Linux', icon: 'terminal' },
+        android: { name: 'Android', icon: 'smartphone' }
+    };
+    return Object.keys(links).map(os => ({
+        id: os,
+        ...osMap[os],
+        ...links[os]
+    })).filter(os => os.name);
+}
+
 function formatFileSize(size) {
-    if (!size) return '0 B';
+    if (!size || size === '—') return '—';
     if (typeof size === 'number') {
         const k = 1024;
         const sizes = ['B', 'KB', 'MB', 'GB', 'TB'];
@@ -320,11 +684,14 @@ export {
     softwareData,
     categories,
     defaultCategories,
+    osList,
     loadCategoriesFromDB,
     loadSoftwareFromDB,
     getSoftwareById,
     getSoftwareByCategory,
+    getSoftwareByOS,
     searchSoftware,
+    getSoftwareOSList,
     createSoftware,
     updateSoftware,
     deleteSoftware,

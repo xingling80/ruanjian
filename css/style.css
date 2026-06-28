@@ -842,3 +842,162 @@ body {
 .rotate-180 {
     transform: rotate(180deg);
 }
+
+/* OS Tab Buttons */
+.os-tab {
+    padding: 10px 20px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #c1c6d7;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: inherit;
+}
+
+.os-tab:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.25);
+}
+
+.os-tab.active {
+    background: rgba(75, 142, 255, 0.2);
+    border-color: rgba(75, 142, 255, 0.5);
+    color: #adc6ff;
+}
+
+/* Category Tab Buttons */
+.category-tab {
+    padding: 12px 24px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #c1c6d7;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: inherit;
+}
+
+.category-tab:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.25);
+}
+
+.category-tab.active {
+    background: rgba(75, 142, 255, 0.15);
+    border-color: rgba(75, 142, 255, 0.4);
+    color: #adc6ff;
+    box-shadow: 0 0 20px rgba(75, 142, 255, 0.2);
+}
+
+/* OS Pill */
+.os-pill {
+    padding: 8px 16px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #c1c6d7;
+}
+
+.os-pill.active {
+    background: rgba(75, 142, 255, 0.2);
+    border-color: rgba(75, 142, 255, 0.5);
+    color: #adc6ff;
+}
+
+.os-pill:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+/* OS Badge */
+.os-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #c1c6d7;
+    transition: all 0.2s ease;
+}
+
+.os-badge:hover {
+    background: rgba(75, 142, 255, 0.15);
+    border-color: rgba(75, 142, 255, 0.4);
+    color: #adc6ff;
+}
+
+/* Download OS Card */
+.download-os-card {
+    transition: all 0.3s ease;
+}
+
+.download-os-card:hover {
+    border-color: rgba(75, 142, 255, 0.4);
+    box-shadow: 0 0 20px rgba(75, 142, 255, 0.15);
+}
+
+.download-os-card .download-btn-icon {
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: all 0.3s ease;
+}
+
+.download-os-card:hover .download-btn-icon {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Compact Software Card */
+.software-card-compact {
+    transition: all 0.3s ease;
+}
+
+.software-card-compact:hover {
+    border-color: rgba(173, 198, 255, 0.4);
+    box-shadow: 0 0 20px rgba(173, 198, 255, 0.15);
+    transform: translateY(-2px);
+}
+
+.software-card-compact .download-btn-icon {
+    opacity: 0.5;
+    transition: all 0.3s ease;
+}
+
+.software-card-compact:hover .download-btn-icon {
+    opacity: 1;
+}
+
+/* Line clamp utilities */
+.line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
