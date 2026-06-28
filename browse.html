@@ -189,7 +189,8 @@
         async function renderCategories() {
             await loadCategoriesFromDB();
             const container = document.getElementById('category-filters');
-            const displayCats = categories.filter(c => c.id === 'all' || c.id === 'devtools' || c.id === 'ai');
+            const cats = window.categories || [];
+            const displayCats = cats.filter(c => c.id === 'all' || c.id === 'devtools' || c.id === 'ai');
             container.innerHTML = displayCats.map(cat => `
                 <button 
                     class="category-pill glass-level-1 ${currentCategory === cat.id ? 'active' : ''}"
@@ -240,7 +241,7 @@
             if (categoryId === 'all') return true;
             if (software.category_id === categoryId) return true;
             if (software.category === categoryId) return true;
-            const cat = categories.find(c => c.id === categoryId);
+            const cat = (window.categories || []).find(c => c.id === categoryId);
             if (cat && software.category === cat.name) return true;
             return false;
         }

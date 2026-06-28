@@ -544,11 +544,18 @@ function parseJsonField(val) {
     return val;
 }
 
+function syncWindowCategories(cats) {
+    if (typeof window !== 'undefined') {
+        window.categories = cats;
+    }
+}
+
 async function loadCategoriesFromDB() {
     // 优先读缓存 → 二次访问秒开
     const cached = getCache('categories');
     if (cached) {
         categories = cached;
+        syncWindowCategories(cached);
         return;
     }
     try {
@@ -556,6 +563,7 @@ async function loadCategoriesFromDB() {
         if (data && data.length > 0) {
             categories = [{ id: 'all', name: '全部软件', icon: 'apps' }, ...data];
             setCache('categories', categories);
+            syncWindowCategories(categories);
         }
     } catch (e) {
         console.log('Failed to load categories from DB, using default');
