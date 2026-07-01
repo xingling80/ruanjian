@@ -1,37 +1,78 @@
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
-const SUPABASE_URL = 'https://still-meadow-9abe.dongzehua588.workers.dev';
+const WORKER_URL = 'https://still-meadow-9abe.dongzehua588.workers.dev';
+const DIRECT_SUPABASE_URL = 'https://bszmxgjhxikfpisxgaml.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_vVGZp3VO6OPFxKBUIaxJkA_FmC0rqeS';
 
-export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+let supabaseClient;
+
+async function initSupabase() {
+    let useWorker = true;
+    try {
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 3000);
+        const response = await fetch(`${WORKER_URL}/rest/v1/categories?apikey=${SUPABASE_ANON_KEY}`, {
+            method: 'GET',
+            signal: controller.signal,
+        });
+        clearTimeout(timeout);
+        if (!response.ok) {
+            useWorker = false;
+        }
+    } catch (e) {
+        useWorker = false;
+    }
+    
+    const url = useWorker ? WORKER_URL : DIRECT_SUPABASE_URL;
+    if (!useWorker) {
+        console.log('Worker proxy unavailable, using direct Supabase connection');
+    }
+    
+    supabaseClient = createClient(url, SUPABASE_ANON_KEY);
+}
+
+initSupabase();
+
+export async function getSupabase() {
+    if (!supabaseClient) {
+        await initSupabase();
+    }
+    return supabaseClient;
+}
 
 export async function getCurrentUser() {
-    const { data: { user } } = await supabase.auth.getUser();
+    const client = await getSupabase();
+    const { data: { user } } = await client.auth.getUser();
     return user;
 }
 
 export async function isAuthenticated() {
-    const { data: { session } } = await supabase.auth.getSession();
+    const client = await getSupabase();
+    const { data: { session } } = await client.auth.getSession();
     return !!session;
 }
 
 export async function login(email, password) {
-    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+    const client = await getSupabase();
+    const { data, error } = await client.auth.signInWithPassword({ email, password });
     return { data, error };
 }
 
 export async function logout() {
-    const { error } = await supabase.auth.signOut();
+    const client = await getSupabase();
+    const { error } = await client.auth.signOut();
     return { error };
 }
 
 export async function getCategories() {
-    const { data, error } = await supabase.from('categories').select('*').order('id');
+    const client = await getSupabase();
+    const { data, error } = await client.from('categories').select('*').order('id');
     return { data, error };
 }
 
 export async function getSoftware(limit = null, categoryId = null) {
-    let query = supabase.from('software').select('*, categories(name)');
+    const client = await getSupabase();
+    let query = client.from('software').select('*, categories(name)');
     
     if (categoryId) {
         query = query.eq('category_id', categoryId);
@@ -46,12 +87,14 @@ export async function getSoftware(limit = null, categoryId = null) {
 }
 
 export async function getSoftwareById(id) {
-    const { data, error } = await supabase.from('software').select('*, categories(name)').eq('id', id).single();
+    const client = await getSupabase();
+    const { data, error } = await client.from('software').select('*, categories(name)').eq('id', id).single();
     return { data, error };
 }
 
 export async function searchSoftware(query) {
-    const { data, error } = await supabase.from('software').select('*, categories(name)')
+    const client = await getSupabase();
+    const { data, error } = await client.from('software').select('*, categories(name)')
         .ilike('name', `%${query}%`)
         .or(`description.ilike.%${query}%`)
         .order('downloads_count', { ascending: false });
@@ -59,39 +102,46 @@ export async function searchSoftware(query) {
 }
 
 export async function createSoftware(software) {
-    const { data, error } = await supabase.from('software').insert([software]);
+    const client = await getSupabase();
+    const { data, error } = await client.from('software').insert([software]);
     return { data, error };
 }
 
 export async function updateSoftware(id, software) {
-    const { data, error } = await supabase.from('software').update(software).eq('id', id);
+    const client = await getSupabase();
+    const { data, error } = await client.from('software').update(software).eq('id', id);
     return { data, error };
 }
 
 export async function deleteSoftware(id) {
-    const { data, error } = await supabase.from('software').delete().eq('id', id);
+    const client = await getSupabase();
+    const { data, error } = await client.from('software').delete().eq('id', id);
     return { data, error };
 }
 
 export async function createDownloadLog(log) {
-    const { data, error } = await supabase.from('download_logs').insert([log]);
+    const client = await getSupabase();
+    const { data, error } = await client.from('download_logs').insert([log]);
     return { data, error };
 }
 
 export async function getDownloadLogs(limit = 50) {
-    const { data, error } = await supabase.from('download_logs').select('*, software(name)')
+    const client = await getSupabase();
+    const { data, error } = await client.from('download_logs').select('*, software(name)')
         .order('download_time', { ascending: false })
         .limit(limit);
     return { data, error };
 }
 
 export async function incrementDownloadCount(softwareId) {
-    const { data, error } = await supabase.rpc('increment_download_count', { software_id: softwareId });
+    const client = await getSupabase();
+    const { data, error } = await client.rpc('increment_download_count', { software_id: softwareId });
     return { data, error };
 }
 
 export async function submitContactMessage(message) {
-    const { data, error } = await supabase.from('contact_messages').insert([{
+    const client = await getSupabase();
+    const { data, error } = await client.from('contact_messages').insert([{
         name: message.name,
         contact: message.contact,
         type: message.type,
@@ -101,8 +151,9 @@ export async function submitContactMessage(message) {
 }
 
 export async function getStats() {
-    const softwareCount = await supabase.from('software').select('id', { count: 'exact', head: true });
-    const totalDownloads = await supabase.from('software').select('downloads_count');
+    const client = await getSupabase();
+    const softwareCount = await client.from('software').select('id', { count: 'exact', head: true });
+    const totalDownloads = await client.from('software').select('downloads_count');
     
     return {
         softwareCount: softwareCount.count || 0,
@@ -110,8 +161,8 @@ export async function getStats() {
     };
 }
 
-// ==================== 注册管理员（首次设置用） ====================
 export async function signUpAdmin(email, password) {
-    const { data, error } = await supabase.auth.signUp({ email, password });
+    const client = await getSupabase();
+    const { data, error } = await client.auth.signUp({ email, password });
     return { data, error };
 }
