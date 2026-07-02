@@ -79,8 +79,10 @@
 
     <script type="module">
         import { getSoftwareById, getSoftwareOSList } from './js/data.js';
+        import { formatDate } from './js/time-utils.js';
         window.getSoftwareById = getSoftwareById;
         window.getSoftwareOSList = getSoftwareOSList;
+        window.formatDate = formatDate;
     </script>
     <script src="js/common.js"></script>
     <script>

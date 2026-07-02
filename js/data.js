@@ -1,4 +1,4 @@
-﻿﻿import { getSoftware, getSoftwareById as sbGetSoftwareById, getCategories, searchSoftware as sbSearchSoftware, createSoftware, updateSoftware, deleteSoftware, getDownloadLogs, getStats } from './supabase-client.js';
+import { getSoftware, getSoftwareById as sbGetSoftwareById, getCategories, searchSoftware as sbSearchSoftware, createSoftware, updateSoftware, deleteSoftware, getDownloadLogs, getStats } from './supabase-client.js';
 import { getCache, setCache } from './cache.js';
 
 const softwareData = [
@@ -695,23 +695,6 @@ function getSoftwareOSList(software) {
     })).filter(os => os.name);
 }
 
-function formatFileSize(size) {
-    if (!size || size === '—') return '—';
-    if (typeof size === 'number') {
-        const k = 1024;
-        const sizes = ['B', 'KB', 'MB', 'GB', 'TB'];
-        const i = Math.floor(Math.log(size) / Math.log(k));
-        return parseFloat((size / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-    }
-    return size;
-}
-
-function formatDate(dateStr) {
-    if (!dateStr) return '-';
-    const date = new Date(dateStr);
-    return date.toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' });
-}
-
 export {
     softwareData,
     categories,
@@ -728,7 +711,5 @@ export {
     updateSoftware,
     deleteSoftware,
     getDownloadLogs,
-    getStats,
-    formatFileSize,
-    formatDate
+    getStats
 };

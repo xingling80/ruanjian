@@ -125,18 +125,6 @@ function showToast(message, type = 'info') {
     }, 2500);
 }
 
-function formatDate(dateStr) {
-    const date = new Date(dateStr);
-    return date.toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' });
-}
-
-function formatNumber(num) {
-    if (num >= 10000) {
-        return (num / 10000).toFixed(1) + '万';
-    }
-    return num.toLocaleString();
-}
-
 // 认证已统一使用 Supabase Auth，请勿使用 localStorage 自定义 token。
 // 以下函数仅保留用于兼容旧代码，新代码请使用 supabase-client.js 中的 isAuthenticated()。
 // 管理后台的 login/logout 由 supabase-client.js 处理，请勿在 common.js 中覆盖。
